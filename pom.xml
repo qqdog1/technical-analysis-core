@@ -17,4 +17,15 @@
 			<version>1.0</version>
 		</dependency>
 	</dependencies>
+	
+	<repositories>
+	    <repository>
+	        <id>FileCache-mvn-repo</id>
+	        <url>https://raw.github.com/qqdog1/FileCache/mvn-repo/</url>
+	        <snapshots>
+	            <enabled>true</enabled>
+	            <updatePolicy>always</updatePolicy>
+	        </snapshots>
+	    </repository>
+	</repositories>
 </project>
