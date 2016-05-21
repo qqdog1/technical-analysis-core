@@ -19,11 +19,11 @@ public class TWSEDataPoller {
 		this.sFilePath = sFilePath;
 	}
 	
-	public void downloadFile(String sDate, String sProdId) throws IOException {
-		URL url = new URL(getQueryAPI(sDate, sProdId));
+	public void downloadFile(String sYearMonth, String sProdId) throws IOException {
+		URL url = new URL(getQueryAPI(sYearMonth, sProdId));
 		ReadableByteChannel rbc = Channels.newChannel(url.openStream());
 		@SuppressWarnings("resource")
-		FileOutputStream fos = new FileOutputStream(sFilePath + sDate + "_" + sProdId + ".csv");
+		FileOutputStream fos = new FileOutputStream(sFilePath + sYearMonth + "_" + sProdId + ".csv");
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 	}
 	

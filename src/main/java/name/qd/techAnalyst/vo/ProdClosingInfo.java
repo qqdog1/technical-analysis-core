@@ -1,6 +1,6 @@
 package name.qd.techAnalyst.vo;
 
-public class ProdDailyClosingInfo {
+public class ProdClosingInfo {
 	private String sDate;
 	private long lFilledShare;
 	private double dOpenPrice;
@@ -8,40 +8,40 @@ public class ProdDailyClosingInfo {
 	private double dUpperPrice;
 	private double dLowerPrice;
 	
-	public String getsDate() {
+	public String getDate() {
 		return sDate;
 	}
-	public void setsDate(String sDate) {
+	public void setDate(String sDate) {
 		this.sDate = sDate;
 	}
-	public long getlFilledShare() {
+	public long getFilledShare() {
 		return lFilledShare;
 	}
-	public void setlFilledShare(long lFilledShare) {
+	public void setFilledShare(long lFilledShare) {
 		this.lFilledShare = lFilledShare;
 	}
-	public double getdOpenPrice() {
+	public double getOpenPrice() {
 		return dOpenPrice;
 	}
-	public void setdOpenPrice(double dOpenPrice) {
+	public void setOpenPrice(double dOpenPrice) {
 		this.dOpenPrice = dOpenPrice;
 	}
-	public double getdClosePrice() {
+	public double getClosePrice() {
 		return dClosePrice;
 	}
-	public void setdClosePrice(double dClosePrice) {
+	public void setClosePrice(double dClosePrice) {
 		this.dClosePrice = dClosePrice;
 	}
-	public double getdUpperPrice() {
+	public double getUpperPrice() {
 		return dUpperPrice;
 	}
-	public void setdUpperPrice(double dUpperPrice) {
+	public void setUpperPrice(double dUpperPrice) {
 		this.dUpperPrice = dUpperPrice;
 	}
-	public double getdLowerPrice() {
+	public double getLowerPrice() {
 		return dLowerPrice;
 	}
-	public void setdLowerPrice(double dLowerPrice) {
+	public void setLowerPrice(double dLowerPrice) {
 		this.dLowerPrice = dLowerPrice;
 	}
 }
