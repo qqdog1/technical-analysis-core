@@ -4,16 +4,16 @@ public class AnalysisResult {
 	private String sDate;
 	private double dValue;
 	
-	public String getsDate() {
+	public String getDate() {
 		return sDate;
 	}
-	public void setsDate(String sDate) {
+	public void setDate(String sDate) {
 		this.sDate = sDate;
 	}
-	public double getdValue() {
+	public double getValue() {
 		return dValue;
 	}
-	public void setdValue(double dValue) {
+	public void setValue(double dValue) {
 		this.dValue = dValue;
 	}
 }

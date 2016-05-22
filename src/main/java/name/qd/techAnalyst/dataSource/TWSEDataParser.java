@@ -60,7 +60,9 @@ public class TWSEDataParser {
 			int iIndex = 0;
 			int iComma = sData.indexOf(",");
 			int iQuotation = sData.indexOf("\"");
-			if(iComma == -1 && iQuotation == -1) {
+			if(iComma == 0) {
+				iIndex = 1;
+			} else if(iComma == -1 && iQuotation == -1) {
 				lst.add(sData.trim());
 				iIndex = sData.length();
 			} else if (iQuotation == -1 || iComma < iQuotation) {
@@ -70,9 +72,10 @@ public class TWSEDataParser {
 				iIndex = iQuotation + 1;
 				iQuotation = sData.substring(iIndex, sData.length()).indexOf("\"");
 				lst.add(sData.substring(iIndex, iQuotation + iIndex).trim().replaceAll(",", ""));
-				iIndex = iQuotation + iIndex + 2;
+				iIndex = iQuotation + iIndex + 1;
 			}
 			sData = sData.substring(iIndex, sData.length());
+			
 		}
 		return lst;
 	}

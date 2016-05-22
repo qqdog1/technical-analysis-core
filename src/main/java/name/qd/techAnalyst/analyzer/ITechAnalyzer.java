@@ -1,6 +1,11 @@
 package name.qd.techAnalyst.analyzer;
 
+import java.util.List;
+
+import name.qd.techAnalyst.vo.AnalysisResult;
+import name.qd.techAnalyst.vo.ProdClosingInfo;
+
 public interface ITechAnalyzer {
 
-	public void analyze(String sFrom, String sTo, String sProdId);
+	public List<AnalysisResult> analyze(String sFrom, String sTo, String sProdId, List<ProdClosingInfo> lst);
 }

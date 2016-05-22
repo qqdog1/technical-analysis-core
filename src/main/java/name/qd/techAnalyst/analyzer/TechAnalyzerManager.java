@@ -1,9 +1,12 @@
 package name.qd.techAnalyst.analyzer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import name.qd.techAnalyst.analyzer.impl.DayAvg5;
+import name.qd.techAnalyst.vo.AnalysisResult;
+import name.qd.techAnalyst.vo.ProdClosingInfo;
 
 public class TechAnalyzerManager {
 	private Map<String, ITechAnalyzer> map = new HashMap<String, ITechAnalyzer>();
@@ -18,13 +21,13 @@ public class TechAnalyzerManager {
 		map.put("DayAvg5", new DayAvg5());
 	}
 	
-	public void analyze(String sAnalyzer, String sFrom, String sTo, String sProdId) {
+	public List<AnalysisResult> analyze(String sAnalyzer, String sFrom, String sTo, String sProdId, List<ProdClosingInfo> lst) {
 		if(!map.containsKey(sAnalyzer)) {
 			// TODO
-			return;
+			return null;
 		}
 		
-		map.get(sAnalyzer).analyze(sFrom, sTo, sProdId);
+		return map.get(sAnalyzer).analyze(sFrom, sTo, sProdId, lst);
 	}
 	
 }
