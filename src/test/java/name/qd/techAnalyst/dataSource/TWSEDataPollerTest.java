@@ -1,3 +1,4 @@
+package name.qd.techAnalyst.dataSource;
 import java.io.IOException;
 
 import name.qd.techAnalyst.dataSource.TWSEDataPoller;

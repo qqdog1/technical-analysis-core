@@ -15,7 +15,7 @@ public class TWSEDataPoller {
 	
 	private String sFilePath;
 	
-	public TWSEDataPoller(String sFilePath) {
+	TWSEDataPoller(String sFilePath) {
 		this.sFilePath = sFilePath;
 	}
 	

@@ -7,17 +7,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.qd.techAnalyst.util.ADROCUtil;
+import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.ProdClosingInfo;
 
 public class TWSEDataParser {
 	private String sFilePath;
 	
-	public TWSEDataParser(String sFilePath) {
+	TWSEDataParser(String sFilePath) {
 		this.sFilePath = sFilePath;
 	}
 	
-	public List<ProdClosingInfo> readProdDailyClosingInfo(String sYearMonth, String sProdId) throws FileNotFoundException, IOException {
+	public List<ProdClosingInfo> readProdClosingInfo(String sYearMonth, String sProdId) throws FileNotFoundException, IOException {
 		List<ProdClosingInfo> lst = new ArrayList<ProdClosingInfo>();
 		String sPrefix = toTWSEDateFormat(sYearMonth);
 		try (BufferedReader br = new BufferedReader(new FileReader(sFilePath + sYearMonth + "_" + sProdId + ".csv"))) {
@@ -34,7 +34,7 @@ public class TWSEDataParser {
 	private String toTWSEDateFormat(String sYearMonth) {
 		String sYear = sYearMonth.substring(0, 4);
 		String sMonth = sYearMonth.substring(4, 6);
-		sYear = ADROCUtil.AD2ROC(sYear);
+		sYear = TimeUtil.AD2ROC(sYear);
 		return " " + sYear + "/" + sMonth;
 	}
 	
