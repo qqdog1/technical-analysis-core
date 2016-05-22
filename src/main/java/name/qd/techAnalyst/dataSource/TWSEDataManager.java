@@ -17,7 +17,7 @@ public class TWSEDataManager {
 		poller = new TWSEDataPoller(sFilePath);
 	}
 	
-	public void checkDataAndDownload(String sFrom, String sTo, String sProdId) throws ParseException, IOException {
+	public void checkDateAndDownload(String sFrom, String sTo, String sProdId) throws ParseException, IOException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		List<String> lst = TimeUtil.getYearMonthBetween(sdf.parse(sFrom), sdf.parse(sTo));
 		for(String sYearMonth : lst) {
