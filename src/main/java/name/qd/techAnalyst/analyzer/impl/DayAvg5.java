@@ -17,7 +17,7 @@ public class DayAvg5 implements ITechAnalyzer {
 			result.setDate(lst.get(i).getDate());
 			double dSum = 0;
 			for(int j = 0 ; j < 5 ; j++) {
-				dSum += lst.get(i - j).getClosePrice();
+				dSum += lst.get(i - j).getAvgPrice();
 			}
 			result.setValue(dSum / 5);
 			lstResult.add(result);

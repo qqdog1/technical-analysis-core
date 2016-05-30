@@ -47,10 +47,12 @@ public class TWSEDataParser {
 		ProdClosingInfo prod = new ProdClosingInfo();
 		prod.setDate(lst.get(0));
 		prod.setFilledShare(Long.parseLong(lst.get(1)));
+		prod.setFilledAmount(Double.parseDouble(lst.get(2)));
 		prod.setOpenPrice(Double.parseDouble(lst.get(3)));
 		prod.setUpperPrice(Double.parseDouble(lst.get(4)));
 		prod.setLowerPrice(Double.parseDouble(lst.get(5)));
 		prod.setClosePrice(Double.parseDouble(lst.get(6)));
+		prod.setAvgPrice(prod.getFilledAmount() / prod.getFilledShare());
 		return prod;
 	}
 	

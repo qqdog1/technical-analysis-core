@@ -7,6 +7,8 @@ public class ProdClosingInfo {
 	private double dClosePrice;
 	private double dUpperPrice;
 	private double dLowerPrice;
+	private double dAvgPrice;
+	private double dFilledAmount;
 	
 	public String getDate() {
 		return sDate;
@@ -43,5 +45,17 @@ public class ProdClosingInfo {
 	}
 	public void setLowerPrice(double dLowerPrice) {
 		this.dLowerPrice = dLowerPrice;
+	}
+	public double getAvgPrice() {
+		return dAvgPrice;
+	}
+	public void setAvgPrice(double dAvgPrice) {
+		this.dAvgPrice = dAvgPrice;
+	}
+	public double getFilledAmount() {
+		return dFilledAmount;
+	}
+	public void setFilledAmount(double dFilledAmount) {
+		this.dFilledAmount = dFilledAmount;
 	}
 }
