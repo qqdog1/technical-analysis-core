@@ -38,7 +38,7 @@ public class TechAnalyst {
 			e.printStackTrace();
 		}
 		
-		List<AnalysisResult> lstResult = analyzerManager.analyze(sAnalyzer, sFrom, sTo, sProdId, lst);
+		List<AnalysisResult> lstResult = analyzerManager.analyze(sAnalyzer, sFrom, sTo, lst);
 		for(AnalysisResult result : lstResult) {
 			System.out.println(result.getDate() + ":" + result.getValue());
 		}

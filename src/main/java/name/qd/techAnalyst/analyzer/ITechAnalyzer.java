@@ -7,5 +7,5 @@ import name.qd.techAnalyst.vo.ProdClosingInfo;
 
 public interface ITechAnalyzer {
 
-	public List<AnalysisResult> analyze(String sFrom, String sTo, String sProdId, List<ProdClosingInfo> lst);
+	public List<AnalysisResult> analyze(String sFrom, String sTo, List<ProdClosingInfo> lst);
 }

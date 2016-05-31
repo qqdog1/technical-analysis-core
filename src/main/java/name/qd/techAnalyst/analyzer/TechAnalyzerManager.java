@@ -21,13 +21,13 @@ public class TechAnalyzerManager {
 		map.put("DayAvg5", new DayAvg5());
 	}
 	
-	public List<AnalysisResult> analyze(String sAnalyzer, String sFrom, String sTo, String sProdId, List<ProdClosingInfo> lst) {
+	public List<AnalysisResult> analyze(String sAnalyzer, String sFrom, String sTo, List<ProdClosingInfo> lst) {
 		if(!map.containsKey(sAnalyzer)) {
 			// TODO
 			return null;
 		}
 		
-		return map.get(sAnalyzer).analyze(sFrom, sTo, sProdId, lst);
+		return map.get(sAnalyzer).analyze(sFrom, sTo, lst);
 	}
 	
 }
