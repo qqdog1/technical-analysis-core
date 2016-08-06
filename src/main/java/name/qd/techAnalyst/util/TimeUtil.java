@@ -1,5 +1,6 @@
 package name.qd.techAnalyst.util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,20 +24,27 @@ public class TimeUtil {
 	}
 	
 	public static List<String> getYearMonthBetween(Date dateFrom, Date dateTo) {
-		List<String> set = new ArrayList<String>();
+		List<String> lst = new ArrayList<String>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(dateFrom);
 		calendar.set(Calendar.DATE, 1);
-		calendar.set(Calendar.HOUR, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
 		while(calendar.getTimeInMillis() <= dateTo.getTime()) {
-			String sYear = String.valueOf(calendar.get(Calendar.YEAR));
-			String sMonth = String.format("%02d", calendar.get(Calendar.MONTH) + 1);
-			set.add(sYear + sMonth);
+			lst.add(sdf.format(calendar.getTime()));
 			calendar.add(Calendar.MONTH, 1);
 		}
-		return set;
+		return lst;
+	}
+	
+	public static List<String> getDateBetween(Date dateFrom, Date dateTo) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		List<String> lst = new ArrayList<String>();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dateFrom);
+		while(calendar.getTimeInMillis() <= dateTo.getTime()) {
+			lst.add(sdf.format(calendar.getTime()));
+			calendar.add(Calendar.DATE, 1);
+		}
+		return lst;
 	}
 }

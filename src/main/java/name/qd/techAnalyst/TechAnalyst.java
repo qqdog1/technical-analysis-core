@@ -21,8 +21,8 @@ public class TechAnalyst {
 		analyzerManager = TechAnalyzerManager.getInstance();
 		twseDataManager = new TWSEDataManager("./");
 		
-		String sFrom = "20160101";
-		String sTo = "20160522";
+		String sFrom = "20160331";
+		String sTo = "20160501";
 		String sProdId = "2453";
 		String sAnalyzer = MovingAvg5Day.class.getSimpleName();
 		

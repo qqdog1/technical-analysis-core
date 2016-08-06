@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import name.qd.techAnalyst.util.FileConstUtil;
@@ -25,8 +26,12 @@ public class TWSEDataManager {
 	
 	public void checkDateAndDownload(String sFrom, String sTo, String sProdId) throws ParseException, IOException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		List<String> lst = TimeUtil.getYearMonthBetween(sdf.parse(sFrom), sdf.parse(sTo));
-		checkAndDownloadProdClosing(sFilePath, lst, sProdId);
+		Date dateFrom = sdf.parse(sFrom);
+		Date dateTo = sdf.parse(sTo);
+		List<String> lstYearMonth = TimeUtil.getYearMonthBetween(dateFrom, dateTo);
+		List<String> lstDate = TimeUtil.getDateBetween(dateFrom, dateTo);
+		checkAndDownloadProdClosing(sFilePath, lstYearMonth, sProdId);
+		checkAndDownloadDailyClosing(sFilePath, lstDate);
 	}
 	
 	private void checkAndDownloadProdClosing(String sFilePath, List<String> lst, String sProdId) throws IOException {
@@ -37,6 +42,15 @@ public class TWSEDataManager {
 			}
 		}
 		poller.downloadProdClosingInfo(lst.get(lst.size() - 1), sProdId);
+	}
+	
+	private void checkAndDownloadDailyClosing(String sFilePath, List<String> lst) throws IOException {
+		for(String sDate : lst) {
+			File file = new File(FileConstUtil.getDailyClosingFilePath(sFilePath, sDate));
+			if(!file.exists()) {
+				poller.downloadDailyClosingInfo(sDate);
+			}
+		}
 	}
 	
 	public ArrayList<ProdClosingInfo> getProdClosingInfo(String sFrom, String sTo, String sProdId) throws ParseException, FileNotFoundException, IOException {

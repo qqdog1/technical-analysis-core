@@ -37,7 +37,8 @@ public class TWSEDataPoller {
 		connection.setRequestMethod("POST");
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		connection.getOutputStream().write(FileConstUtil.getDailyClosingPOSTBody(sDate).getBytes());
+//		connection.getOutputStream().write(FileConstUtil.getDailyClosingPOSTBody(sDate).getBytes());
+		connection.getOutputStream().write("download=csv&qdate=2016/08/01&selectType=MS".getBytes());
 		ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
 		@SuppressWarnings("resource")
 		FileOutputStream fos = new FileOutputStream(FileConstUtil.getDailyClosingFilePath(sFilePath, sDate));

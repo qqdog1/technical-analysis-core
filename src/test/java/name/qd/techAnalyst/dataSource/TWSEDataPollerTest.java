@@ -18,7 +18,7 @@ public class TWSEDataPollerTest {
 		}
 		
 		try {
-			new TWSEDataPoller("./").downloadDailyClosingInfo("20160801");
+			new TWSEDataPoller("./").downloadDailyClosingInfo("2016/08/01");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
