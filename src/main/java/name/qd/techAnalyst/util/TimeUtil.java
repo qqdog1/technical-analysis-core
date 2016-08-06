@@ -37,12 +37,25 @@ public class TimeUtil {
 	}
 	
 	public static List<String> getDateBetween(Date dateFrom, Date dateTo) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		List<String> lst = new ArrayList<String>();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(dateFrom);
 		while(calendar.getTimeInMillis() <= dateTo.getTime()) {
 			lst.add(sdf.format(calendar.getTime()));
+			calendar.add(Calendar.DATE, 1);
+		}
+		return lst;
+	}
+	
+	public static List<String> getPOSTDateBetween(Date dateFrom, Date dateTo) {
+		SimpleDateFormat sdf = new SimpleDateFormat("/MM/dd");
+		List<String> lst = new ArrayList<String>();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dateFrom);
+		while(calendar.getTimeInMillis() <= dateTo.getTime()) {
+			int iYear = AD2ROC(calendar.get(Calendar.YEAR));
+			lst.add(String.valueOf(iYear) + sdf.format(calendar.getTime()));
 			calendar.add(Calendar.DATE, 1);
 		}
 		return lst;

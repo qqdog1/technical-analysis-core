@@ -30,8 +30,9 @@ public class TWSEDataManager {
 		Date dateTo = sdf.parse(sTo);
 		List<String> lstYearMonth = TimeUtil.getYearMonthBetween(dateFrom, dateTo);
 		List<String> lstDate = TimeUtil.getDateBetween(dateFrom, dateTo);
+		List<String> lstPOSTDate = TimeUtil.getPOSTDateBetween(dateFrom, dateTo);
 		checkAndDownloadProdClosing(sFilePath, lstYearMonth, sProdId);
-		checkAndDownloadDailyClosing(sFilePath, lstDate);
+		checkAndDownloadDailyClosing(sFilePath, lstDate, lstPOSTDate);
 	}
 	
 	private void checkAndDownloadProdClosing(String sFilePath, List<String> lst, String sProdId) throws IOException {
@@ -44,11 +45,11 @@ public class TWSEDataManager {
 		poller.downloadProdClosingInfo(lst.get(lst.size() - 1), sProdId);
 	}
 	
-	private void checkAndDownloadDailyClosing(String sFilePath, List<String> lst) throws IOException {
-		for(String sDate : lst) {
-			File file = new File(FileConstUtil.getDailyClosingFilePath(sFilePath, sDate));
+	private void checkAndDownloadDailyClosing(String sFilePath, List<String> lstDate, List<String> lstPOSTDate) throws IOException {
+		for(int i = 0 ; i < lstDate.size() ; i++) {
+			File file = new File(FileConstUtil.getDailyClosingFilePath(sFilePath, lstDate.get(i)));
 			if(!file.exists()) {
-				poller.downloadDailyClosingInfo(sDate);
+				poller.downloadDailyClosingInfo(lstDate.get(i), lstPOSTDate.get(i));
 			}
 		}
 	}
