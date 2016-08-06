@@ -7,8 +7,9 @@ import name.qd.techAnalyst.analyzer.ITechAnalyzer;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProdClosingInfo;
 
-public class DayAvg5 implements ITechAnalyzer {
-
+// 移動平均線-5日
+// 5日均價
+public class MovingAvg5Day implements ITechAnalyzer {
 	@Override
 	public List<AnalysisResult> analyze(String sFrom, String sTo, List<ProdClosingInfo> lst) {
 		return AnalystUtils.NDaysAvg(sFrom, sTo, lst, 5);

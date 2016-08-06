@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import name.qd.techAnalyst.util.FileConstUtil;
 import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.ProdClosingInfo;
 
@@ -20,7 +21,7 @@ public class TWSEDataParser {
 	public List<ProdClosingInfo> readProdClosingInfo(String sYearMonth, String sProdId) throws FileNotFoundException, IOException {
 		List<ProdClosingInfo> lst = new ArrayList<ProdClosingInfo>();
 		String sPrefix = toTWSEDateFormat(sYearMonth);
-		try (BufferedReader br = new BufferedReader(new FileReader(sFilePath + sYearMonth + "_" + sProdId + ".csv"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(FileConstUtil.getProdClosingFilePath(sFilePath, sYearMonth, sProdId)))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				ProdClosingInfo prod = parse2ProdClosingInfo(line, sPrefix);
 				if(prod != null) {

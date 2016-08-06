@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
+import name.qd.techAnalyst.analyzer.impl.MovingAvg5Day;
 import name.qd.techAnalyst.dataSource.TWSEDataManager;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProdClosingInfo;
@@ -14,8 +15,8 @@ public class TechAnalyst {
 	private TWSEDataManager twseDataManager;
 	
 	private TechAnalyst() {
-		// ­n¤ÀªR­ş¤@ÀÉ°Ó«~  ®É¶¡  ­şºØ¤ÀªR¤è¦¡
-		// ÀË¬dÀÉ®× ¤ÀªR ¦^¶Çµ²ªG?
+		// è¦åˆ†æå“ªä¸€æª”å•†å“  æ™‚é–“  å“ªç¨®åˆ†ææ–¹å¼
+		// æª¢æŸ¥æª”æ¡ˆ åˆ†æ å›å‚³çµæœ?
 		
 		analyzerManager = TechAnalyzerManager.getInstance();
 		twseDataManager = new TWSEDataManager("./");
@@ -23,7 +24,7 @@ public class TechAnalyst {
 		String sFrom = "20160101";
 		String sTo = "20160522";
 		String sProdId = "2453";
-		String sAnalyzer = "DayAvg5";
+		String sAnalyzer = MovingAvg5Day.class.getSimpleName();
 		
 		try {
 			twseDataManager.checkDateAndDownload(sFrom, sTo, sProdId);

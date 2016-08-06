@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import name.qd.techAnalyst.analyzer.impl.DayAvg5;
+import name.qd.techAnalyst.analyzer.impl.MovingAvg5Day;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProdClosingInfo;
 
@@ -18,7 +18,7 @@ public class TechAnalyzerManager {
 	}
 	
 	private TechAnalyzerManager() {
-		map.put("DayAvg5", new DayAvg5());
+		map.put(MovingAvg5Day.class.getSimpleName(), new MovingAvg5Day());
 	}
 	
 	public List<AnalysisResult> analyze(String sAnalyzer, String sFrom, String sTo, List<ProdClosingInfo> lst) {
