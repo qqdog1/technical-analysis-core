@@ -1,14 +1,18 @@
 package name.qd.techAnalyst.dataSource;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import name.qd.techAnalyst.util.FileConstUtil;
 import name.qd.techAnalyst.util.TimeUtil;
+import name.qd.techAnalyst.vo.DailyClosingInfo;
 import name.qd.techAnalyst.vo.ProdClosingInfo;
 
 public class TWSEDataParser {
@@ -32,6 +36,27 @@ public class TWSEDataParser {
 		return lst;
 	}
 	
+	public DailyClosingInfo readDailyClosingInfo(String sDate) throws FileNotFoundException, IOException, ParseException {
+		DailyClosingInfo dailyClosingInfo = null;
+		
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(FileConstUtil.getDailyClosingFilePath(sFilePath, sDate)), "Big5"))) {
+			for(String line; (line = br.readLine()) != null; ) {
+				if(line.contains(FileConstUtil.ADVANCE)) {
+					dailyClosingInfo = new DailyClosingInfo();
+					List<String> lst = parseTWSEcsv(line);
+					String sAdvance = lst.get(2).split("\\(")[0];
+					dailyClosingInfo.setAdvance(Integer.parseInt(sAdvance));
+					dailyClosingInfo.setDate(TimeUtil.getOutput(sDate));
+				} else if(line.contains(FileConstUtil.DECLINE)) {
+					List<String> lst = parseTWSEcsv(line);
+					String sDecline = lst.get(2).split("\\(")[0];
+					dailyClosingInfo.setDecline(Integer.parseInt(sDecline));
+				}
+			}
+		}
+		return dailyClosingInfo;
+	}
+	
 	private String toTWSEDateFormat(String sYearMonth) {
 		String sYear = sYearMonth.substring(0, 4);
 		String sMonth = sYearMonth.substring(4, 6);
@@ -46,7 +71,7 @@ public class TWSEDataParser {
 		List<String> lst = parseTWSEcsv(sData);
 		
 		ProdClosingInfo prod = new ProdClosingInfo();
-		prod.setDate(lst.get(0));
+		prod.setDate(TimeUtil.getOutputFromROC(lst.get(0)));
 		prod.setFilledShare(Long.parseLong(lst.get(1)));
 		prod.setFilledAmount(Double.parseDouble(lst.get(2)));
 		prod.setOpenPrice(Double.parseDouble(lst.get(3)));

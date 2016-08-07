@@ -11,12 +11,15 @@ import java.util.List;
 
 import name.qd.techAnalyst.util.FileConstUtil;
 import name.qd.techAnalyst.util.TimeUtil;
+import name.qd.techAnalyst.vo.DailyClosingInfo;
 import name.qd.techAnalyst.vo.ProdClosingInfo;
 
 public class TWSEDataManager {
 	private String sFilePath;
 	private TWSEDataPoller poller;
 	private TWSEDataParser parser;
+	
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 	
 	public TWSEDataManager(String sFilePath) {
 		this.sFilePath = sFilePath;
@@ -55,7 +58,6 @@ public class TWSEDataManager {
 	}
 	
 	public ArrayList<ProdClosingInfo> getProdClosingInfo(String sFrom, String sTo, String sProdId) throws ParseException, FileNotFoundException, IOException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		List<String> lstYearMonth = TimeUtil.getYearMonthBetween(sdf.parse(sFrom), sdf.parse(sTo));
 		ArrayList<ProdClosingInfo> lstProd = new ArrayList<ProdClosingInfo>();
 		for(String sYearMonth : lstYearMonth) {
@@ -65,5 +67,20 @@ public class TWSEDataManager {
 			}
 		}
 		return lstProd;
+	}
+	
+	public ArrayList<DailyClosingInfo> getDailyClosingInfo(String sFrom, String sTo) throws ParseException, FileNotFoundException, IOException {
+		List<String> lstDate = TimeUtil.getDateBetween(sdf.parse(sFrom), sdf.parse(sTo));
+		ArrayList<DailyClosingInfo> lstInfo = new ArrayList<DailyClosingInfo>();
+		for(String sDate : lstDate) {
+			File file = new File(FileConstUtil.getDailyClosingFilePath(sFilePath, sDate));
+			if(file.exists()) {
+				DailyClosingInfo dailyClosingInfo = parser.readDailyClosingInfo(sDate);
+				if(dailyClosingInfo != null) {
+					lstInfo.add(dailyClosingInfo);
+				}
+			}
+		}
+		return lstInfo;
 	}
 }
