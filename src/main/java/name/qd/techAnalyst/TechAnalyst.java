@@ -51,7 +51,7 @@ public class TechAnalyst {
 			e.printStackTrace();
 		}
 		
-		List<AnalysisResult> lstResult = analyzerManager.analyze(sAnalyzer, sFrom, sTo, lstProdClosingInfo);
+		List<AnalysisResult> lstResult = analyzerManager.analyze(twseDataManager, sAnalyzer, sFrom, sTo, sProdId);
 		for(AnalysisResult result : lstResult) {
 			System.out.println(result.getDate() + ":" + result.getValue());
 		}

@@ -7,7 +7,7 @@ import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProdClosingInfo;
 
 public class AnalystUtils {
-	public static List<AnalysisResult> NDaysAvg(String sFrom, String sTo, List<ProdClosingInfo> lst, int iDays) {
+	public static List<AnalysisResult> NDaysAvg(List<ProdClosingInfo> lst, int iDays) {
 		List<AnalysisResult> lstResult = new ArrayList<AnalysisResult>();
 		for(int i = lst.size() - 1 ; i >= iDays - 1 ;  i--) {
 			AnalysisResult result = new AnalysisResult();

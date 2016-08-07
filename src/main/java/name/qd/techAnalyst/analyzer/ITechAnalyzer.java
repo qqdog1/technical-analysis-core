@@ -2,10 +2,10 @@ package name.qd.techAnalyst.analyzer;
 
 import java.util.List;
 
+import name.qd.techAnalyst.dataSource.TWSEDataManager;
 import name.qd.techAnalyst.vo.AnalysisResult;
-import name.qd.techAnalyst.vo.ProdClosingInfo;
 
 public interface ITechAnalyzer {
 
-	public List<AnalysisResult> analyze(String sFrom, String sTo, List<ProdClosingInfo> lst);
+	public List<AnalysisResult> analyze(TWSEDataManager dataManager, String sFrom, String sTo, String sProd);
 }

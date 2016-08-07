@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import name.qd.techAnalyst.analyzer.impl.MovingAvg5Day;
+import name.qd.techAnalyst.dataSource.TWSEDataManager;
 import name.qd.techAnalyst.vo.AnalysisResult;
-import name.qd.techAnalyst.vo.ProdClosingInfo;
 
 public class TechAnalyzerManager {
 	private Map<String, ITechAnalyzer> map = new HashMap<String, ITechAnalyzer>();
@@ -21,13 +21,10 @@ public class TechAnalyzerManager {
 		map.put(MovingAvg5Day.class.getSimpleName(), new MovingAvg5Day());
 	}
 	
-	public List<AnalysisResult> analyze(String sAnalyzer, String sFrom, String sTo, List<ProdClosingInfo> lst) {
+	public List<AnalysisResult> analyze(TWSEDataManager dataManager, String sAnalyzer, String sFrom, String sTo, String sProd) {
 		if(!map.containsKey(sAnalyzer)) {
-			// TODO
 			return null;
 		}
-		
-		return map.get(sAnalyzer).analyze(sFrom, sTo, lst);
+		return map.get(sAnalyzer).analyze(dataManager, sFrom, sTo, sProd);
 	}
-	
 }
