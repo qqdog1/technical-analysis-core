@@ -12,13 +12,13 @@ public class TWSEDataPollerTest {
 	
 	private TWSEDataPollerTest() {
 		try {
-			new TWSEDataPoller("./").downloadProdClosingInfo("201604", "2453");
+			new TWSEDataPoller("./file/").downloadProdClosingInfo("201604", "2453");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			new TWSEDataPoller("./").downloadDailyClosingInfo("20160801", "105/08/01");
+			new TWSEDataPoller("./file/").downloadDailyClosingInfo("20160801", "105/08/01");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

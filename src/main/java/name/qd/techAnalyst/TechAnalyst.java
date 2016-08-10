@@ -20,7 +20,7 @@ public class TechAnalyst {
 		// 檢查檔案 分析 回傳結果?
 		
 		analyzerManager = TechAnalyzerManager.getInstance();
-		twseDataManager = new TWSEDataManager("./");
+		twseDataManager = new TWSEDataManager("./file/");
 		
 		String sFrom = "20160331";
 		String sTo = "20160501";

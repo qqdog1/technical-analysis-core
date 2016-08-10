@@ -11,7 +11,7 @@ public class TWSEDataParserTest {
 	}
 	
 	private TWSEDataParserTest() {
-		TWSEDataParser parser = new TWSEDataParser("./");
+		TWSEDataParser parser = new TWSEDataParser("./file/");
 //		try {
 //			List<ProdClosingInfo> lst = parser.readProdClosingInfo("201604", "2453");
 //			for(ProdClosingInfo p : lst) {

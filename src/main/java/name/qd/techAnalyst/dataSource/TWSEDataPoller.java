@@ -38,7 +38,14 @@ public class TWSEDataPoller {
 		connection.setDoOutput(true);
 		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		connection.getOutputStream().write(FileConstUtil.getDailyClosingPOSTBody(sPOSTDate).getBytes());
-		ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
+		ReadableByteChannel rbc = null;
+		try {
+			rbc = Channels.newChannel(connection.getInputStream());
+		} catch (IOException e) {
+			// TODO log
+			System.out.println("非交易日 :[" + sDate + "]");
+			return;
+		}
 		@SuppressWarnings("resource")
 		FileOutputStream fos = new FileOutputStream(FileConstUtil.getDailyClosingFilePath(sFilePath, sDate));
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
