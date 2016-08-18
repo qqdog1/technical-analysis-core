@@ -62,16 +62,9 @@ public class TimeUtil {
 		return lst;
 	}
 	
-	// 100/01/01 -> 2011/01/01
+	// 100/01/01 -> 20110101
 	public static String getOutputFromROC(String sDate) {
 		String[] sDateInfo = sDate.split("/");
-		return ROC2AD(sDateInfo[0]) + "/" + sDateInfo[1] + "/" + sDateInfo[2];
-	}
-	
-	// 20160101 -> 2016/01/01
-	public static String getOutput(String sDate) throws ParseException {
-		SimpleDateFormat sdfIn = new SimpleDateFormat("yyyyMMdd");
-		SimpleDateFormat sdfOut = new SimpleDateFormat("yyyy/MM/dd");
-		return sdfOut.format(sdfIn.parse(sDate));
+		return ROC2AD(sDateInfo[0]) + sDateInfo[1] + sDateInfo[2];
 	}
 }

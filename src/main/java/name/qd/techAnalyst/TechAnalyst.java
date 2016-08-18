@@ -19,11 +19,11 @@ public class TechAnalyst {
 		// 要分析哪一檔商品  時間  哪種分析方式
 		// 檢查檔案 分析 回傳結果?
 		
-		analyzerManager = TechAnalyzerManager.getInstance();
+		analyzerManager = new TechAnalyzerManager();
 		twseDataManager = new TWSEDataManager("./file/");
 		
-		String sFrom = "20160331";
-		String sTo = "20160501";
+		String sFrom = "20160301";
+		String sTo = "20160601";
 		String sProdId = "2453";
 		String sAnalyzer = MovingAvg5Day.class.getSimpleName();
 		

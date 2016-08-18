@@ -11,18 +11,14 @@ import name.qd.techAnalyst.analyzer.impl.MovingAvg240Day;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg5Day;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg60Day;
 import name.qd.techAnalyst.dataSource.TWSEDataManager;
+import name.qd.techAnalyst.fileCache.TechAnalystCacheManager;
 import name.qd.techAnalyst.vo.AnalysisResult;
 
 public class TechAnalyzerManager {
 	private Map<String, ITechAnalyzer> map = new HashMap<String, ITechAnalyzer>();
+	private TechAnalystCacheManager techAnalystCacheManager = new TechAnalystCacheManager();
 
-	private static TechAnalyzerManager instance = new TechAnalyzerManager();
-	
-	public static TechAnalyzerManager getInstance() {
-		return instance;
-	}
-	
-	private TechAnalyzerManager() {
+	public TechAnalyzerManager() {
 		map.put(MovingAvg5Day.class.getSimpleName(), new MovingAvg5Day());
 		map.put(MovingAvg10Day.class.getSimpleName(), new MovingAvg10Day());
 		map.put(MovingAvg20Day.class.getSimpleName(), new MovingAvg20Day());
@@ -35,6 +31,19 @@ public class TechAnalyzerManager {
 		if(!map.containsKey(sAnalyzer)) {
 			return null;
 		}
-		return map.get(sAnalyzer).analyze(dataManager, sFrom, sTo, sProd);
+		
+		if(!techAnalystCacheManager.isDateInRange(sAnalyzer, sFrom, sTo)) {
+			updateCache(dataManager, sAnalyzer, sFrom, sTo, sProd);
+		}
+		
+		return techAnalystCacheManager.getAnalysisResult(sAnalyzer, sFrom, sTo);
+	}
+	
+	private void updateCache(TWSEDataManager dataManager, String sAnalyzer, String sFrom, String sTo, String sProd) {
+		String sFirst = techAnalystCacheManager.getFirstDateString(sAnalyzer, sFrom);
+		String sLast = techAnalystCacheManager.getLastDateString(sAnalyzer, sTo);
+		List<AnalysisResult> lst = map.get(sAnalyzer).analyze(dataManager, sFirst, sLast, sProd);
+		techAnalystCacheManager.putAnalysisResult(sAnalyzer, lst);
+		techAnalystCacheManager.syncFile(sAnalyzer);
 	}
 }

@@ -46,7 +46,7 @@ public class TWSEDataParser {
 					List<String> lst = parseTWSEcsv(line);
 					String sAdvance = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setAdvance(Integer.parseInt(sAdvance));
-					dailyClosingInfo.setDate(TimeUtil.getOutput(sDate));
+					dailyClosingInfo.setDate(sDate);
 				} else if(line.contains(FileConstUtil.DECLINE)) {
 					List<String> lst = parseTWSEcsv(line);
 					String sDecline = lst.get(2).split("\\(")[0];
