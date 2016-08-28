@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg5Day;
 import name.qd.techAnalyst.dataSource.TWSEDataManager;
@@ -15,11 +18,13 @@ public class TechAnalyst {
 	private TechAnalyzerManager analyzerManager;
 	private TWSEDataManager twseDataManager;
 	
+	
 	private TechAnalyst() {
 		// 要分析哪一檔商品  時間  哪種分析方式
 		// 檢查檔案 分析 回傳結果?
 		
 		System.setProperty("log4j.configurationFile", "./config/log4j2.xml");
+		Logger logger = LogManager.getLogger(TechAnalyst.class);
 		
 		analyzerManager = new TechAnalyzerManager();
 		twseDataManager = new TWSEDataManager("./file/");
@@ -32,14 +37,14 @@ public class TechAnalyst {
 		try {
 			twseDataManager.checkDateAndDownload(sFrom, sTo, sProdId);
 		} catch (ParseException | IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		
 		List<ProdClosingInfo> lstProdClosingInfo = null;
 		try {
 			lstProdClosingInfo = twseDataManager.getProdClosingInfo(sFrom, sTo, sProdId);
 		} catch (ParseException | IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		
 		List<DailyClosingInfo> lstDailyClosingInfo = null;
@@ -50,7 +55,7 @@ public class TechAnalyst {
 				System.out.println(dailyClosingInfo.getDate() + ":" + dailyClosingInfo.getAdvance() + ":" + dailyClosingInfo.getDecline());
 			}
 		} catch (ParseException | IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		
 		List<AnalysisResult> lstResult = analyzerManager.analyze(twseDataManager, sAnalyzer, sFrom, sTo, sProdId);
