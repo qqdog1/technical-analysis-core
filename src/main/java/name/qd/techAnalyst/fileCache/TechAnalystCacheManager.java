@@ -47,13 +47,13 @@ public class TechAnalystCacheManager {
 		recoverDayRange();
 	}
 	
-	public void putAnalysisResult(String sCacheName, List<AnalysisResult> lst) {
-		CacheManager cacheManager = fileCacheManager.getCacheInstance(sCacheName);
+	public void putAnalysisResult(String cacheName, List<AnalysisResult> lst) {
+		CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
 		for(AnalysisResult result : lst) {
 			try {
 				Date date = sdf.parse(result.getDate());
-				updateFirstDate(sCacheName, date);
-				updateLastDate(sCacheName, date);
+				updateFirstDate(cacheName, date);
+				updateLastDate(cacheName, date);
 				cacheManager.put(result.getDate(), result);
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -61,12 +61,12 @@ public class TechAnalystCacheManager {
 		}
 	}
 	
-	public ArrayList<AnalysisResult> getAnalysisResult(String sCacheName, String sFrom, String sTo) {
+	public ArrayList<AnalysisResult> getAnalysisResult(String cacheName, String from, String to) {
 		ArrayList<AnalysisResult> lst = new ArrayList<AnalysisResult>();
 		try {
-			Date fromDate = sdf.parse(sFrom);
-			Date toDate = sdf.parse(sTo);
-			CacheManager cacheManager = fileCacheManager.getCacheInstance(sCacheName);
+			Date fromDate = sdf.parse(from);
+			Date toDate = sdf.parse(to);
+			CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
 			
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(fromDate);
@@ -82,16 +82,16 @@ public class TechAnalystCacheManager {
 		return lst;
 	}
 	
-	public boolean isDateInRange(String sCacheName, String sFrom, String sTo) {
-		if(!mapFirst.containsKey(sCacheName) || !mapLast.containsKey(sCacheName)) {
+	public boolean isDateInRange(String cacheName, String from, String to) {
+		if(!mapFirst.containsKey(cacheName) || !mapLast.containsKey(cacheName)) {
 			return false;
 		}
 		
 		try {
-			Date fromDate = sdf.parse(sFrom);
-			Date toDate = sdf.parse(sTo);
-			Date firstDate = mapFirst.get(sCacheName);
-			Date lastDate = mapLast.get(sCacheName);
+			Date fromDate = sdf.parse(from);
+			Date toDate = sdf.parse(to);
+			Date firstDate = mapFirst.get(cacheName);
+			Date lastDate = mapLast.get(cacheName);
 			if(fromDate.before(firstDate)) {
 				return false;
 			}
@@ -104,15 +104,15 @@ public class TechAnalystCacheManager {
 		return true;
 	}
 	
-	public String getFirstDateString(String sCacheName, String sDate) {
-		if(!mapFirst.containsKey(sCacheName) || !mapLast.containsKey(sCacheName)) {
+	public String getFirstDateString(String cacheName, String sDate) {
+		if(!mapFirst.containsKey(cacheName) || !mapLast.containsKey(cacheName)) {
 			return sDate;
 		}
 		
 		try {
 			Date date = sdf.parse(sDate);
-			Date firstDate = mapFirst.get(sCacheName);
-			Date lastDate = mapLast.get(sCacheName);
+			Date firstDate = mapFirst.get(cacheName);
+			Date lastDate = mapLast.get(cacheName);
 			
 			if(date.before(firstDate)) {
 				return sDate;
@@ -124,15 +124,15 @@ public class TechAnalystCacheManager {
 		return null;
 	}
 	
-	public String getLastDateString(String sCacheName, String sDate) {
-		if(!mapFirst.containsKey(sCacheName) || !mapLast.containsKey(sCacheName)) {
+	public String getLastDateString(String cacheName, String sDate) {
+		if(!mapFirst.containsKey(cacheName) || !mapLast.containsKey(cacheName)) {
 			return sDate;
 		}
 		
 		try {
 			Date date = sdf.parse(sDate);
-			Date firstDate = mapFirst.get(sCacheName);
-			Date lastDate = mapLast.get(sCacheName);
+			Date firstDate = mapFirst.get(cacheName);
+			Date lastDate = mapLast.get(cacheName);
 			
 			if(date.after(lastDate)) {
 				return sDate;
@@ -144,8 +144,8 @@ public class TechAnalystCacheManager {
 		return null;
 	}
 	
-	public void syncFile(String sCacheName) {
-		CacheManager cacheManager = fileCacheManager.getCacheInstance(sCacheName);
+	public void syncFile(String cacheName) {
+		CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
 		if(cacheManager != null) {
 			try {
 				cacheManager.writeCacheToFile();
@@ -155,42 +155,42 @@ public class TechAnalystCacheManager {
 		}
 	}
 	
-	private void updateFirstDate(String sCacheName, Date date) {
-		if(!mapFirst.containsKey(sCacheName)) {
-			mapFirst.put(sCacheName, date);
+	private void updateFirstDate(String cacheName, Date date) {
+		if(!mapFirst.containsKey(cacheName)) {
+			mapFirst.put(cacheName, date);
 		}
-		Date firstDate = mapFirst.get(sCacheName);
+		Date firstDate = mapFirst.get(cacheName);
 		if(date.before(firstDate)) {
-			mapFirst.put(sCacheName, date);
+			mapFirst.put(cacheName, date);
 		}
 	}
 	
-	private void updateLastDate(String sCacheName, Date date) {
-		if(!mapLast.containsKey(sCacheName)) {
-			mapLast.put(sCacheName, date);
+	private void updateLastDate(String cacheName, Date date) {
+		if(!mapLast.containsKey(cacheName)) {
+			mapLast.put(cacheName, date);
 		}
-		Date lastDate = mapLast.get(sCacheName);
+		Date lastDate = mapLast.get(cacheName);
 		if(date.after(lastDate)) {
-			mapLast.put(sCacheName, date);
+			mapLast.put(cacheName, date);
 		}
 	}
 	
-	private void initCache(String sCacheName, String sClassName) {
-		if(fileCacheManager.getCacheInstance(sCacheName) == null) {
-			fileCacheManager.createCacheInstance(sCacheName, sClassName);
+	private void initCache(String cacheName, String className) {
+		if(fileCacheManager.getCacheInstance(cacheName) == null) {
+			fileCacheManager.createCacheInstance(cacheName, className);
 		}
 	}
 	
 	private void recoverDayRange() {
 		Set<String> set = fileCacheManager.getCacheNameSet();
-		for(String sCacheName : set) {
-			CacheManager cacheManager = fileCacheManager.getCacheInstance(sCacheName);
+		for(String cacheName : set) {
+			CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
 			for(IFileCacheObject obj : cacheManager.values()) {
 				AnalysisResult result = (AnalysisResult) obj;
 				try {
 					Date date = sdf.parse(result.getDate());
-					updateFirstDate(sCacheName, date);
-					updateLastDate(sCacheName, date);
+					updateFirstDate(cacheName, date);
+					updateLastDate(cacheName, date);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}

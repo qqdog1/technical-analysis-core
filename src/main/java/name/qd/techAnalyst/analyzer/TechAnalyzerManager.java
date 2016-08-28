@@ -35,23 +35,23 @@ public class TechAnalyzerManager {
 		}
 	}
 	
-	public List<AnalysisResult> analyze(TWSEDataManager dataManager, String sAnalyzer, String sFrom, String sTo, String sProd) {
-		if(!map.containsKey(sAnalyzer)) {
+	public List<AnalysisResult> analyze(TWSEDataManager dataManager, String analyzer, String from, String to, String prodId) {
+		if(!map.containsKey(analyzer)) {
 			return null;
 		}
 		
-		if(!techAnalystCacheManager.isDateInRange(sAnalyzer, sFrom, sTo)) {
-			updateCache(dataManager, sAnalyzer, sFrom, sTo, sProd);
+		if(!techAnalystCacheManager.isDateInRange(analyzer, from, to)) {
+			updateCache(dataManager, analyzer, from, to, prodId);
 		}
 		
-		return techAnalystCacheManager.getAnalysisResult(sAnalyzer, sFrom, sTo);
+		return techAnalystCacheManager.getAnalysisResult(analyzer, from, to);
 	}
 	
-	private void updateCache(TWSEDataManager dataManager, String sAnalyzer, String sFrom, String sTo, String sProd) {
-		String sFirst = techAnalystCacheManager.getFirstDateString(sAnalyzer, sFrom);
-		String sLast = techAnalystCacheManager.getLastDateString(sAnalyzer, sTo);
-		List<AnalysisResult> lst = map.get(sAnalyzer).analyze(dataManager, sFirst, sLast, sProd);
-		techAnalystCacheManager.putAnalysisResult(sAnalyzer, lst);
-		techAnalystCacheManager.syncFile(sAnalyzer);
+	private void updateCache(TWSEDataManager dataManager, String analyzer, String from, String to, String prodId) {
+		String first = techAnalystCacheManager.getFirstDateString(analyzer, from);
+		String last = techAnalystCacheManager.getLastDateString(analyzer, to);
+		List<AnalysisResult> lst = map.get(analyzer).analyze(dataManager, first, last, prodId);
+		techAnalystCacheManager.putAnalysisResult(analyzer, lst);
+		techAnalystCacheManager.syncFile(analyzer);
 	}
 }

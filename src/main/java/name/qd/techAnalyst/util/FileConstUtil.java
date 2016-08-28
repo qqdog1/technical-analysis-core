@@ -7,15 +7,15 @@ public class FileConstUtil {
 	public static final String ADVANCE = "上漲(漲停)";
 	public static final String DECLINE = "下跌(跌停)";
 	
-	public static String getProdClosingFilePath(String sFilePath, String sYearMonth, String sProdId) {
-		return sFilePath + FileConstUtil.PROD_CLOSING_FILE_PREFIX + sYearMonth + "_" + sProdId + ".csv";
+	public static String getProdClosingFilePath(String filePath, String yearMonth, String prodId) {
+		return filePath + FileConstUtil.PROD_CLOSING_FILE_PREFIX + yearMonth + "_" + prodId + ".csv";
 	}
 	
-	public static String getDailyClosingFilePath(String sFilePath, String sDate) {
-		return sFilePath + FileConstUtil.DAILY_CLOSING_FILE_PREFIX + sDate + ".csv";
+	public static String getDailyClosingFilePath(String filePath, String date) {
+		return filePath + FileConstUtil.DAILY_CLOSING_FILE_PREFIX + date + ".csv";
 	}
 	
-	public static String getDailyClosingPOSTBody(String sDate) {
-		return "download=csv&qdate=" + sDate + "&selectType=MS";
+	public static String getDailyClosingPOSTBody(String date) {
+		return "download=csv&qdate=" + date + "&selectType=MS";
 	}
 }

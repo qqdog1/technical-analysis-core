@@ -1,26 +1,26 @@
 package name.qd.techAnalyst.vo;
 
 public class DailyClosingInfo {
-	private String sDate;
-	private int iAdvance;
-	private int iDecline;
+	private String date;
+	private int advance;
+	private int decline;
 	
 	public String getDate() {
-		return sDate;
+		return date;
 	}
 	public void setDate(String sDate) {
-		this.sDate = sDate;
+		this.date = sDate;
 	}
 	public int getAdvance() {
-		return iAdvance;
+		return advance;
 	}
 	public void setAdvance(int iAdvance) {
-		this.iAdvance = iAdvance;
+		this.advance = iAdvance;
 	}
 	public int getDecline() {
-		return iDecline;
+		return decline;
 	}
 	public void setDecline(int iDecline) {
-		this.iDecline = iDecline;
+		this.decline = iDecline;
 	}
 }

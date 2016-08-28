@@ -22,12 +22,12 @@ public class TWSEDataParser {
 		this.sFilePath = sFilePath;
 	}
 	
-	public List<ProdClosingInfo> readProdClosingInfo(String sYearMonth, String sProdId) throws FileNotFoundException, IOException {
+	public List<ProdClosingInfo> readProdClosingInfo(String yearMonth, String prodId) throws FileNotFoundException, IOException {
 		List<ProdClosingInfo> lst = new ArrayList<ProdClosingInfo>();
-		String sPrefix = toTWSEDateFormat(sYearMonth);
-		try (BufferedReader br = new BufferedReader(new FileReader(FileConstUtil.getProdClosingFilePath(sFilePath, sYearMonth, sProdId)))) {
+		String prefix = toTWSEDateFormat(yearMonth);
+		try (BufferedReader br = new BufferedReader(new FileReader(FileConstUtil.getProdClosingFilePath(sFilePath, yearMonth, prodId)))) {
 			for(String line; (line = br.readLine()) != null; ) {
-				ProdClosingInfo prod = parse2ProdClosingInfo(line, sPrefix);
+				ProdClosingInfo prod = parse2ProdClosingInfo(line, prefix);
 				if(prod != null) {
 					lst.add(prod);
 				}
@@ -36,32 +36,32 @@ public class TWSEDataParser {
 		return lst;
 	}
 	
-	public DailyClosingInfo readDailyClosingInfo(String sDate) throws FileNotFoundException, IOException, ParseException {
+	public DailyClosingInfo readDailyClosingInfo(String date) throws FileNotFoundException, IOException, ParseException {
 		DailyClosingInfo dailyClosingInfo = null;
 		
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(FileConstUtil.getDailyClosingFilePath(sFilePath, sDate)), "Big5"))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(FileConstUtil.getDailyClosingFilePath(sFilePath, date)), "Big5"))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				if(line.contains(FileConstUtil.ADVANCE)) {
 					dailyClosingInfo = new DailyClosingInfo();
 					List<String> lst = parseTWSEcsv(line);
 					String sAdvance = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setAdvance(Integer.parseInt(sAdvance));
-					dailyClosingInfo.setDate(sDate);
+					dailyClosingInfo.setDate(date);
 				} else if(line.contains(FileConstUtil.DECLINE)) {
 					List<String> lst = parseTWSEcsv(line);
-					String sDecline = lst.get(2).split("\\(")[0];
-					dailyClosingInfo.setDecline(Integer.parseInt(sDecline));
+					String decline = lst.get(2).split("\\(")[0];
+					dailyClosingInfo.setDecline(Integer.parseInt(decline));
 				}
 			}
 		}
 		return dailyClosingInfo;
 	}
 	
-	private String toTWSEDateFormat(String sYearMonth) {
-		String sYear = sYearMonth.substring(0, 4);
-		String sMonth = sYearMonth.substring(4, 6);
-		sYear = TimeUtil.AD2ROC(sYear);
-		return " " + sYear + "/" + sMonth;
+	private String toTWSEDateFormat(String yearMonth) {
+		String year = yearMonth.substring(0, 4);
+		String month = yearMonth.substring(4, 6);
+		year = TimeUtil.AD2ROC(year);
+		return " " + year + "/" + month;
 	}
 	
 	private ProdClosingInfo parse2ProdClosingInfo(String sData, String sPrefix) {

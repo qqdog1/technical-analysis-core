@@ -7,36 +7,43 @@ import name.qd.fileCache.common.TransInputStream;
 import name.qd.fileCache.common.TransOutputStream;
 
 public class AnalysisResult implements IFileCacheObject {
-	private String sDate;
-	private double dValue;
+	private String date;
+	private double value;
+	private String action;
 	
 	public String getDate() {
-		return sDate;
+		return date;
 	}
 	public void setDate(String sDate) {
-		this.sDate = sDate;
+		this.date = sDate;
 	}
 	public double getValue() {
-		return dValue;
+		return value;
 	}
 	public void setValue(double dValue) {
-		this.dValue = dValue;
+		this.value = dValue;
+	}
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
 	}
 	@Override
 	public byte[] parseToFileFormat() throws IOException {
 		TransOutputStream tOut = new TransOutputStream();
-		tOut.writeString(sDate);
-		tOut.writeDouble(dValue);
+		tOut.writeString(date);
+		tOut.writeDouble(value);
 		return tOut.toByteArray();
 	}
 	@Override
 	public void toValueObject(byte[] bData) throws IOException {
 		TransInputStream tIn = new TransInputStream(bData);
-		sDate = tIn.getString();
-		dValue = tIn.getDouble();
+		date = tIn.getString();
+		value = tIn.getDouble();
 	}
 	@Override
 	public String getKeyString() {
-		return sDate;
+		return date;
 	}
 }

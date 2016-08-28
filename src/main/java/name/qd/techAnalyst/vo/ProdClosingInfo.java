@@ -1,61 +1,61 @@
 package name.qd.techAnalyst.vo;
 
 public class ProdClosingInfo {
-	private String sDate;
-	private long lFilledShare;
-	private double dOpenPrice;
-	private double dClosePrice;
-	private double dUpperPrice;
-	private double dLowerPrice;
-	private double dAvgPrice;
-	private double dFilledAmount;
+	private String date;
+	private long filledShare;
+	private double openPrice;
+	private double closePrice;
+	private double upperPrice;
+	private double lowerPrice;
+	private double avgPrice;
+	private double filledAmount;
 	
 	public String getDate() {
-		return sDate;
+		return date;
 	}
 	public void setDate(String sDate) {
-		this.sDate = sDate;
+		this.date = sDate;
 	}
 	public long getFilledShare() {
-		return lFilledShare;
+		return filledShare;
 	}
 	public void setFilledShare(long lFilledShare) {
-		this.lFilledShare = lFilledShare;
+		this.filledShare = lFilledShare;
 	}
 	public double getOpenPrice() {
-		return dOpenPrice;
+		return openPrice;
 	}
 	public void setOpenPrice(double dOpenPrice) {
-		this.dOpenPrice = dOpenPrice;
+		this.openPrice = dOpenPrice;
 	}
 	public double getClosePrice() {
-		return dClosePrice;
+		return closePrice;
 	}
 	public void setClosePrice(double dClosePrice) {
-		this.dClosePrice = dClosePrice;
+		this.closePrice = dClosePrice;
 	}
 	public double getUpperPrice() {
-		return dUpperPrice;
+		return upperPrice;
 	}
 	public void setUpperPrice(double dUpperPrice) {
-		this.dUpperPrice = dUpperPrice;
+		this.upperPrice = dUpperPrice;
 	}
 	public double getLowerPrice() {
-		return dLowerPrice;
+		return lowerPrice;
 	}
 	public void setLowerPrice(double dLowerPrice) {
-		this.dLowerPrice = dLowerPrice;
+		this.lowerPrice = dLowerPrice;
 	}
 	public double getAvgPrice() {
-		return dAvgPrice;
+		return avgPrice;
 	}
 	public void setAvgPrice(double dAvgPrice) {
-		this.dAvgPrice = dAvgPrice;
+		this.avgPrice = dAvgPrice;
 	}
 	public double getFilledAmount() {
-		return dFilledAmount;
+		return filledAmount;
 	}
 	public void setFilledAmount(double dFilledAmount) {
-		this.dFilledAmount = dFilledAmount;
+		this.filledAmount = dFilledAmount;
 	}
 }

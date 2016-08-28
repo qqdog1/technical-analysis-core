@@ -7,16 +7,16 @@ import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProdClosingInfo;
 
 public class AnalystUtils {
-	public static List<AnalysisResult> NDaysAvg(List<ProdClosingInfo> lst, int iDays) {
+	public static List<AnalysisResult> NDaysAvg(List<ProdClosingInfo> lst, int days) {
 		List<AnalysisResult> lstResult = new ArrayList<AnalysisResult>();
-		for(int i = lst.size() - 1 ; i >= iDays - 1 ;  i--) {
+		for(int i = lst.size() - 1 ; i >= days - 1 ;  i--) {
 			AnalysisResult result = new AnalysisResult();
 			result.setDate(lst.get(i).getDate());
-			double dSum = 0;
-			for(int j = 0 ; j < iDays ; j++) {
-				dSum += lst.get(i - j).getAvgPrice();
+			double sum = 0;
+			for(int j = 0 ; j < days ; j++) {
+				sum += lst.get(i - j).getAvgPrice();
 			}
-			result.setValue(dSum / iDays);
+			result.setValue(sum / days);
 			lstResult.add(result);
 		}
 		return lstResult;

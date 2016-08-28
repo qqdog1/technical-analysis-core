@@ -1,6 +1,5 @@
 package name.qd.techAnalyst.util;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,20 +7,20 @@ import java.util.Date;
 import java.util.List;
 
 public class TimeUtil {
-	public static String AD2ROC(String sAD) {
-		return String.valueOf(AD2ROC(Integer.parseInt(sAD)));
+	public static String AD2ROC(String AD) {
+		return String.valueOf(AD2ROC(Integer.parseInt(AD)));
 	}
 	
-	public static String ROC2AD(String sROC) {
-		return String.valueOf(ROC2AD(Integer.parseInt(sROC)));
+	public static String ROC2AD(String ROC) {
+		return String.valueOf(ROC2AD(Integer.parseInt(ROC)));
 	}
 	
-	public static int AD2ROC(int iAD) {
-		return iAD - 1911;
+	public static int AD2ROC(int AD) {
+		return AD - 1911;
 	}
 	
-	public static int ROC2AD(int iROC) {
-		return iROC + 1911;
+	public static int ROC2AD(int ROC) {
+		return ROC + 1911;
 	}
 	
 	public static List<String> getYearMonthBetween(Date dateFrom, Date dateTo) {
@@ -63,8 +62,8 @@ public class TimeUtil {
 	}
 	
 	// 100/01/01 -> 20110101
-	public static String getOutputFromROC(String sDate) {
-		String[] sDateInfo = sDate.split("/");
-		return ROC2AD(sDateInfo[0]) + sDateInfo[1] + sDateInfo[2];
+	public static String getOutputFromROC(String date) {
+		String[] dateInfo = date.split("/");
+		return ROC2AD(dateInfo[0]) + dateInfo[1] + dateInfo[2];
 	}
 }
