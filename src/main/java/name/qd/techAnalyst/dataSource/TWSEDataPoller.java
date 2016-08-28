@@ -10,6 +10,7 @@ import java.nio.channels.ReadableByteChannel;
 import name.qd.techAnalyst.util.FileConstUtil;
 
 public class TWSEDataPoller {
+	// 20160828 : 交易所改檔案名稱了 20166 表示6月 之後再調媽的爛死
 	private static final String[] PROD_CLOSING_INFO = 
 		{"http://www.twse.com.tw/ch/trading/exchange/STOCK_DAY/STOCK_DAY_print.php?genpage=genpage/Report"
 			, "/"

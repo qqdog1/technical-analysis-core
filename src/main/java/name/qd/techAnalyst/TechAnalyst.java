@@ -19,6 +19,8 @@ public class TechAnalyst {
 		// 要分析哪一檔商品  時間  哪種分析方式
 		// 檢查檔案 分析 回傳結果?
 		
+		System.setProperty("log4j.configurationFile", "./config/log4j2.xml");
+		
 		analyzerManager = new TechAnalyzerManager();
 		twseDataManager = new TWSEDataManager("./file/");
 		
