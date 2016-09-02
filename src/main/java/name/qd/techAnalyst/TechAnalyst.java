@@ -40,24 +40,6 @@ public class TechAnalyst {
 			logger.error(e.getMessage(), e);
 		}
 		
-		List<ProdClosingInfo> lstProdClosingInfo = null;
-		try {
-			lstProdClosingInfo = twseDataManager.getProdClosingInfo(sFrom, sTo, sProdId);
-		} catch (ParseException | IOException e) {
-			logger.error(e.getMessage(), e);
-		}
-		
-		List<DailyClosingInfo> lstDailyClosingInfo = null;
-		try {
-			lstDailyClosingInfo = twseDataManager.getDailyClosingInfo(sFrom, sTo);
-			
-			for(DailyClosingInfo dailyClosingInfo : lstDailyClosingInfo) {
-				System.out.println(dailyClosingInfo.getDate() + ":" + dailyClosingInfo.getAdvance() + ":" + dailyClosingInfo.getDecline());
-			}
-		} catch (ParseException | IOException e) {
-			logger.error(e.getMessage(), e);
-		}
-		
 		List<AnalysisResult> lstResult = analyzerManager.analyze(twseDataManager, sAnalyzer, sFrom, sTo, sProdId);
 		for(AnalysisResult result : lstResult) {
 			System.out.println(result.getDate() + ":" + result.getValue());
