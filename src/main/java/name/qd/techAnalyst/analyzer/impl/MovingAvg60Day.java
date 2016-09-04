@@ -17,7 +17,7 @@ import name.qd.techAnalyst.vo.ProdClosingInfo;
 public class MovingAvg60Day implements ITechAnalyzer {
 	private static Logger logger = LogManager.getLogger(MovingAvg60Day.class);
 	@Override
-	public List<AnalysisResult> analyze(TWSEDataManager dataManager, String from, String to, String prodId) {
+	public List<AnalysisResult> analyze(TWSEDataManager dataManager, String from, String to, String prodId, Object ... customizeObjs) {
 		ArrayList<ProdClosingInfo> lst = null;
 		try {
 			lst = dataManager.getProdClosingInfo(from, to, prodId);

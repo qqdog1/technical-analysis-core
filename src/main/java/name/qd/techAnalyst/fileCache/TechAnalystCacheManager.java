@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import name.qd.fileCache.FileCacheManager;
 import name.qd.fileCache.cache.CacheManager;
 import name.qd.fileCache.cache.IFileCacheObject;
@@ -29,7 +32,7 @@ public class TechAnalystCacheManager {
 	//     2. 要求20160707 ~ 20160808
 	//     3. 直接補完 1的最後時間20160606到新的最後時間20160808
 	// 往前亦同
-	
+	private Logger logger = LogManager.getLogger(TechAnalystCacheManager.class);
 	private FileCacheManager fileCacheManager;
 	private Map<String, Date> mapFirst = new HashMap<String, Date>();
 	private Map<String, Date> mapLast = new HashMap<String, Date>();
@@ -37,6 +40,7 @@ public class TechAnalystCacheManager {
 
 	public TechAnalystCacheManager() {
 		fileCacheManager = new FileCacheManager("./cache/");
+		
 		initCache(MovingAvg5Day.class.getSimpleName(), AnalysisResult.class.getName());
 		initCache(MovingAvg10Day.class.getSimpleName(), AnalysisResult.class.getName());
 		initCache(MovingAvg20Day.class.getSimpleName(), AnalysisResult.class.getName());
@@ -56,7 +60,7 @@ public class TechAnalystCacheManager {
 				updateLastDate(cacheName, date);
 				cacheManager.put(result.getDate(), result);
 			} catch (ParseException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 	}
@@ -77,7 +81,7 @@ public class TechAnalystCacheManager {
 				}
 			}
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return lst;
 	}
@@ -99,7 +103,7 @@ public class TechAnalystCacheManager {
 				return false;
 			}
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return true;
 	}
@@ -119,7 +123,7 @@ public class TechAnalystCacheManager {
 			}
 			return sdf.format(lastDate);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return null;
 	}
@@ -139,7 +143,7 @@ public class TechAnalystCacheManager {
 			}
 			return sdf.format(firstDate);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return null;
 	}
@@ -150,7 +154,7 @@ public class TechAnalystCacheManager {
 			try {
 				cacheManager.writeCacheToFile();
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 	}
@@ -192,7 +196,7 @@ public class TechAnalystCacheManager {
 					updateFirstDate(cacheName, date);
 					updateLastDate(cacheName, date);
 				} catch (ParseException e) {
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}
 			}
 		}

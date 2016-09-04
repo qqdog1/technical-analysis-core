@@ -31,26 +31,26 @@ public class TechAnalyzerManager {
 		map.put(MovingAvg240Day.class.getSimpleName(), new MovingAvg240Day());
 		
 		for(String className : map.keySet()) {
-			logger.info("Init Analyzer: " + className);
+			logger.info("Created analyzer instance: " + className);
 		}
 	}
 	
-	public List<AnalysisResult> analyze(TWSEDataManager dataManager, String analyzer, String from, String to, String prodId) {
+	public List<AnalysisResult> analyze(TWSEDataManager dataManager, String analyzer, String from, String to, String prodId, Object ...customizeObjs) {
 		if(!map.containsKey(analyzer)) {
 			return null;
 		}
 		
 		if(!techAnalystCacheManager.isDateInRange(analyzer, from, to)) {
-			updateCache(dataManager, analyzer, from, to, prodId);
+			updateCache(dataManager, analyzer, from, to, prodId, customizeObjs);
 		}
 		
 		return techAnalystCacheManager.getAnalysisResult(analyzer, from, to);
 	}
 	
-	private void updateCache(TWSEDataManager dataManager, String analyzer, String from, String to, String prodId) {
+	private void updateCache(TWSEDataManager dataManager, String analyzer, String from, String to, String prodId, Object ...customizeObjs) {
 		String first = techAnalystCacheManager.getFirstDateString(analyzer, from);
 		String last = techAnalystCacheManager.getLastDateString(analyzer, to);
-		List<AnalysisResult> lst = map.get(analyzer).analyze(dataManager, first, last, prodId);
+		List<AnalysisResult> lst = map.get(analyzer).analyze(dataManager, first, last, prodId, customizeObjs);
 		techAnalystCacheManager.putAnalysisResult(analyzer, lst);
 		techAnalystCacheManager.syncFile(analyzer);
 	}

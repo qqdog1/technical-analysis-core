@@ -7,5 +7,5 @@ import name.qd.techAnalyst.vo.AnalysisResult;
 
 public interface ITechAnalyzer {
 
-	public List<AnalysisResult> analyze(TWSEDataManager dataManager, String from, String to, String prodId);
+	public List<AnalysisResult> analyze(TWSEDataManager dataManager, String from, String to, String prodId, Object ... customizeObjs);
 }
