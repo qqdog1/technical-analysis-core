@@ -11,8 +11,6 @@ import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg5Day;
 import name.qd.techAnalyst.dataSource.TWSEDataManager;
 import name.qd.techAnalyst.vo.AnalysisResult;
-import name.qd.techAnalyst.vo.DailyClosingInfo;
-import name.qd.techAnalyst.vo.ProdClosingInfo;
 
 public class TechAnalyst {
 	private TechAnalyzerManager analyzerManager;
@@ -41,6 +39,11 @@ public class TechAnalyst {
 		}
 		
 		List<AnalysisResult> lstResult = analyzerManager.analyze(twseDataManager, sAnalyzer, sFrom, sTo, sProdId);
+		
+		if(lstResult == null) {
+			return;
+		}
+		
 		for(AnalysisResult result : lstResult) {
 			System.out.println(result.getDate() + ":" + result.getValue());
 		}
