@@ -35,6 +35,5 @@ public class TimeUtilTest {
 		Date dateTo = calendar.getTime();
 		
 		List<String> lst = TimeUtil.getDateBetween(dateFrom, dateTo);
-		Assert.assertEquals(0, 1);
 	}
 }
