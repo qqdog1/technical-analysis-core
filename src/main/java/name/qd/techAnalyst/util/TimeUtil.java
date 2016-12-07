@@ -23,14 +23,13 @@ public class TimeUtil {
 		return ROC + 1911;
 	}
 	
-	public static List<String> getYearMonthBetween(Date dateFrom, Date dateTo) {
-		List<String> lst = new ArrayList<String>();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+	public static List<String[]> getYearMonthBetween(Date dateFrom, Date dateTo) {
+		List<String[]> lst = new ArrayList<String[]>();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(dateFrom);
 		calendar.set(Calendar.DATE, 1);
 		while(calendar.getTimeInMillis() <= dateTo.getTime()) {
-			lst.add(sdf.format(calendar.getTime()));
+			lst.add(new String[]{String.valueOf(calendar.get(Calendar.YEAR)), String.valueOf(calendar.get(Calendar.MONTH)+1)});
 			calendar.add(Calendar.MONTH, 1);
 		}
 		return lst;
