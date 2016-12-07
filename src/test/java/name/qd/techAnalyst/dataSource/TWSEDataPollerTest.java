@@ -12,7 +12,7 @@ public class TWSEDataPollerTest {
 	
 	private TWSEDataPollerTest() {
 		try {
-			new TWSEDataPoller("./file/").downloadProdClosingInfo("201604", "2453");
+			new TWSEDataPoller("./file/").downloadProdClosingInfo("2016", "4", "2453");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

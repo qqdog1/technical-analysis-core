@@ -22,10 +22,10 @@ public class TWSEDataParser {
 		this.sFilePath = sFilePath;
 	}
 	
-	public List<ProdClosingInfo> readProdClosingInfo(String yearMonth, String prodId) throws FileNotFoundException, IOException {
+	public List<ProdClosingInfo> readProdClosingInfo(String year, String month, String prodId) throws FileNotFoundException, IOException {
 		List<ProdClosingInfo> lst = new ArrayList<ProdClosingInfo>();
-		String prefix = toTWSEDateFormat(yearMonth);
-		try (BufferedReader br = new BufferedReader(new FileReader(FileConstUtil.getProdClosingFilePath(sFilePath, yearMonth, prodId)))) {
+		String prefix = toTWSEDateFormat(year, month);
+		try (BufferedReader br = new BufferedReader(new FileReader(FileConstUtil.getProdClosingFilePath(sFilePath, year, month, prodId)))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				ProdClosingInfo prod = parse2ProdClosingInfo(line, prefix);
 				if(prod != null) {
@@ -57,9 +57,7 @@ public class TWSEDataParser {
 		return dailyClosingInfo;
 	}
 	
-	private String toTWSEDateFormat(String yearMonth) {
-		String year = yearMonth.substring(0, 4);
-		String month = yearMonth.substring(4, 6);
+	private String toTWSEDateFormat(String year, String month) {
 		year = TimeUtil.AD2ROC(year);
 		return " " + year + "/" + month;
 	}
