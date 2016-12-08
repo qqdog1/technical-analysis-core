@@ -16,7 +16,7 @@ public class FileConstUtil {
 	}
 	
 	public static String getProdClosingPOSTBody(String year, String month, String prodId) {
-		return StringCombineUtil.combine("query_year=", year, "&query_month=", month, "&CO_ID=", prodId);
+		return StringCombineUtil.combine("download=csv&query_year=", year, "&query_month=", month, "&CO_ID=", prodId);
 	}
 	
 	public static String getDailyClosingPOSTBody(String date) {

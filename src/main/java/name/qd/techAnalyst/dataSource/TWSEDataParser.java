@@ -60,7 +60,7 @@ public class TWSEDataParser {
 	private String toTWSEDateFormat(String year, String month) {
 		year = TimeUtil.AD2ROC(year);
 		StringBuilder sb = new StringBuilder();
-		sb.append(" ").append(year).append("/").append(month);
+		sb.append(year).append("/").append(String.format("%1$02d", Integer.parseInt(month)));
 		return sb.toString();
 	}
 	
