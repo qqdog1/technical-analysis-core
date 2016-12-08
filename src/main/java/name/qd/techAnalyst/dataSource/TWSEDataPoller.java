@@ -36,7 +36,6 @@ public class TWSEDataPoller {
 			rbc = Channels.newChannel(connection.getInputStream());
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
-			logger.error("可能是非交易日 :[" + year + month + "]");
 			return;
 		}
 		@SuppressWarnings("resource")
@@ -55,7 +54,7 @@ public class TWSEDataPoller {
 			rbc = Channels.newChannel(connection.getInputStream());
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
-			logger.error("可能是非交易日 :[" + date + "]");
+			logger.error("可能是非交易日 :[{}]", date);
 			return;
 		}
 		@SuppressWarnings("resource")

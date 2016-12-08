@@ -59,7 +59,9 @@ public class TWSEDataParser {
 	
 	private String toTWSEDateFormat(String year, String month) {
 		year = TimeUtil.AD2ROC(year);
-		return " " + year + "/" + month;
+		StringBuilder sb = new StringBuilder();
+		sb.append(" ").append(year).append("/").append(month);
+		return sb.toString();
 	}
 	
 	private ProdClosingInfo parse2ProdClosingInfo(String sData, String sPrefix) {

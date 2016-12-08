@@ -31,7 +31,7 @@ public class TechAnalyzerManager {
 		map.put(MovingAvg240Day.class.getSimpleName(), new MovingAvg240Day());
 		
 		for(String className : map.keySet()) {
-			logger.info("Created analyzer instance: " + className);
+			logger.info("Created analyzer instance: {}", className);
 		}
 	}
 	

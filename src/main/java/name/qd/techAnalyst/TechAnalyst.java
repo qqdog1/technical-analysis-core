@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg5Day;
 import name.qd.techAnalyst.dataSource.TWSEDataManager;
+import name.qd.techAnalyst.util.StringCombineUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
 
 public class TechAnalyst {
@@ -45,7 +46,7 @@ public class TechAnalyst {
 		}
 		
 		for(AnalysisResult result : lstResult) {
-			System.out.println(result.getDate() + ":" + result.getValue());
+			System.out.println(StringCombineUtil.combine(result.getDate(), ":", String.valueOf(result.getValue())));
 		}
 	}
 	
