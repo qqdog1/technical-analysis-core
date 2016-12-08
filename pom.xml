@@ -17,11 +17,6 @@
 			<artifactId>fileCache</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<dependency>
-			<groupId>name.qd.simpleConnect</groupId>
-			<artifactId>server</artifactId>
-			<version>1.0</version>
-		</dependency>
 	    <dependency>
 	    	<groupId>org.apache.logging.log4j</groupId>
 	    	<artifactId>log4j-slf4j-impl</artifactId>
@@ -49,14 +44,6 @@
 	    <repository>
 	        <id>FileCache-mvn-repo</id>
 	        <url>https://raw.github.com/qqdog1/FileCache/mvn-repo/</url>
-	        <snapshots>
-	            <enabled>true</enabled>
-	            <updatePolicy>always</updatePolicy>
-	        </snapshots>
-	    </repository>
-	    <repository>
-	        <id>SimpleConnect-mvn-repo</id>
-	        <url>https://raw.github.com/qqdog1/SimpleConnect/mvn-repo/</url>
 	        <snapshots>
 	            <enabled>true</enabled>
 	            <updatePolicy>always</updatePolicy>
