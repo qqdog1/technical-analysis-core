@@ -26,10 +26,18 @@ public class TWSEDataManager {
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 	
-	public TWSEDataManager(String filePath) {
+	public TWSEDataManager(String filePath) throws Exception {
 		this.filePath = filePath;
 		poller = new TWSEDataPoller(filePath);
 		parser = new TWSEDataParser(filePath);
+		
+		File file = new File(filePath);
+		if(!file.exists()) {
+			file.mkdir();
+		}
+		if(!file.isDirectory()) {
+			throw new Exception(filePath + " is not a directory.");
+		}
 		
 		logger.info("TWSE data source path:[{}]", filePath);
 	}

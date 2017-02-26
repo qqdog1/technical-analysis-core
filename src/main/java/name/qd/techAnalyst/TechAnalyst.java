@@ -26,7 +26,12 @@ public class TechAnalyst {
 		Logger logger = LogManager.getLogger(TechAnalyst.class);
 		
 		analyzerManager = new TechAnalyzerManager();
-		twseDataManager = new TWSEDataManager("./file/");
+		
+		try {
+			twseDataManager = new TWSEDataManager("./file/");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
 		
 		String sFrom = "20160301";
 		String sTo = "20160601";
