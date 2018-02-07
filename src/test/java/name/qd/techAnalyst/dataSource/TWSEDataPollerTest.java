@@ -1,7 +1,7 @@
 package name.qd.techAnalyst.dataSource;
-import java.io.IOException;
 
-import name.qd.techAnalyst.dataSource.TWSEDataPoller;
+import name.qd.techAnalyst.dataSource.TWSE.TWSEDataPoller2016;
+import name.qd.techAnalyst.dataSource.TWSE.TWSEDataPoller2018;
 
 
 public class TWSEDataPollerTest {
@@ -11,16 +11,8 @@ public class TWSEDataPollerTest {
 	}
 	
 	private TWSEDataPollerTest() {
-		try {
-			new TWSEDataPoller("./file/").downloadProdClosingInfo("2016", "4", "2453");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			new TWSEDataPoller2018(new TWSEDataPoller2016(null)).downloadProdClosingInfo("2016", "04", "2453");
 		
-		try {
-			new TWSEDataPoller("./file/").downloadDailyClosingInfo("20160801", "105/08/01");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			new TWSEDataPoller2018(null).downloadDailyClosingInfo("20160801");
 	}
 }

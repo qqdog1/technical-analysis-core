@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import name.qd.fileCache.FileCacheManager;
 import name.qd.fileCache.cache.CacheManager;
-import name.qd.fileCache.cache.IFileCacheObject;
+import name.qd.fileCache.cache.FileCacheObject;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg10Day;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg120Day;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg20Day;
@@ -39,7 +39,11 @@ public class TechAnalystCacheManager {
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
 	public TechAnalystCacheManager() {
-		fileCacheManager = new FileCacheManager("./cache/");
+		try {
+			fileCacheManager = new FileCacheManager("./cache/");
+		} catch (Exception e) {
+			logger.error("Init file cache manager failed.", e);
+		}
 		
 		initCache(MovingAvg5Day.class.getSimpleName(), AnalysisResult.class.getName());
 		initCache(MovingAvg10Day.class.getSimpleName(), AnalysisResult.class.getName());
@@ -186,10 +190,10 @@ public class TechAnalystCacheManager {
 	}
 	
 	private void recoverDayRange() {
-		Set<String> set = fileCacheManager.getCacheNameSet();
+		Set<String> set = fileCacheManager.getLoadedCacheNameSet();
 		for(String cacheName : set) {
 			CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
-			for(IFileCacheObject obj : cacheManager.values()) {
+			for(FileCacheObject obj : cacheManager.values()) {
 				AnalysisResult result = (AnalysisResult) obj;
 				try {
 					Date date = sdf.parse(result.getDate());

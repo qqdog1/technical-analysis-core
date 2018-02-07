@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import name.qd.techAnalyst.analyzer.AnalystUtils;
 import name.qd.techAnalyst.analyzer.ITechAnalyzer;
-import name.qd.techAnalyst.dataSource.TWSEDataManager;
+import name.qd.techAnalyst.dataSource.TWSE.TWSEDataManager;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProdClosingInfo;
 

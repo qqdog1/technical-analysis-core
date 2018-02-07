@@ -13,7 +13,7 @@ import name.qd.techAnalyst.analyzer.impl.MovingAvg20Day;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg240Day;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg5Day;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg60Day;
-import name.qd.techAnalyst.dataSource.TWSEDataManager;
+import name.qd.techAnalyst.dataSource.TWSE.TWSEDataManager;
 import name.qd.techAnalyst.fileCache.TechAnalystCacheManager;
 import name.qd.techAnalyst.vo.AnalysisResult;
 

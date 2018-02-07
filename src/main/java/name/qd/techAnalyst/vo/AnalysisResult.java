@@ -2,11 +2,11 @@ package name.qd.techAnalyst.vo;
 
 import java.io.IOException;
 
-import name.qd.fileCache.cache.IFileCacheObject;
+import name.qd.fileCache.cache.FileCacheObject;
 import name.qd.fileCache.common.TransInputStream;
 import name.qd.fileCache.common.TransOutputStream;
 
-public class AnalysisResult implements IFileCacheObject {
+public class AnalysisResult implements FileCacheObject {
 	private String date;
 	private double value;
 	private String action;

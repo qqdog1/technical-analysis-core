@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
 import name.qd.techAnalyst.analyzer.impl.MovingAvg5Day;
-import name.qd.techAnalyst.dataSource.TWSEDataManager;
+import name.qd.techAnalyst.dataSource.TWSE.TWSEDataManager;
 import name.qd.techAnalyst.util.StringCombineUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
 
@@ -26,7 +26,7 @@ public class TechAnalyst {
 		Logger logger = LogManager.getLogger(TechAnalyst.class);
 		
 		analyzerManager = new TechAnalyzerManager();
-		twseDataManager = new TWSEDataManager("./file/");
+		twseDataManager = new TWSEDataManager();
 		
 		String sFrom = "20160301";
 		String sTo = "20160601";

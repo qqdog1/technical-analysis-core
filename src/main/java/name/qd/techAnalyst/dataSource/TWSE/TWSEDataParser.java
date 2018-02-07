@@ -1,4 +1,4 @@
-package name.qd.techAnalyst.dataSource;
+package name.qd.techAnalyst.dataSource.TWSE;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -16,16 +16,14 @@ import name.qd.techAnalyst.vo.DailyClosingInfo;
 import name.qd.techAnalyst.vo.ProdClosingInfo;
 
 public class TWSEDataParser {
-	private String sFilePath;
 	
-	TWSEDataParser(String sFilePath) {
-		this.sFilePath = sFilePath;
+	public TWSEDataParser() {
 	}
 	
 	public List<ProdClosingInfo> readProdClosingInfo(String year, String month, String prodId) throws FileNotFoundException, IOException {
 		List<ProdClosingInfo> lst = new ArrayList<ProdClosingInfo>();
 		String prefix = toTWSEDateFormat(year, month);
-		try (BufferedReader br = new BufferedReader(new FileReader(FileConstUtil.getProdClosingFilePath(sFilePath, year, month, prodId)))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(FileConstUtil.getProdClosingFilePath(year, month, prodId)))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				ProdClosingInfo prod = parse2ProdClosingInfo(line, prefix);
 				if(prod != null) {
@@ -39,7 +37,7 @@ public class TWSEDataParser {
 	public DailyClosingInfo readDailyClosingInfo(String date) throws FileNotFoundException, IOException, ParseException {
 		DailyClosingInfo dailyClosingInfo = null;
 		
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(FileConstUtil.getDailyClosingFilePath(sFilePath, date)), "Big5"))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(FileConstUtil.getDailyClosingFilePath(date)), "Big5"))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				if(line.contains(FileConstUtil.ADVANCE)) {
 					dailyClosingInfo = new DailyClosingInfo();
@@ -103,7 +101,6 @@ public class TWSEDataParser {
 				iIndex = iQuotation + iIndex + 1;
 			}
 			sData = sData.substring(iIndex, sData.length());
-			
 		}
 		return lst;
 	}

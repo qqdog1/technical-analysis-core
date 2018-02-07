@@ -47,19 +47,6 @@ public class TimeUtil {
 		return lst;
 	}
 	
-	public static List<String> getPOSTDateBetween(Date dateFrom, Date dateTo) {
-		SimpleDateFormat sdf = new SimpleDateFormat("/MM/dd");
-		List<String> lst = new ArrayList<String>();
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(dateFrom);
-		while(calendar.getTimeInMillis() <= dateTo.getTime()) {
-			int iYear = AD2ROC(calendar.get(Calendar.YEAR));
-			lst.add(String.valueOf(iYear) + sdf.format(calendar.getTime()));
-			calendar.add(Calendar.DATE, 1);
-		}
-		return lst;
-	}
-	
 	// 100/01/01 -> 20110101
 	public static String getOutputFromROC(String date) {
 		String[] dateInfo = date.split("/");
