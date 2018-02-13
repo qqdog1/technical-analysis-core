@@ -46,10 +46,10 @@ public class TWSEDataManager implements DataManager {
 	}
 	
 	@Override
-	public void checkDataAndDownload(String prodId, Date from, Date to) throws ParseException, IOException {
+	public void checkDataAndDownload(String product, Date from, Date to) throws ParseException, IOException {
 		List<String[]> lstYearMonth = TimeUtil.getYearMonthBetween(from, to);
 		List<String> lstDate = TimeUtil.getDateBetween(from, to);
-		checkAndDownloadProdClosing(lstYearMonth, prodId);
+		checkAndDownloadProdClosing(lstYearMonth, product);
 		checkAndDownloadDailyClosing(lstDate);
 	}
 	
@@ -86,6 +86,7 @@ public class TWSEDataManager implements DataManager {
 		for(String[] yearMonth : lst) {
 			File file = new File(Constants.getProdClosingFilePath(yearMonth[0], yearMonth[1], product));
 			if(!file.exists()) {
+				log.info("Download product closing info. {}{}", yearMonth[0], yearMonth[1]);
 				poller.downloadProdClosingInfo(yearMonth[0], yearMonth[1], product);
 			}
 		}
@@ -97,6 +98,7 @@ public class TWSEDataManager implements DataManager {
 		for(int i = 0 ; i < lstDate.size() ; i++) {
 			File file = new File(Constants.getDailyClosingFilePath(lstDate.get(i)));
 			if(!file.exists()) {
+				log.info("Download daily closing info. {}", lstDate.get(i));
 				poller.downloadDailyClosingInfo(lstDate.get(i));
 			}
 		}

@@ -31,7 +31,7 @@ public class TechAnalyzerManager {
 	private FileCacheManager fileCacheManager;
 	private Map<String, Date> mapFirst = new HashMap<String, Date>();
 	private Map<String, Date> mapLast = new HashMap<String, Date>();
-	private SimpleDateFormat sdf = TimeUtil.getDateFormat();
+	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
 	
 	public TechAnalyzerManager() {
 		try {
@@ -52,15 +52,18 @@ public class TechAnalyzerManager {
 		}
 	}
 	
-	public ArrayList<AnalysisResult> getAnalysisResult(DataManager dataManager, String analyzerName, String product, Date from, Date to) {
+	public List<AnalysisResult> getAnalysisResult(DataManager dataManager, String analyzerName, String product, Date from, Date to) {
 		if(!mapAnalyzer.containsKey(analyzerName)) {
 			log.error("Analyzer not exist. {}", analyzerName);
 			return null;
 		}
+		
+		log.info("Get analyzer : {}", analyzerName);
 		TechAnalyzer techAnalyzer = mapAnalyzer.get(analyzerName);
 		String cacheName = techAnalyzer.getCacheName(product);
 		
-		if(!isDateInRange(cacheName, from, to)) {
+		if(!isDateInRange(techAnalyzer, product, from, to)) {
+			log.info("Result data not in range.");
 			// get data source
 			try {
 				dataManager.checkDataAndDownload(product, from, to);
@@ -75,8 +78,11 @@ public class TechAnalyzerManager {
 		CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
 		
 		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(to);
+		calendar.add(Calendar.DATE, 1);
+		Date endDate = calendar.getTime();
 		calendar.setTime(from);
-		for(; calendar.getTime().before(to); calendar.add(Calendar.DATE, 1)) {
+		for(; calendar.getTime().before(endDate); calendar.add(Calendar.DATE, 1)) {
 			AnalysisResult result = (AnalysisResult) cacheManager.get(sdf.format(calendar.getTime()));
 			if(result != null) {
 				lst.add(result);
@@ -95,8 +101,9 @@ public class TechAnalyzerManager {
 		}
 	}
 	
-	private boolean isDateInRange(String cacheName, Date from, Date to) {
-		loadCache(cacheName);
+	private boolean isDateInRange(TechAnalyzer techAnalyzer, String product, Date from, Date to) {
+		String cacheName = techAnalyzer.getCacheName(product);
+		loadCache(techAnalyzer, product);
 		
 		if(!mapFirst.containsKey(cacheName) || !mapLast.containsKey(cacheName)) {
 			return false;
@@ -113,7 +120,8 @@ public class TechAnalyzerManager {
 		return true;
 	}
 	
-	private void loadCache(String cacheName) {
+	private void loadCache(TechAnalyzer techAnalyzer, String product) {
+		String cacheName = techAnalyzer.getCacheName(product);
 		CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
 		if(cacheManager != null) {
 			for(FileCacheObject obj : cacheManager.values()) {
@@ -122,6 +130,8 @@ public class TechAnalyzerManager {
 				updateFirstDate(cacheName, date);
 				updateLastDate(cacheName, date);
 			}
+		} else {
+			fileCacheManager.createCacheInstance(cacheName, AnalysisResult.class.getName());
 		}
 	}
 	
@@ -186,6 +196,7 @@ public class TechAnalyzerManager {
 		String cacheName = analyzer.getCacheName(product);
 		Date first = getFirstDate(cacheName, from);
 		Date last = getLastDate(cacheName, to);
+		log.info("Analyze {}, {}-{}", cacheName, first, last);
 		List<AnalysisResult> lst = analyzer.analyze(dataManager, product, first, last);
 		putAnalysisResult(cacheName, lst);
 		syncFile(cacheName);

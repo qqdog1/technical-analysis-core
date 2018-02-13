@@ -1,7 +1,9 @@
 package name.qd.techAnalyst;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +12,8 @@ import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
 import name.qd.techAnalyst.analyzer.impl.ma.MovingAvg5Day;
 import name.qd.techAnalyst.dataSource.DataManager;
 import name.qd.techAnalyst.dataSource.TWSE.TWSEDataManager;
+import name.qd.techAnalyst.util.TimeUtil;
+import name.qd.techAnalyst.vo.AnalysisResult;
 
 public class TechAnalyst {
 	private TechAnalyzerManager analyzerManager;
@@ -25,30 +29,24 @@ public class TechAnalyst {
 		analyzerManager = new TechAnalyzerManager();
 		twseDataManager = new TWSEDataManager();
 		
-		String sFrom = "20160301";
-		String sTo = "20160601";
-		String sProdId = "2453";
-		String sAnalyzer = MovingAvg5Day.class.getSimpleName();
+		try {
+			Date from = TimeUtil.getDateTimeFormat().parse("20180201-00:00:00:000");
+			Date to = TimeUtil.getDateTimeFormat().parse("20180212-00:00:00:000");
+			String product = "2453";
+			String analyzerName = MovingAvg5Day.class.getSimpleName();
+			
+			List<AnalysisResult> lst = analyzerManager.getAnalysisResult(twseDataManager, analyzerName, product, from, to);
+			for(AnalysisResult result : lst) {
+				System.out.println(result.getKeyString() + ":" + result.getValue());
+			}
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
-//		try {
-//			twseDataManager.checkDateAndDownload(sFrom, sTo, sProdId);
-//		} catch (ParseException | IOException e) {
-//			logger.error(e.getMessage(), e);
-//		}
-//		
-//		List<AnalysisResult> lstResult = analyzerManager.analyze(twseDataManager, sAnalyzer, sFrom, sTo, sProdId);
-//		
-//		if(lstResult == null) {
-//			return;
-//		}
-//		
-//		for(AnalysisResult result : lstResult) {
-//			System.out.println(StringCombineUtil.combine(result.getDate(), ":", String.valueOf(result.getValue())));
-//		}
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("MM");
-		Date date = new Date();
-		System.out.println(sdf.format(date));
+		
+		
 	}
 	
 	public static void main(String[] args) {
