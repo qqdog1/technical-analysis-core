@@ -6,23 +6,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
-import name.qd.techAnalyst.dataSource.DataPoller;
-import name.qd.techAnalyst.util.FileConstUtil;
+import name.qd.techAnalyst.Constants;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
-public class TWSEDataPoller2018 extends DataPoller {
+public class TWSEDataPoller2018 extends TWSEDataPoller {
 	private final OkHttpClient okHttpClient = new OkHttpClient.Builder().pingInterval(5, TimeUnit.SECONDS).build();
 	private HttpUrl httpUrl = HttpUrl.parse("http://www.tse.com.tw/exchangeReport");
 	
-	public TWSEDataPoller2018(DataPoller nextPoller) {
+	TWSEDataPoller2018(TWSEDataPoller nextPoller) {
 		super(nextPoller);
 	}
 
 	@Override
-	public void tryDownloadProdClosingInfo(String year, String month, String prodId) throws IOException {
-		String filePathName = FileConstUtil.getProdClosingFilePath(year, month, prodId);
+	protected void tryDownloadProdClosingInfo(String year, String month, String prodId) throws IOException {
+		String filePathName = Constants.getProdClosingFilePath(year, month, prodId);
 		Path path = new File(filePathName).toPath();
 		if(Files.exists(path)) return;
 		
@@ -40,8 +39,8 @@ public class TWSEDataPoller2018 extends DataPoller {
 	}
 
 	@Override
-	public void tryDownloadDailyClosingInfo(String date) throws IOException {
-		String filePathName = FileConstUtil.getDailyClosingFilePath(date);
+	protected void tryDownloadDailyClosingInfo(String date) throws IOException {
+		String filePathName = Constants.getDailyClosingFilePath(date);
 		Path path = new File(filePathName).toPath();
 		if(Files.exists(path)) return;
 		

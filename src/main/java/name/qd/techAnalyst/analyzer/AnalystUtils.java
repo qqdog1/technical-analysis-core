@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import name.qd.techAnalyst.vo.AnalysisResult;
-import name.qd.techAnalyst.vo.ProdClosingInfo;
+import name.qd.techAnalyst.vo.ProductClosingInfo;
 
 public class AnalystUtils {
-	public static List<AnalysisResult> NDaysAvg(List<ProdClosingInfo> lst, int days) {
+	public static List<AnalysisResult> NDaysAvg(List<ProductClosingInfo> lst, int days) {
 		List<AnalysisResult> lstResult = new ArrayList<AnalysisResult>();
 		for(int i = lst.size() - 1 ; i >= days - 1 ;  i--) {
 			AnalysisResult result = new AnalysisResult();

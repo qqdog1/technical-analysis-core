@@ -1,14 +1,16 @@
 package name.qd.techAnalyst.vo;
 
+import java.util.Date;
+
 public class DailyClosingInfo {
-	private String date;
+	private Date date;
 	private int advance;
 	private int decline;
 	
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(String sDate) {
+	public void setDate(Date sDate) {
 		this.date = sDate;
 	}
 	public int getAdvance() {

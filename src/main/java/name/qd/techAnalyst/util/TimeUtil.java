@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.List;
 
 public class TimeUtil {
+	private static SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMdd");
+	private static SimpleDateFormat sdfDateTime = new SimpleDateFormat("yyyyMMdd-HH:mm:ss:SSS");
+	
 	public static String AD2ROC(String AD) {
 		return String.valueOf(AD2ROC(Integer.parseInt(AD)));
 	}
@@ -23,25 +26,25 @@ public class TimeUtil {
 		return ROC + 1911;
 	}
 	
-	public static List<String[]> getYearMonthBetween(Date dateFrom, Date dateTo) {
+	public static List<String[]> getYearMonthBetween(Date from, Date to) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM");
 		List<String[]> lst = new ArrayList<String[]>();
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(dateFrom);
+		calendar.setTime(from);
 		calendar.set(Calendar.DATE, 1);
-		while(calendar.getTimeInMillis() <= dateTo.getTime()) {
-			lst.add(new String[]{String.valueOf(calendar.get(Calendar.YEAR)), String.valueOf(calendar.get(Calendar.MONTH)+1)});
+		while(calendar.getTimeInMillis() <= to.getTime()) {
+			lst.add(new String[]{String.valueOf(calendar.get(Calendar.YEAR)), sdf.format(calendar.getTime())});
 			calendar.add(Calendar.MONTH, 1);
 		}
 		return lst;
 	}
 	
-	public static List<String> getDateBetween(Date dateFrom, Date dateTo) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	public static List<String> getDateBetween(Date from, Date to) {
 		List<String> lst = new ArrayList<String>();
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(dateFrom);
-		while(calendar.getTimeInMillis() <= dateTo.getTime()) {
-			lst.add(sdf.format(calendar.getTime()));
+		calendar.setTime(from);
+		while(calendar.getTimeInMillis() <= to.getTime()) {
+			lst.add(sdfDate.format(calendar.getTime()));
 			calendar.add(Calendar.DATE, 1);
 		}
 		return lst;
@@ -50,6 +53,14 @@ public class TimeUtil {
 	// 100/01/01 -> 20110101
 	public static String getOutputFromROC(String date) {
 		String[] dateInfo = date.split("/");
-		return ROC2AD(dateInfo[0]) + dateInfo[1] + dateInfo[2];
+		return StringCombineUtil.combine(ROC2AD(dateInfo[0]), dateInfo[1], dateInfo[2]);
+	}
+	
+	public static SimpleDateFormat getDateFormat() {
+		return sdfDate;
+	}
+	
+	public static SimpleDateFormat getDateTimeFormat() {
+		return sdfDateTime;
 	}
 }

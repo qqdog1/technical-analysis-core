@@ -7,25 +7,26 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.qd.techAnalyst.util.FileConstUtil;
+import name.qd.techAnalyst.Constants;
 import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
-import name.qd.techAnalyst.vo.ProdClosingInfo;
+import name.qd.techAnalyst.vo.ProductClosingInfo;
 
 public class TWSEDataParser {
 	
 	public TWSEDataParser() {
 	}
 	
-	public List<ProdClosingInfo> readProdClosingInfo(String year, String month, String prodId) throws FileNotFoundException, IOException {
-		List<ProdClosingInfo> lst = new ArrayList<ProdClosingInfo>();
+	public List<ProductClosingInfo> readProdClosingInfo(String year, String month, String prodId) throws FileNotFoundException, IOException, ParseException {
+		List<ProductClosingInfo> lst = new ArrayList<ProductClosingInfo>();
 		String prefix = toTWSEDateFormat(year, month);
-		try (BufferedReader br = new BufferedReader(new FileReader(FileConstUtil.getProdClosingFilePath(year, month, prodId)))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(Constants.getProdClosingFilePath(year, month, prodId)))) {
 			for(String line; (line = br.readLine()) != null; ) {
-				ProdClosingInfo prod = parse2ProdClosingInfo(line, prefix);
+				ProductClosingInfo prod = parse2ProdClosingInfo(line, prefix);
 				if(prod != null) {
 					lst.add(prod);
 				}
@@ -36,16 +37,17 @@ public class TWSEDataParser {
 	
 	public DailyClosingInfo readDailyClosingInfo(String date) throws FileNotFoundException, IOException, ParseException {
 		DailyClosingInfo dailyClosingInfo = null;
+		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(FileConstUtil.getDailyClosingFilePath(date)), "Big5"))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Constants.getDailyClosingFilePath(date)), "Big5"))) {
 			for(String line; (line = br.readLine()) != null; ) {
-				if(line.contains(FileConstUtil.ADVANCE)) {
+				if(line.contains(Constants.ADVANCE)) {
 					dailyClosingInfo = new DailyClosingInfo();
 					List<String> lst = parseTWSEcsv(line);
 					String sAdvance = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setAdvance(Integer.parseInt(sAdvance));
-					dailyClosingInfo.setDate(date);
-				} else if(line.contains(FileConstUtil.DECLINE)) {
+					dailyClosingInfo.setDate(sdf.parse(date));
+				} else if(line.contains(Constants.DECLINE)) {
 					List<String> lst = parseTWSEcsv(line);
 					String decline = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setDecline(Integer.parseInt(decline));
@@ -62,14 +64,15 @@ public class TWSEDataParser {
 		return sb.toString();
 	}
 	
-	private ProdClosingInfo parse2ProdClosingInfo(String sData, String sPrefix) {
+	private ProductClosingInfo parse2ProdClosingInfo(String sData, String sPrefix) throws ParseException {
 		if(!sData.contains(sPrefix)) {
 			return null;
 		}
+		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		List<String> lst = parseTWSEcsv(sData);
 		
-		ProdClosingInfo prod = new ProdClosingInfo();
-		prod.setDate(TimeUtil.getOutputFromROC(lst.get(0)));
+		ProductClosingInfo prod = new ProductClosingInfo();
+		prod.setDate(sdf.parse(TimeUtil.getOutputFromROC(lst.get(0))));
 		prod.setFilledShare(Long.parseLong(lst.get(1)));
 		prod.setFilledAmount(Double.parseDouble(lst.get(2)));
 		prod.setOpenPrice(Double.parseDouble(lst.get(3)));

@@ -1,27 +1,32 @@
 package name.qd.techAnalyst.vo;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import name.qd.fileCache.cache.FileCacheObject;
 import name.qd.fileCache.common.TransInputStream;
 import name.qd.fileCache.common.TransOutputStream;
+import name.qd.techAnalyst.util.TimeUtil;
 
 public class AnalysisResult implements FileCacheObject {
-	private String date;
+	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
+	private Date date;
 	private double value;
 	private String action;
 	
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(String sDate) {
-		this.date = sDate;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	public double getValue() {
 		return value;
 	}
-	public void setValue(double dValue) {
-		this.value = dValue;
+	public void setValue(double value) {
+		this.value = value;
 	}
 	public String getAction() {
 		return action;
@@ -32,18 +37,21 @@ public class AnalysisResult implements FileCacheObject {
 	@Override
 	public byte[] parseToFileFormat() throws IOException {
 		TransOutputStream tOut = new TransOutputStream();
-		tOut.writeString(date);
+		tOut.writeLong(date.getTime());
 		tOut.writeDouble(value);
 		return tOut.toByteArray();
 	}
 	@Override
 	public void toValueObject(byte[] bData) throws IOException {
 		TransInputStream tIn = new TransInputStream(bData);
-		date = tIn.getString();
+		long timestamp = tIn.getLong();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(timestamp);
+		date = calendar.getTime();
 		value = tIn.getDouble();
 	}
 	@Override
 	public String getKeyString() {
-		return date;
+		return sdf.format(date);
 	}
 }

@@ -1,11 +1,11 @@
-package name.qd.techAnalyst.dataSource;
+package name.qd.techAnalyst.dataSource.TWSE;
 
 import java.io.IOException;
 
-public abstract class DataPoller {
-	private DataPoller nextPoller;
+public abstract class TWSEDataPoller {
+	private TWSEDataPoller nextPoller;
 	
-	public DataPoller(DataPoller nextPoller) {
+	public TWSEDataPoller(TWSEDataPoller nextPoller) {
 		this.nextPoller = nextPoller;
 	}
 	
@@ -29,6 +29,6 @@ public abstract class DataPoller {
 		}
 	}
 	
-	public abstract void tryDownloadProdClosingInfo(String year, String month, String prodId) throws IOException;
-	public abstract void tryDownloadDailyClosingInfo(String date) throws IOException;
+	protected abstract void tryDownloadProdClosingInfo(String year, String month, String prodId) throws IOException;
+	protected abstract void tryDownloadDailyClosingInfo(String date) throws IOException;
 }
