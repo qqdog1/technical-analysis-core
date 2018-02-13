@@ -18,4 +18,8 @@ public class Constants {
 	public static String getDailyClosingFilePath(String date) {
 		return StringCombineUtil.combine(FILE_DIR, Constants.DAILY_CLOSING_FILE_PREFIX, date, ".csv");
 	}
+	
+	public enum AnalyzerType {
+		PRODUCT, MARKET;
+	}
 }

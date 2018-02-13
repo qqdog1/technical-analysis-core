@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import name.qd.techAnalyst.Constants.AnalyzerType;
 import name.qd.techAnalyst.analyzer.AnalystUtils;
 import name.qd.techAnalyst.analyzer.TechAnalyzer;
 import name.qd.techAnalyst.dataSource.DataManager;
@@ -29,5 +30,10 @@ public class MovingAvg120Day implements TechAnalyzer {
 	@Override
 	public String getCacheName(String product) {
 		return StringCombineUtil.combine(MovingAvg120Day.class.getSimpleName(), product);
+	}
+
+	@Override
+	public AnalyzerType getAnalyzerType() {
+		return AnalyzerType.PRODUCT;
 	}
 }
