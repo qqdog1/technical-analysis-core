@@ -22,4 +22,9 @@ public class Constants {
 	public enum AnalyzerType {
 		PRODUCT, MARKET;
 	}
+	
+	public enum Exchange {
+		TWSE,
+		;
+	}
 }

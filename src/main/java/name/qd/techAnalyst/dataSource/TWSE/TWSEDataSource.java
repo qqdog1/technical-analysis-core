@@ -14,18 +14,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import name.qd.techAnalyst.Constants;
-import name.qd.techAnalyst.dataSource.DataManager;
+import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 
-public class TWSEDataManager implements DataManager {
-	private Logger log = LogManager.getLogger(TWSEDataManager.class);
+public class TWSEDataSource implements DataSource {
+	private Logger log = LogManager.getLogger(TWSEDataSource.class);
 	private Path folderPath;
 	private TWSEDataPoller poller;
 	private TWSEDataParser parser;
 	
-	public TWSEDataManager() {
+	public TWSEDataSource() {
 		folderPath = new File(Constants.FILE_DIR).toPath();
 		poller = new TWSEDataPoller2018(new TWSEDataPoller2016(null));
 		parser = new TWSEDataParser();

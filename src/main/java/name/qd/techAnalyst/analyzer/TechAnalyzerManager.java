@@ -15,23 +15,17 @@ import org.apache.logging.log4j.Logger;
 import name.qd.fileCache.FileCacheManager;
 import name.qd.fileCache.cache.CacheManager;
 import name.qd.fileCache.cache.FileCacheObject;
-import name.qd.techAnalyst.analyzer.impl.ma.MovingAvg10Day;
-import name.qd.techAnalyst.analyzer.impl.ma.MovingAvg120Day;
-import name.qd.techAnalyst.analyzer.impl.ma.MovingAvg20Day;
-import name.qd.techAnalyst.analyzer.impl.ma.MovingAvg240Day;
-import name.qd.techAnalyst.analyzer.impl.ma.MovingAvg5Day;
-import name.qd.techAnalyst.analyzer.impl.ma.MovingAvg60Day;
-import name.qd.techAnalyst.dataSource.DataManager;
+import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
 
 public class TechAnalyzerManager {
 	private Logger log = LogManager.getLogger(TechAnalyzerManager.class);
-	private Map<String, TechAnalyzer> mapAnalyzer = new HashMap<>();
 	private FileCacheManager fileCacheManager;
 	private Map<String, Date> mapFirst = new HashMap<String, Date>();
 	private Map<String, Date> mapLast = new HashMap<String, Date>();
 	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
+	private TechAnalyzerFactory techAnalyzerFactory = TechAnalyzerFactory.getInstance();
 	
 	public TechAnalyzerManager() {
 		try {
@@ -39,27 +33,16 @@ public class TechAnalyzerManager {
 		} catch (Exception e) {
 			log.error("Init file cache manager failed.", e);
 		}
-		
-		mapAnalyzer.put(MovingAvg5Day.class.getSimpleName(), new MovingAvg5Day());
-		mapAnalyzer.put(MovingAvg10Day.class.getSimpleName(), new MovingAvg10Day());
-		mapAnalyzer.put(MovingAvg20Day.class.getSimpleName(), new MovingAvg20Day());
-		mapAnalyzer.put(MovingAvg60Day.class.getSimpleName(), new MovingAvg60Day());
-		mapAnalyzer.put(MovingAvg120Day.class.getSimpleName(), new MovingAvg120Day());
-		mapAnalyzer.put(MovingAvg240Day.class.getSimpleName(), new MovingAvg240Day());
-		
-		for(String className : mapAnalyzer.keySet()) {
-			log.info("Created analyzer instance: {}", className);
-		}
 	}
 	
-	public List<AnalysisResult> getAnalysisResult(DataManager dataManager, String analyzerName, String product, Date from, Date to) {
-		if(!mapAnalyzer.containsKey(analyzerName)) {
+	public List<AnalysisResult> getAnalysisResult(DataSource dataManager, String analyzerName, String product, Date from, Date to) {
+		if(techAnalyzerFactory.getAnalyzer(analyzerName) == null) {
 			log.error("Analyzer not exist. {}", analyzerName);
 			return null;
 		}
 		
 		log.info("Get analyzer : {}", analyzerName);
-		TechAnalyzer techAnalyzer = mapAnalyzer.get(analyzerName);
+		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzerName);
 		String cacheName = techAnalyzer.getCacheName(product);
 		
 		if(!isDateInRange(techAnalyzer, product, from, to)) {
@@ -192,7 +175,7 @@ public class TechAnalyzerManager {
 		}
 	}
 	
-	private void updateCache(DataManager dataManager, TechAnalyzer analyzer, String product, Date from, Date to) {
+	private void updateCache(DataSource dataManager, TechAnalyzer analyzer, String product, Date from, Date to) {
 		String cacheName = analyzer.getCacheName(product);
 		Date first = getFirstDate(cacheName, from);
 		Date last = getLastDate(cacheName, to);

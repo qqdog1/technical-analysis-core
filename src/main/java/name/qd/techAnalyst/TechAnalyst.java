@@ -9,15 +9,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
+import name.qd.techAnalyst.analyzer.impl.ABI;
 import name.qd.techAnalyst.analyzer.impl.ma.MovingAvg5Day;
-import name.qd.techAnalyst.dataSource.DataManager;
-import name.qd.techAnalyst.dataSource.TWSE.TWSEDataManager;
+import name.qd.techAnalyst.dataSource.DataSource;
+import name.qd.techAnalyst.dataSource.TWSE.TWSEDataSource;
 import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
 
 public class TechAnalyst {
 	private TechAnalyzerManager analyzerManager;
-	private DataManager twseDataManager;
+	private DataSource twseDataManager;
 	
 	private TechAnalyst() {
 		// 要分析哪一檔商品  時間  哪種分析方式
@@ -27,13 +28,14 @@ public class TechAnalyst {
 		Logger logger = LogManager.getLogger(TechAnalyst.class);
 		
 		analyzerManager = new TechAnalyzerManager();
-		twseDataManager = new TWSEDataManager();
+		twseDataManager = new TWSEDataSource();
 		
 		try {
 			Date from = TimeUtil.getDateTimeFormat().parse("20180201-00:00:00:000");
 			Date to = TimeUtil.getDateTimeFormat().parse("20180212-00:00:00:000");
 			String product = "2453";
-			String analyzerName = MovingAvg5Day.class.getSimpleName();
+//			String analyzerName = MovingAvg5Day.class.getSimpleName();
+			String analyzerName = ABI.class.getSimpleName();
 			
 			List<AnalysisResult> lst = analyzerManager.getAnalysisResult(twseDataManager, analyzerName, product, from, to);
 			for(AnalysisResult result : lst) {

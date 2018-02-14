@@ -21,4 +21,19 @@ public class AnalystUtils {
 		}
 		return lstResult;
 	}
+	
+	public static List<AnalysisResult> NDaysAvgByAnalysisResult(List<AnalysisResult> lst, int days) {
+		List<AnalysisResult> lstResult = new ArrayList<AnalysisResult>();
+		for(int i = lst.size() - 1 ; i >= days - 1 ;  i--) {
+			AnalysisResult result = new AnalysisResult();
+			result.setDate(lst.get(i).getDate());
+			double sum = 0;
+			for(int j = 0 ; j < days ; j++) {
+				sum += lst.get(i - j).getValue();
+			}
+			result.setValue(sum / days);
+			lstResult.add(result);
+		}
+		return lstResult;
+	}
 }
