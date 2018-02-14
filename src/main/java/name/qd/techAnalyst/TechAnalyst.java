@@ -1,7 +1,6 @@
 package name.qd.techAnalyst;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 
 import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
 import name.qd.techAnalyst.analyzer.impl.ABI;
-import name.qd.techAnalyst.analyzer.impl.ma.MovingAvg5Day;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.dataSource.TWSE.TWSEDataSource;
 import name.qd.techAnalyst.util.TimeUtil;
@@ -21,9 +19,6 @@ public class TechAnalyst {
 	private DataSource twseDataManager;
 	
 	private TechAnalyst() {
-		// 要分析哪一檔商品  時間  哪種分析方式
-		// 檢查檔案 分析 回傳結果?
-		
 		System.setProperty("log4j.configurationFile", "./config/log4j2.xml");
 		Logger logger = LogManager.getLogger(TechAnalyst.class);
 		

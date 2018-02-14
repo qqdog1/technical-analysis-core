@@ -27,4 +27,8 @@ public class Constants {
 		TWSE,
 		;
 	}
+	
+	public enum Action {
+		BUY, SELL, NONE;
+	}
 }
