@@ -47,12 +47,6 @@ public class TechAnalyzerManager {
 		
 		if(!isDateInRange(techAnalyzer, product, from, to)) {
 			log.info("Result data not in range.");
-			// get data source
-			try {
-				dataManager.checkDataAndDownload(product, from, to);
-			} catch (Exception e) {
-				log.error("download data failed. product:{}, {}-{}", product, from.toString(), to.toString());
-			}
 			// analyze new data and cache
 			updateCache(dataManager, techAnalyzer, product, from, to);
 		}

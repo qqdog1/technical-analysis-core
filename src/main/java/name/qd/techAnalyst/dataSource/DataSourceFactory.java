@@ -3,15 +3,15 @@ package name.qd.techAnalyst.dataSource;
 import name.qd.techAnalyst.Constants.Exchange;
 import name.qd.techAnalyst.dataSource.TWSE.TWSEDataSource;
 
-public class DataSourceManager {
-	private static DataSourceManager instance = new DataSourceManager();
+public class DataSourceFactory {
+	private static DataSourceFactory instance = new DataSourceFactory();
 	
 	private DataSource twse;
 	
-	private DataSourceManager() {
+	private DataSourceFactory() {
 	}
 	
-	public static DataSourceManager getInstance() {
+	public static DataSourceFactory getInstance() {
 		return instance;
 	}
 	

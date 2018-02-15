@@ -1,4 +1,4 @@
 package name.qd.techAnalyst.winPercent;
 
-public interface WinningPercentageCalc {
+public interface WPVerifier {
 }

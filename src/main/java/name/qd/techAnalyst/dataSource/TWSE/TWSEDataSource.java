@@ -46,16 +46,9 @@ public class TWSEDataSource implements DataSource {
 	}
 	
 	@Override
-	public void checkDataAndDownload(String product, Date from, Date to) throws ParseException, IOException {
-		List<String[]> lstYearMonth = TimeUtil.getYearMonthBetween(from, to);
-		List<String> lstDate = TimeUtil.getDateBetween(from, to);
-		checkAndDownloadProdClosing(lstYearMonth, product);
-		checkAndDownloadDailyClosing(lstDate);
-	}
-	
-	@Override
 	public List<ProductClosingInfo> getProductClosingInfo(String product, Date from, Date to) throws Exception {
 		List<String[]> lstYearMonth = TimeUtil.getYearMonthBetween(from, to);
+		checkAndDownloadProdClosing(lstYearMonth, product);
 		ArrayList<ProductClosingInfo> lstProd = new ArrayList<ProductClosingInfo>();
 		for(String[] yearMonth : lstYearMonth) {
 			File file = new File(Constants.getProdClosingFilePath(yearMonth[0], yearMonth[1], product));
@@ -69,6 +62,7 @@ public class TWSEDataSource implements DataSource {
 	@Override
 	public List<DailyClosingInfo> getDailyClosingInfo(Date from, Date to) throws ParseException, FileNotFoundException, IOException {
 		List<String> lstDate = TimeUtil.getDateBetween(from, to);
+		checkAndDownloadDailyClosing(lstDate);
 		ArrayList<DailyClosingInfo> lstInfo = new ArrayList<DailyClosingInfo>();
 		for(String date : lstDate) {
 			File file = new File(Constants.getDailyClosingFilePath(date));
@@ -86,7 +80,7 @@ public class TWSEDataSource implements DataSource {
 		for(String[] yearMonth : lst) {
 			File file = new File(Constants.getProdClosingFilePath(yearMonth[0], yearMonth[1], product));
 			if(!file.exists()) {
-				log.info("Download product closing info. {}{}", yearMonth[0], yearMonth[1]);
+				log.info("Download product closing info. {},{}{}", product, yearMonth[0], yearMonth[1]);
 				poller.downloadProdClosingInfo(yearMonth[0], yearMonth[1], product);
 			}
 		}

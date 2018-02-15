@@ -31,4 +31,8 @@ public class Constants {
 	public enum Action {
 		BUY, SELL, NONE;
 	}
+	
+	public enum WinLose {
+		WIN, LOSE, NONE;
+	}
 }
