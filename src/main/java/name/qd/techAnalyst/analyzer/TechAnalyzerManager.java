@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import name.qd.fileCache.FileCacheManager;
 import name.qd.fileCache.cache.CacheManager;
 import name.qd.fileCache.cache.FileCacheObject;
+import name.qd.techAnalyst.Analyzer;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
@@ -35,14 +36,14 @@ public class TechAnalyzerManager {
 		}
 	}
 	
-	public List<AnalysisResult> getAnalysisResult(DataSource dataManager, String analyzerName, String product, Date from, Date to) {
-		if(techAnalyzerFactory.getAnalyzer(analyzerName) == null) {
-			log.error("Analyzer not exist. {}", analyzerName);
+	public List<AnalysisResult> getAnalysisResult(DataSource dataManager, Analyzer analyzer, String product, Date from, Date to) {
+		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
+		if(techAnalyzer == null) {
+			log.error("Analyzer not exist. {}", analyzer);
 			return null;
 		}
 		
-		log.info("Get analyzer : {}", analyzerName);
-		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzerName);
+		log.info("Get analyzer : {}", analyzer);
 		String cacheName = techAnalyzer.getCacheName(product);
 		
 		if(!isDateInRange(techAnalyzer, product, from, to)) {
