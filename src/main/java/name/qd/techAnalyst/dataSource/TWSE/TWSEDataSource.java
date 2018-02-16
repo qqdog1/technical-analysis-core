@@ -82,6 +82,11 @@ public class TWSEDataSource implements DataSource {
 			if(!file.exists()) {
 				log.info("Download product closing info. {},{}{}", product, yearMonth[0], yearMonth[1]);
 				poller.downloadProdClosingInfo(yearMonth[0], yearMonth[1], product);
+				try {
+					Thread.sleep(30000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		String[] lastYearMonth = lst.get(lst.size() - 1);
@@ -94,6 +99,11 @@ public class TWSEDataSource implements DataSource {
 			if(!file.exists()) {
 				log.info("Download daily closing info. {}", lstDate.get(i));
 				poller.downloadDailyClosingInfo(lstDate.get(i));
+				try {
+					Thread.sleep(30000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

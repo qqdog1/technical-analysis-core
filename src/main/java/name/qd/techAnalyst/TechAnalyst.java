@@ -14,6 +14,7 @@ import name.qd.techAnalyst.dataSource.TWSE.TWSEDataSource;
 import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.VerifyResult;
+import name.qd.techAnalyst.vo.VerifyResult.VerifyDetail;
 import name.qd.techAnalyst.winPercent.impl.ABIVerify;
 
 public class TechAnalyst {
@@ -29,9 +30,9 @@ public class TechAnalyst {
 		
 		List<AnalysisResult> lst = null;
 		try {
-			Date from = TimeUtil.getDateTimeFormat().parse("20180201-00:00:00:000");
+			Date from = TimeUtil.getDateTimeFormat().parse("20170201-00:00:00:000");
 			Date to = TimeUtil.getDateTimeFormat().parse("20180212-00:00:00:000");
-			String product = "2453";
+			String product = "0050";
 			String analyzerName = ABI.class.getSimpleName();
 			
 			lst = analyzerManager.getAnalysisResult(twseDataManager, analyzerName, product, from, to);
@@ -40,7 +41,10 @@ public class TechAnalyst {
 			}
 			
 			ABIVerify v = new ABIVerify();
-			VerifyResult vf = v.verify(twseDataManager, lst, "0050", from, to, 1, 600, 1);
+			VerifyResult vf = v.verify(twseDataManager, lst, product, from, to, 10, 200, 10);
+			for(VerifyDetail detail : vf.getVerifyDetails()) {
+				System.out.println(detail.getDate() + ":" + detail.getWinLose().name());
+			}
 			System.out.println(vf.getWinPercent());
 			
 		} catch (ParseException e) {

@@ -75,7 +75,7 @@ public class VerifyResult {
 		none++;
 	}
 	
-	class VerifyDetail {
+	public class VerifyDetail {
 		private Date date;
 		private WinLose winLose;
 		public Date getDate() {

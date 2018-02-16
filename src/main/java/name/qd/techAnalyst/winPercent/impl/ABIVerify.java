@@ -47,17 +47,21 @@ public class ABIVerify implements WPVerifier {
 		for(AnalysisResult analysisResult : lstMA) {
 			if(analysisResult.getValue() >= threshold) {
 				Date date = analysisResult.getDate();
+				log.info("value > threshold, {} {}", analysisResult.getValue(), date);
 				double price = map.get(date).getClosePrice();
 				ProductClosingInfo productInfo = getNextNDay(map, date, verifyDay, to);
 				if(productInfo == null) {
-					break;
+					continue;
 				} else {
 					double afterPrice = productInfo.getClosePrice();
 					if(afterPrice > price) {
+						log.info("WIN, {} {} > {}", productInfo.getDate(), afterPrice, price);
 						verifyResult.addVerifyDetail(date, WinLose.WIN);
 					} else if(afterPrice < price) {
+						log.info("LOSE, {} {} < {}", productInfo.getDate(), afterPrice, price);
 						verifyResult.addVerifyDetail(date, WinLose.LOSE);
 					} else {
+						log.info("NONE, {} {} = {}", productInfo.getDate(), afterPrice, price);
 						verifyResult.addVerifyDetail(date, WinLose.NONE);
 					}
 				}
