@@ -10,7 +10,6 @@ import java.nio.channels.ReadableByteChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import name.qd.techAnalyst.Constants;
 import name.qd.techAnalyst.util.StringCombineUtil;
 import name.qd.techAnalyst.util.TimeUtil;
 
@@ -35,7 +34,7 @@ public class TWSEDataPoller2016 extends TWSEDataPoller {
 		connection.getOutputStream().write(getProdClosingPOSTBody(year, month, prodId).getBytes());
 		ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
 		@SuppressWarnings("resource")
-		FileOutputStream fos = new FileOutputStream(Constants.getProdClosingFilePath(year, month, prodId));
+		FileOutputStream fos = new FileOutputStream(TWSEConstants.getProdClosingFilePath(year, month, prodId));
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 		logger.info("download product closing info success.");
 	}
@@ -49,7 +48,7 @@ public class TWSEDataPoller2016 extends TWSEDataPoller {
 		connection.getOutputStream().write(getDailyClosingPOSTBody(POSTDate).getBytes());
 		ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
 		@SuppressWarnings("resource")
-		FileOutputStream fos = new FileOutputStream(Constants.getDailyClosingFilePath(date));
+		FileOutputStream fos = new FileOutputStream(TWSEConstants.getDailyClosingFilePath(date));
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 		logger.info("download daily closing info success.");
 	}

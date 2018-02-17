@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
-import name.qd.techAnalyst.Constants;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,7 +20,7 @@ public class TWSEDataPoller2018 extends TWSEDataPoller {
 
 	@Override
 	protected void tryDownloadProdClosingInfo(String year, String month, String prodId) throws IOException {
-		String filePathName = Constants.getProdClosingFilePath(year, month, prodId);
+		String filePathName = TWSEConstants.getProdClosingFilePath(year, month, prodId);
 		Path path = new File(filePathName).toPath();
 		if(Files.exists(path)) return;
 		
@@ -40,7 +39,7 @@ public class TWSEDataPoller2018 extends TWSEDataPoller {
 
 	@Override
 	protected void tryDownloadDailyClosingInfo(String date) throws IOException {
-		String filePathName = Constants.getDailyClosingFilePath(date);
+		String filePathName = TWSEConstants.getDailyClosingFilePath(date);
 		Path path = new File(filePathName).toPath();
 		if(Files.exists(path)) return;
 		

@@ -32,7 +32,7 @@ public class TechAnalyst {
 		List<AnalysisResult> lst = null;
 		try {
 			Date from = TimeUtil.getDateTimeFormat().parse("20170201-00:00:00:000");
-			Date to = TimeUtil.getDateTimeFormat().parse("20180212-00:00:00:000");
+			Date to = TimeUtil.getDateTimeFormat().parse("20170203-00:00:00:000");
 			String product = "0050";
 			Analyzer analyzer = Analyzer.ABI;
 			

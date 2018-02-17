@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.qd.techAnalyst.Constants;
 import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
@@ -24,7 +23,7 @@ public class TWSEDataParser {
 	public List<ProductClosingInfo> readProdClosingInfo(String year, String month, String prodId) throws FileNotFoundException, IOException, ParseException {
 		List<ProductClosingInfo> lst = new ArrayList<ProductClosingInfo>();
 		String prefix = toTWSEDateFormat(year, month);
-		try (BufferedReader br = new BufferedReader(new FileReader(Constants.getProdClosingFilePath(year, month, prodId)))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(TWSEConstants.getProdClosingFilePath(year, month, prodId)))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				ProductClosingInfo prod = parse2ProdClosingInfo(line, prefix);
 				if(prod != null) {
@@ -39,15 +38,15 @@ public class TWSEDataParser {
 		DailyClosingInfo dailyClosingInfo = null;
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Constants.getDailyClosingFilePath(date)), "Big5"))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), "Big5"))) {
 			for(String line; (line = br.readLine()) != null; ) {
-				if(line.contains(Constants.ADVANCE)) {
+				if(line.contains(TWSEConstants.ADVANCE)) {
 					dailyClosingInfo = new DailyClosingInfo();
 					List<String> lst = parseTWSEcsv(line);
 					String sAdvance = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setAdvance(Integer.parseInt(sAdvance));
 					dailyClosingInfo.setDate(sdf.parse(date));
-				} else if(line.contains(Constants.DECLINE)) {
+				} else if(line.contains(TWSEConstants.DECLINE)) {
 					List<String> lst = parseTWSEcsv(line);
 					String decline = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setDecline(Integer.parseInt(decline));

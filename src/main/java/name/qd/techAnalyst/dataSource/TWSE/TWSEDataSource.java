@@ -13,7 +13,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import name.qd.techAnalyst.Constants;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
@@ -21,28 +20,22 @@ import name.qd.techAnalyst.vo.ProductClosingInfo;
 
 public class TWSEDataSource implements DataSource {
 	private Logger log = LogManager.getLogger(TWSEDataSource.class);
-	private Path folderPath;
 	private TWSEDataPoller poller;
 	private TWSEDataParser parser;
 	
 	public TWSEDataSource() {
-		folderPath = new File(Constants.FILE_DIR).toPath();
 		poller = new TWSEDataPoller2018(new TWSEDataPoller2016(null));
 		parser = new TWSEDataParser();
 		
 		initFolder();
 		
-		log.info("TWSE data source path:[{}]", Constants.FILE_DIR);
+		log.info("TWSE data source path:[{}]", TWSEConstants.FILE_DIR);
 	}
 	
 	private void initFolder() {
-		if(!Files.exists(folderPath)) {
-			try {
-				Files.createDirectory(folderPath);
-			} catch (IOException e) {
-				log.error("Create {} folder failed.", Constants.FILE_DIR, e);
-			}
-		}
+		checkFolderExist(TWSEConstants.FILE_DIR);
+		checkFolderExist(TWSEConstants.FILE_DIR + TWSEConstants.DAILY_CLOSING_INFO_DIR);
+		checkFolderExist(TWSEConstants.FILE_DIR + TWSEConstants.PRODUCT_CLOSING_INFO_DIR);
 	}
 	
 	@Override
@@ -51,7 +44,7 @@ public class TWSEDataSource implements DataSource {
 		checkAndDownloadProdClosing(lstYearMonth, product);
 		ArrayList<ProductClosingInfo> lstProd = new ArrayList<ProductClosingInfo>();
 		for(String[] yearMonth : lstYearMonth) {
-			File file = new File(Constants.getProdClosingFilePath(yearMonth[0], yearMonth[1], product));
+			File file = new File(TWSEConstants.getProdClosingFilePath(yearMonth[0], yearMonth[1], product));
 			if(file.exists()) {
 				lstProd.addAll(parser.readProdClosingInfo(yearMonth[0], yearMonth[1], product));
 			}
@@ -65,7 +58,7 @@ public class TWSEDataSource implements DataSource {
 		checkAndDownloadDailyClosing(lstDate);
 		ArrayList<DailyClosingInfo> lstInfo = new ArrayList<DailyClosingInfo>();
 		for(String date : lstDate) {
-			File file = new File(Constants.getDailyClosingFilePath(date));
+			File file = new File(TWSEConstants.getDailyClosingFilePath(date));
 			if(file.exists()) {
 				DailyClosingInfo dailyClosingInfo = parser.readDailyClosingInfo(date);
 				if(dailyClosingInfo != null) {
@@ -78,8 +71,9 @@ public class TWSEDataSource implements DataSource {
 	
 	private void checkAndDownloadProdClosing(List<String[]> lst, String product) throws IOException {
 		for(String[] yearMonth : lst) {
-			File file = new File(Constants.getProdClosingFilePath(yearMonth[0], yearMonth[1], product));
+			File file = new File(TWSEConstants.getProdClosingFilePath(yearMonth[0], yearMonth[1], product));
 			if(!file.exists()) {
+				checkFolderExist(TWSEConstants.getProdClosingFolder(product));
 				log.info("Download product closing info. {},{}{}", product, yearMonth[0], yearMonth[1]);
 				poller.downloadProdClosingInfo(yearMonth[0], yearMonth[1], product);
 				try {
@@ -95,8 +89,9 @@ public class TWSEDataSource implements DataSource {
 	
 	private void checkAndDownloadDailyClosing(List<String> lstDate) throws IOException {
 		for(int i = 0 ; i < lstDate.size() ; i++) {
-			File file = new File(Constants.getDailyClosingFilePath(lstDate.get(i)));
+			File file = new File(TWSEConstants.getDailyClosingFilePath(lstDate.get(i)));
 			if(!file.exists()) {
+				checkFolderExist(TWSEConstants.getDailyClosingFolder(lstDate.get(i).substring(0, 4)));
 				log.info("Download daily closing info. {}", lstDate.get(i));
 				poller.downloadDailyClosingInfo(lstDate.get(i));
 				try {
@@ -104,6 +99,18 @@ public class TWSEDataSource implements DataSource {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+			}
+		}
+	}
+	
+	private void checkFolderExist(String folderPath) {
+		Path path = new File(folderPath).toPath();
+		if(!Files.exists(path)) {
+			try {
+				Files.createDirectory(path);
+				log.info("Create folder. {}", folderPath);
+			} catch (IOException e) {
+				log.error("Create folder failed. {}", folderPath);
 			}
 		}
 	}
