@@ -48,22 +48,26 @@ public class ABIVerify implements WPVerifier {
 			if(analysisResult.getValue() >= threshold) {
 				Date date = analysisResult.getDate();
 				log.info("value > threshold, {} {}", analysisResult.getValue(), date);
+				ProductClosingInfo todayProductInfo = map.get(date);
+				if(todayProductInfo == null) {
+					log.error("can't find product closing info, {}", date);
+					continue;
+				}
 				double price = map.get(date).getClosePrice();
 				ProductClosingInfo productInfo = getNextNDay(map, date, verifyDay, to);
 				if(productInfo == null) {
 					continue;
+				} 
+				double afterPrice = productInfo.getClosePrice();
+				if(afterPrice > price) {
+					log.info("WIN, {} {} > {}", productInfo.getDate(), afterPrice, price);
+					verifyResult.addVerifyDetail(date, WinLose.WIN);
+				} else if(afterPrice < price) {
+					log.info("LOSE, {} {} < {}", productInfo.getDate(), afterPrice, price);
+					verifyResult.addVerifyDetail(date, WinLose.LOSE);
 				} else {
-					double afterPrice = productInfo.getClosePrice();
-					if(afterPrice > price) {
-						log.info("WIN, {} {} > {}", productInfo.getDate(), afterPrice, price);
-						verifyResult.addVerifyDetail(date, WinLose.WIN);
-					} else if(afterPrice < price) {
-						log.info("LOSE, {} {} < {}", productInfo.getDate(), afterPrice, price);
-						verifyResult.addVerifyDetail(date, WinLose.LOSE);
-					} else {
-						log.info("NONE, {} {} = {}", productInfo.getDate(), afterPrice, price);
-						verifyResult.addVerifyDetail(date, WinLose.NONE);
-					}
+					log.info("NONE, {} {} = {}", productInfo.getDate(), afterPrice, price);
+					verifyResult.addVerifyDetail(date, WinLose.NONE);
 				}
 			}
 		}

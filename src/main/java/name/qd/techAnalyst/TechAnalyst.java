@@ -31,8 +31,8 @@ public class TechAnalyst {
 		
 		List<AnalysisResult> lst = null;
 		try {
-			Date from = TimeUtil.getDateTimeFormat().parse("20170201-00:00:00:000");
-			Date to = TimeUtil.getDateTimeFormat().parse("20170203-00:00:00:000");
+			Date from = TimeUtil.getDateTimeFormat().parse("20080101-00:00:00:000");
+			Date to = TimeUtil.getDateTimeFormat().parse("20180217-00:00:00:000");
 			String product = "0050";
 			Analyzer analyzer = Analyzer.ABI;
 			
@@ -42,7 +42,7 @@ public class TechAnalyst {
 			}
 			
 			WPVerifier verifier = WPVerifierFactory.getInstance().getVerifier(analyzer);
-			VerifyResult vf = verifier.verify(twseDataManager, lst, product, from, to, 10, 200, 10);
+			VerifyResult vf = verifier.verify(twseDataManager, lst, product, from, to, 10, 300, 10);
 			for(VerifyDetail detail : vf.getVerifyDetails()) {
 				System.out.println(detail.getDate() + ":" + detail.getWinLose().name());
 			}
