@@ -5,6 +5,9 @@ import java.util.Map;
 
 import name.qd.techAnalyst.Analyzer;
 import name.qd.techAnalyst.analyzer.impl.ABI;
+import name.qd.techAnalyst.analyzer.impl.ABIAdvance;
+import name.qd.techAnalyst.analyzer.impl.ABIDecline;
+import name.qd.techAnalyst.analyzer.impl.ADL;
 
 public class TechAnalyzerFactory {
 	private static TechAnalyzerFactory instance = new TechAnalyzerFactory();
@@ -28,6 +31,16 @@ public class TechAnalyzerFactory {
 		switch(analyzer) {
 		case ABI:
 			map.put(analyzer, new ABI());
+			break;
+		case ABIAdvance:
+			map.put(analyzer, new ABIAdvance());
+			break;
+		case ABIDecline:
+			map.put(analyzer, new ABIDecline());
+			break;
+		case ADL:
+			map.put(analyzer, new ADL());
+			break;
 		}
 	}
 }

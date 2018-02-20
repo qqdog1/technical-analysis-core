@@ -1,6 +1,7 @@
 package name.qd.techAnalyst;
 
 public enum Analyzer {
-	ABI,
+	ABI, ABIAdvance, ABIDecline,
+	ADL,
 	;
 }

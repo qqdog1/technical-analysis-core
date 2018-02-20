@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import name.qd.techAnalyst.Analyzer;
+import name.qd.techAnalyst.winPercent.impl.ABIAdvanceVerify;
+import name.qd.techAnalyst.winPercent.impl.ABIDeclineVerify;
 import name.qd.techAnalyst.winPercent.impl.ABIVerify;
+import name.qd.techAnalyst.winPercent.impl.ADLVerify;
 
 public class WPVerifierFactory {
 	private static WPVerifierFactory instance = new WPVerifierFactory();
@@ -28,6 +31,16 @@ public class WPVerifierFactory {
 		switch(analyzer) {
 		case ABI:
 			map.put(analyzer, new ABIVerify());
+			break;
+		case ABIAdvance:
+			map.put(analyzer, new ABIAdvanceVerify());
+			break;
+		case ABIDecline:
+			map.put(analyzer, new ABIDeclineVerify());
+			break;
+		case ADL:
+			map.put(analyzer, new ADLVerify());
+			break;
 		}
 	}
 }

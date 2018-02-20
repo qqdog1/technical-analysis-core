@@ -17,6 +17,7 @@ import name.qd.techAnalyst.vo.VerifyResult;
 import name.qd.techAnalyst.vo.VerifyResult.VerifyDetail;
 import name.qd.techAnalyst.winPercent.WPVerifier;
 import name.qd.techAnalyst.winPercent.WPVerifierFactory;
+import name.qd.techAnalyst.winPercent.impl.ABIVerify;
 
 public class TechAnalyst {
 	private Logger log;
@@ -30,27 +31,52 @@ public class TechAnalyst {
 		twseDataManager = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 		
 		List<AnalysisResult> lst = null;
+		VerifyResult vf = null;
 		try {
-			Date from = TimeUtil.getDateTimeFormat().parse("20080101-00:00:00:000");
-			Date to = TimeUtil.getDateTimeFormat().parse("20180217-00:00:00:000");
+			Date from = TimeUtil.getDateTimeFormat().parse("20170202-00:00:00:000");
+			Date to = TimeUtil.getDateTimeFormat().parse("20180212-00:00:00:000");
 			String product = "0050";
+			
 			Analyzer analyzer = Analyzer.ABI;
+//			outputResult(analyzer, product, from, to, 1, 600, 10);
 			
-			lst = analyzerManager.getAnalysisResult(twseDataManager, analyzer, product, from, to);
-			for(AnalysisResult result : lst) {
-				System.out.println(result.getKeyString() + ":" + result.getValue());
-			}
+			//
+			analyzer = Analyzer.ABIAdvance;
+//			outputResult(analyzer, product, from, to, 1, 600, 10);
 			
-			WPVerifier verifier = WPVerifierFactory.getInstance().getVerifier(analyzer);
-			VerifyResult vf = verifier.verify(twseDataManager, lst, product, from, to, 10, 300, 10);
-			for(VerifyDetail detail : vf.getVerifyDetails()) {
-				System.out.println(detail.getDate() + ":" + detail.getWinLose().name());
-			}
-			System.out.println(vf.getWinPercent());
+			//
+			analyzer = Analyzer.ABIDecline;
+//			outputResult(analyzer, product, from, to, 1, 600, 10);
+			//
+			analyzer = Analyzer.ADL;
+			outputResult(analyzer, product, from, to);
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void outputResult(Analyzer analyzer, String product, Date from, Date to, Object ... objs) {
+		List<AnalysisResult> lst = getAnalysisResult(analyzer, product, from, to);
+		VerifyResult vf = getVerifyResult(analyzer, lst, product, from, to, objs);
+		System.out.println(vf.getWinPercent());
+	}
+	
+	private List<AnalysisResult> getAnalysisResult(Analyzer analyzer, String product, Date from, Date to) {
+		List<AnalysisResult> lst = analyzerManager.getAnalysisResult(twseDataManager, analyzer, product, from, to);
+		for(AnalysisResult result : lst) {
+			System.out.println(result.getKeyString() + ":" + result.getValue());
+		}
+		return lst;
+	}
+	
+	private VerifyResult getVerifyResult(Analyzer analyzer, List<AnalysisResult> lst, String product, Date from, Date to, Object ... objs) {
+		WPVerifier verifier = WPVerifierFactory.getInstance().getVerifier(analyzer);
+		VerifyResult vf = verifier.verify(twseDataManager, lst, product, from, to, objs);
+		for(VerifyDetail detail : vf.getVerifyDetails()) {
+			System.out.println(detail.getDate() + ":" + detail.getWinLose().name());
+		}
+		return vf;
 	}
 	
 	private void initLogger() {
