@@ -2,7 +2,10 @@
 /build/
 /bin/
 target/
-/log/
+/logs/
+/file/
+/cache/
+
  
 # OS Files #
 .DS_Store

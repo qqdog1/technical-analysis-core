@@ -77,7 +77,7 @@ public class TWSEDataSource implements DataSource {
 				log.info("Download product closing info. {},{}{}", product, yearMonth[0], yearMonth[1]);
 				poller.downloadProdClosingInfo(yearMonth[0], yearMonth[1], product);
 				try {
-					Thread.sleep(8000);
+					Thread.sleep(5000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -95,7 +95,7 @@ public class TWSEDataSource implements DataSource {
 				log.info("Download daily closing info. {}", lstDate.get(i));
 				poller.downloadDailyClosingInfo(lstDate.get(i));
 				try {
-					Thread.sleep(8000);
+					Thread.sleep(5000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
