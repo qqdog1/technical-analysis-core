@@ -12,6 +12,7 @@ public class TWSEConstants {
 	
 	public static final String ADVANCE = "上漲(漲停)";
 	public static final String DECLINE = "下跌(跌停)";
+	public static final String UNCHANGED = "持平";
 	
 	public static String getProdClosingFolder(String product) {
 		return StringCombineUtil.combine(FILE_DIR, PRODUCT_CLOSING_INFO_DIR, product, "/");

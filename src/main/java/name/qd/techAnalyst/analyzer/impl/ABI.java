@@ -29,8 +29,12 @@ public class ABI implements TechAnalyzer {
 			for(DailyClosingInfo info : lstDaily) {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(info.getDate());
-				int value = Math.abs(info.getAdvance()-info.getDecline());
-				result.setValue(value);
+				int abiValue = Math.abs(info.getAdvance()-info.getDecline());
+				int total = info.getAdvance() + info.getDecline() + info.getUnchanged();
+				List<Double> lst = new ArrayList<>();
+				lst.add((double) abiValue);
+				lst.add((double) total);
+				result.setValue(lst);
 				lstResult.add(result);
 			}
 		} catch (Exception e) {

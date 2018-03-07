@@ -2,8 +2,10 @@ package name.qd.techAnalyst.vo;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import name.qd.fileCache.cache.FileCacheObject;
 import name.qd.fileCache.common.TransInputStream;
@@ -14,7 +16,7 @@ import name.qd.techAnalyst.util.TimeUtil;
 public class AnalysisResult implements FileCacheObject {
 	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
 	private Date date;
-	private double value;
+	private List<Double> values;
 	private Action action = Action.NONE;
 	
 	public Date getDate() {
@@ -23,11 +25,11 @@ public class AnalysisResult implements FileCacheObject {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public double getValue() {
-		return value;
+	public List<Double> getValue() {
+		return values;
 	}
-	public void setValue(double value) {
-		this.value = value;
+	public void setValue(List<Double> values) {
+		this.values = values;
 	}
 	public Action getAction() {
 		return action;
@@ -39,7 +41,10 @@ public class AnalysisResult implements FileCacheObject {
 	public byte[] parseToFileFormat() throws IOException {
 		TransOutputStream tOut = new TransOutputStream();
 		tOut.writeLong(date.getTime());
-		tOut.writeDouble(value);
+		tOut.writeInt(values.size());
+		for(double d : values) {
+			tOut.writeDouble(d);
+		}
 		tOut.writeString(action.name());
 		return tOut.toByteArray();
 	}
@@ -47,7 +52,11 @@ public class AnalysisResult implements FileCacheObject {
 	public void toValueObject(byte[] bData) throws IOException {
 		TransInputStream tIn = new TransInputStream(bData);
 		long timestamp = tIn.getLong();
-		value = tIn.getDouble();
+		int size = tIn.getInt();
+		values = new ArrayList<>();
+		for(int i = 0 ; i < size; i++) {
+			values.add(tIn.getDouble());
+		}
 		String act = tIn.getString();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(timestamp);

@@ -30,7 +30,11 @@ public class ABIDecline implements TechAnalyzer {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(info.getDate());
 				int value = info.getDecline()-info.getAdvance();
-				result.setValue(value);
+				int total = info.getDecline()+info.getAdvance()+info.getUnchanged();
+				List<Double> lst = new ArrayList<>();
+				lst.add((double)value);
+				lst.add((double)total);
+				result.setValue(lst);
 				lstResult.add(result);
 			}
 		} catch (Exception e) {

@@ -34,6 +34,7 @@ public class TWSEDataParserTest {
 			if(d != null) {
 				System.out.println(d.getAdvance());
 				System.out.println(d.getDecline());
+				System.out.println(d.getUnchanged());
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

@@ -126,9 +126,9 @@ public class TechClient {
 	
 	private void runAnalyzer(Analyzer analyzer, String product, Date from, Date to) {
 		List<AnalysisResult> lst = getAnalysisResult(analyzer, product, from, to);
-		techChartUI.setData(analyzer.name(), lst, YAxisPosition.Left);
-		frame.revalidate();
-		chartPanel.repaint();
+//		techChartUI.setData(analyzer.name(), lst, YAxisPosition.Left);
+//		frame.revalidate();
+//		chartPanel.repaint();
 	}
 	
 	private List<AnalysisResult> getAnalysisResult(Analyzer analyzer, String product, Date from, Date to) {

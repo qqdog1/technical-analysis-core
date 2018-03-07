@@ -31,7 +31,7 @@ public class TechChartUI {
 		List<Double> lstValue = new ArrayList<>();
 		for(AnalysisResult result : lst) {
 			lstDate.add(result.getDate());
-			lstValue.add(result.getValue());
+			lstValue.add(result.getValue().get(0));
 		}
 		
 		setData(name, lstDate, lstValue, group, yAxisPosition);

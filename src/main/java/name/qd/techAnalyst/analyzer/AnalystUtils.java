@@ -16,7 +16,9 @@ public class AnalystUtils {
 			for(int j = 0 ; j < days ; j++) {
 				sum += lst.get(i - j).getAvgPrice();
 			}
-			result.setValue(sum / days);
+			List<Double> lstValues = new ArrayList<>();
+			lstValues.add(sum / days);
+			result.setValue(lstValues);
 			lstResult.add(result);
 		}
 		return lstResult;
@@ -27,11 +29,16 @@ public class AnalystUtils {
 		for(int i = lst.size() - 1 ; i >= days - 1 ;  i--) {
 			AnalysisResult result = new AnalysisResult();
 			result.setDate(lst.get(i).getDate());
-			double sum = 0;
-			for(int j = 0 ; j < days ; j++) {
-				sum += lst.get(i - j).getValue();
+			List<Double> lstValues = lst.get(i).getValue();
+			List<Double> lstValueResult = new ArrayList<>();
+			for(int index = 0 ; index < lstValues.size() ; index++ ) {
+				double sum = 0;
+				for(int j = 0 ; j < days ; j++) {
+					sum += lst.get(i - j).getValue().get(index);
+				}
+				lstValueResult.add(sum / days);
 			}
-			result.setValue(sum / days);
+			result.setValue(lstValueResult);
 			lstResult.add(result);
 		}
 		return lstResult;

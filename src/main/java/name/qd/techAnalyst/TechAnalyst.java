@@ -41,12 +41,12 @@ public class TechAnalyst {
 		List<AnalysisResult> lst = null;
 		VerifyResult vf = null;
 		try {
-			Date from = TimeUtil.getDateTimeFormat().parse("20180102-00:00:00:000");
-			Date to = TimeUtil.getDateTimeFormat().parse("20180226-00:00:00:000");
+			Date from = TimeUtil.getDateTimeFormat().parse("20110101-00:00:00:000");
+			Date to = TimeUtil.getDateTimeFormat().parse("20180307-00:00:00:000");
 			String product = "0050";
 			
 			Analyzer analyzer = Analyzer.ABI;
-			outputResult(analyzer, product, from, to, 10, 300, 10);
+			outputResult(analyzer, product, from, to, 10, 40, 10);
 			
 			//
 			analyzer = Analyzer.ABIAdvance;
@@ -72,7 +72,7 @@ public class TechAnalyst {
 		List<AnalysisResult> lstMA = AnalystUtils.NDaysAvgByAnalysisResult(lst, 10);
 		
 		try {
-			chartUI.setData(analyzer.name(), lstMA, YAxisPosition.Left);
+//			chartUI.setData(analyzer.name(), lstMA, YAxisPosition.Left);
 			
 			List<ProductClosingInfo> lstProdInfo = twseDataManager.getProductClosingInfo(product, from, to);
 			List<Date> lstDate = new ArrayList<>();
@@ -82,7 +82,7 @@ public class TechAnalyst {
 				lstDate.add(prodInfo.getDate());
 				lstPrice.add(prodInfo.getClosePrice());
 			}
-			chartUI.setData(product, lstDate, lstPrice, YAxisPosition.Left);
+//			chartUI.setData(product, lstDate, lstPrice, YAxisPosition.Left);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

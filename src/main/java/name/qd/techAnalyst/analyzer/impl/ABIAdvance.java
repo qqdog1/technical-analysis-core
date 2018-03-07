@@ -30,7 +30,11 @@ public class ABIAdvance implements TechAnalyzer {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(info.getDate());
 				int value = info.getAdvance()-info.getDecline();
-				result.setValue(value);
+				int total = info.getAdvance()+info.getDecline()+info.getUnchanged();
+				List<Double> lst = new ArrayList<>();
+				lst.add((double)value);
+				lst.add((double)total);
+				result.setValue(lst);
 				lstResult.add(result);
 			}
 		} catch (Exception e) {

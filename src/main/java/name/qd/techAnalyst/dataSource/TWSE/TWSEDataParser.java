@@ -50,6 +50,10 @@ public class TWSEDataParser {
 					List<String> lst = parseTWSEcsv(line);
 					String decline = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setDecline(Integer.parseInt(decline));
+				} else if(line.contains(TWSEConstants.UNCHANGED)) {
+					List<String> lst = parseTWSEcsv(line);
+					String unchanged = lst.get(2).split("\\(")[0];
+					dailyClosingInfo.setUnchanged(Integer.parseInt(unchanged));
 				}
 			}
 		}

@@ -22,7 +22,7 @@ public class ABIDeclineVerify implements WPVerifier {
 	// 可看大盤 台指 台50 etc
 	public VerifyResult verify(DataSource dataSource, List<AnalysisResult> lst, String product, Date from, Date to, Object ... customObjs) {
 		// 1.要用幾日均線驗證?
-		// 2.均線值超過多少 算發生?
+		// 2.均線值超過多少% 算發生?
 		// 3.均線超過後 要用第幾日後交易日價格 與發生日比較?
 		int ma = (int) customObjs[0];
 		int threshold = (int) customObjs[1];
@@ -45,9 +45,10 @@ public class ABIDeclineVerify implements WPVerifier {
 		
 		List<AnalysisResult> lstMA = AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);
 		for(AnalysisResult analysisResult : lstMA) {
-			if(analysisResult.getValue() >= threshold) {
+			int thresholdValue = (int) ((threshold * analysisResult.getValue().get(1)) / 100);
+			if (analysisResult.getValue().get(0) >= thresholdValue) {
 				Date date = analysisResult.getDate();
-				log.info("value > threshold, {} {}", analysisResult.getValue(), date);
+				log.info("value > threshold, {}>{}, {}", analysisResult.getValue().get(0), thresholdValue, date);
 				ProductClosingInfo todayProductInfo = map.get(date);
 				if(todayProductInfo == null) {
 					log.error("can't find product closing info, {}", date);
