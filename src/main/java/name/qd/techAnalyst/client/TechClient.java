@@ -52,7 +52,7 @@ public class TechClient {
 	private JButton btnRemove = new JButton("Remove");
 	private JPanel chartPanel = techChartUI.getChartPanel();
 	
-	
+	private int group = 0;
 
 	public TechClient() {
 		initFrame();
@@ -119,16 +119,28 @@ public class TechClient {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String analyzer = comboTech.getSelectedItem().toString();
-				
+				techChartUI.removeData(analyzer);
+				frame.revalidate();
+				chartPanel.repaint();
 			}
 		});
 	}
 	
 	private void runAnalyzer(Analyzer analyzer, String product, Date from, Date to) {
 		List<AnalysisResult> lst = getAnalysisResult(analyzer, product, from, to);
-//		techChartUI.setData(analyzer.name(), lst, YAxisPosition.Left);
-//		frame.revalidate();
-//		chartPanel.repaint();
+		
+		YAxisPosition axis = YAxisPosition.Left;
+		if(group % 2 == 0) {
+			axis = YAxisPosition.Left;
+			group = 0;
+		} else {
+			group = 1;
+			axis = YAxisPosition.Right;
+		}
+		
+		techChartUI.setData(analyzer.name(), lst, group++, axis);
+		frame.revalidate();
+		chartPanel.repaint();
 	}
 	
 	private List<AnalysisResult> getAnalysisResult(Analyzer analyzer, String product, Date from, Date to) {

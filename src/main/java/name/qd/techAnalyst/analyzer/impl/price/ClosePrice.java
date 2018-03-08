@@ -1,4 +1,4 @@
-package name.qd.techAnalyst.analyzer.impl;
+package name.qd.techAnalyst.analyzer.impl.price;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,38 +11,35 @@ import name.qd.techAnalyst.Constants.AnalyzerType;
 import name.qd.techAnalyst.analyzer.TechAnalyzer;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.vo.AnalysisResult;
-import name.qd.techAnalyst.vo.DailyClosingInfo;
+import name.qd.techAnalyst.vo.ProductClosingInfo;
 
-public class ABI implements TechAnalyzer {
-	private static Logger log = LoggerFactory.getLogger(ABI.class);
-
+public class ClosePrice implements TechAnalyzer {
+	private static Logger log = LoggerFactory.getLogger(ClosePrice.class);
+	
 	@Override
 	public String getCacheName(String product) {
-		return ABI.class.getSimpleName();
+		return ClosePrice.class.getSimpleName();
 	}
 
 	@Override
 	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		try {
-			List<DailyClosingInfo> lstDaily = dataManager.getDailyClosingInfo(from, to);
-			for(DailyClosingInfo info : lstDaily) {
+			List<ProductClosingInfo> lstProductInfo = dataManager.getProductClosingInfo(product, from, to);
+			for(ProductClosingInfo prodInfo : lstProductInfo) {
 				AnalysisResult result = new AnalysisResult();
-				result.setDate(info.getDate());
-				int abiValue = Math.abs(info.getAdvance()-info.getDecline());
-				int total = info.getAdvance() + info.getDecline() + info.getUnchanged();
-				result.setValue(abiValue);
-				result.setValue(total);
+				result.setDate(prodInfo.getDate());
+				result.setValue(prodInfo.getClosePrice());
 				lstResult.add(result);
 			}
 		} catch (Exception e) {
-			log.error("ABI analyze failed.", e);
+			log.error("Get product closing info failed.", e);
 		}
 		return lstResult;
 	}
 
 	@Override
 	public AnalyzerType getAnalyzerType() {
-		return AnalyzerType.MARKET;
+		return AnalyzerType.PRODUCT;
 	}
 }

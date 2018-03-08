@@ -8,6 +8,8 @@ import name.qd.techAnalyst.analyzer.impl.ABI;
 import name.qd.techAnalyst.analyzer.impl.ABIAdvance;
 import name.qd.techAnalyst.analyzer.impl.ABIDecline;
 import name.qd.techAnalyst.analyzer.impl.ADL;
+import name.qd.techAnalyst.analyzer.impl.price.AveragePrice;
+import name.qd.techAnalyst.analyzer.impl.price.ClosePrice;
 
 public class TechAnalyzerFactory {
 	private static TechAnalyzerFactory instance = new TechAnalyzerFactory();
@@ -40,6 +42,11 @@ public class TechAnalyzerFactory {
 			break;
 		case ADL:
 			map.put(analyzer, new ADL());
+		case AVERAGE_PRICE:
+			map.put(analyzer, new AveragePrice());
+			break;
+		case CLOSE_PRICE:
+			map.put(analyzer, new ClosePrice());
 			break;
 		}
 	}

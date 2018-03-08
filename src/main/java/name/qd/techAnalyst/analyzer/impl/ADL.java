@@ -32,9 +32,7 @@ public class ADL implements TechAnalyzer {
 				result.setDate(info.getDate());
 				double d = (info.getClosePrice()-info.getLowerPrice())-(info.getUpperPrice()-info.getClosePrice())/(info.getUpperPrice()-info.getLowerPrice());
 				d = d * info.getFilledShare();
-				List<Double> lstValues = new ArrayList<>();
-				lstValues.add(d);
-				result.setValue(lstValues);
+				result.setValue(d);
 				lst.add(result);
 			}
 		} catch (Exception e) {

@@ -16,7 +16,7 @@ import name.qd.techAnalyst.util.TimeUtil;
 public class AnalysisResult implements FileCacheObject {
 	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
 	private Date date;
-	private List<Double> values;
+	private List<Double> values = new ArrayList<>();
 	private Action action = Action.NONE;
 	
 	public Date getDate() {
@@ -30,6 +30,9 @@ public class AnalysisResult implements FileCacheObject {
 	}
 	public void setValue(List<Double> values) {
 		this.values = values;
+	}
+	public void setValue(double value) {
+		values.add(value);
 	}
 	public Action getAction() {
 		return action;
