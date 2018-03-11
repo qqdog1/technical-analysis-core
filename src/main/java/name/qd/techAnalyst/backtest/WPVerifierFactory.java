@@ -1,17 +1,17 @@
-package name.qd.techAnalyst.winPercent;
+package name.qd.techAnalyst.backtest;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import name.qd.techAnalyst.Analyzer;
-import name.qd.techAnalyst.winPercent.impl.ABIAdvanceVerify;
-import name.qd.techAnalyst.winPercent.impl.ABIDeclineVerify;
-import name.qd.techAnalyst.winPercent.impl.ABIVerify;
-import name.qd.techAnalyst.winPercent.impl.ADLVerify;
+import name.qd.techAnalyst.backtest.impl.ABIAdvanceVerify;
+import name.qd.techAnalyst.backtest.impl.ABIDeclineVerify;
+import name.qd.techAnalyst.backtest.impl.ABIVerify;
+import name.qd.techAnalyst.backtest.impl.ADLVerify;
 
 public class WPVerifierFactory {
 	private static WPVerifierFactory instance = new WPVerifierFactory();
-	private Map<Analyzer, WPVerifier> map = new HashMap<>();
+	private Map<Analyzer, BackTesting> map = new HashMap<>();
 	
 	private WPVerifierFactory() {
 	}
@@ -20,7 +20,7 @@ public class WPVerifierFactory {
 		return instance;
 	}
 	
-	public WPVerifier getVerifier(Analyzer analyzer) {
+	public BackTesting getVerifier(Analyzer analyzer) {
 		if(!map.containsKey(analyzer)) {
 			createVerifier(analyzer);
 		}

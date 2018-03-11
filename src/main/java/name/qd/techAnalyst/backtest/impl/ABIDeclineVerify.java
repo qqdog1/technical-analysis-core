@@ -1,4 +1,4 @@
-package name.qd.techAnalyst.winPercent.impl;
+package name.qd.techAnalyst.backtest.impl;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.techAnalyst.Constants.WinLose;
 import name.qd.techAnalyst.analyzer.AnalystUtils;
+import name.qd.techAnalyst.backtest.BackTesting;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 import name.qd.techAnalyst.vo.VerifyResult;
-import name.qd.techAnalyst.winPercent.WPVerifier;
 
-public class ABIDeclineVerify implements WPVerifier {
+public class ABIDeclineVerify implements BackTesting {
 	private static Logger log = LoggerFactory.getLogger(ABIDeclineVerify.class);
 	// 可看大盤 台指 台50 etc
 	public VerifyResult verify(DataSource dataSource, List<AnalysisResult> lst, String product, Date from, Date to, Object ... customObjs) {

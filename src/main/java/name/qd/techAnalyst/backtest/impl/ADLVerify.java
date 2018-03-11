@@ -1,4 +1,4 @@
-package name.qd.techAnalyst.winPercent.impl;
+package name.qd.techAnalyst.backtest.impl;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -8,14 +8,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import name.qd.techAnalyst.backtest.BackTesting;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 import name.qd.techAnalyst.vo.VerifyResult;
 import name.qd.techAnalyst.vo.VerifyResult.VerifyDetail;
-import name.qd.techAnalyst.winPercent.WPVerifier;
 
-public class ADLVerify implements WPVerifier {
+public class ADLVerify implements BackTesting {
 	private static Logger log = LoggerFactory.getLogger(ADLVerify.class);
 
 	@Override

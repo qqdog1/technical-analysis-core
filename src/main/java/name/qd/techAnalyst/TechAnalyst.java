@@ -12,6 +12,8 @@ import org.knowm.xchart.style.Styler.YAxisPosition;
 import name.qd.techAnalyst.Constants.Exchange;
 import name.qd.techAnalyst.analyzer.AnalystUtils;
 import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
+import name.qd.techAnalyst.backtest.BackTesting;
+import name.qd.techAnalyst.backtest.WPVerifierFactory;
 import name.qd.techAnalyst.client.TechClient;
 import name.qd.techAnalyst.client.TechChartUI;
 import name.qd.techAnalyst.dataSource.DataSource;
@@ -21,8 +23,6 @@ import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 import name.qd.techAnalyst.vo.VerifyResult;
 import name.qd.techAnalyst.vo.VerifyResult.VerifyDetail;
-import name.qd.techAnalyst.winPercent.WPVerifier;
-import name.qd.techAnalyst.winPercent.WPVerifierFactory;
 
 public class TechAnalyst {
 	private Logger log;
@@ -97,7 +97,7 @@ public class TechAnalyst {
 	}
 	
 	private VerifyResult getVerifyResult(Analyzer analyzer, List<AnalysisResult> lst, String product, Date from, Date to, Object ... objs) {
-		WPVerifier verifier = WPVerifierFactory.getInstance().getVerifier(analyzer);
+		BackTesting verifier = WPVerifierFactory.getInstance().getVerifier(analyzer);
 		VerifyResult vf = verifier.verify(twseDataManager, lst, product, from, to, objs);
 		for(VerifyDetail detail : vf.getVerifyDetails()) {
 			System.out.println(detail.getDate() + ":" + detail.getWinLose().name());
