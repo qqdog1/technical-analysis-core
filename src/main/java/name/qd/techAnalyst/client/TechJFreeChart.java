@@ -1,5 +1,6 @@
 package name.qd.techAnalyst.client;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +10,7 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
@@ -19,17 +21,8 @@ import name.qd.techAnalyst.vo.AnalysisResult;
 
 public class TechJFreeChart {
 	private ChartPanel chartPanel;
-//	private JFreeChart chart;
-//	private XYPlot plot;
-//	private TimeSeriesCollection dataset;
 
 	public TechJFreeChart() {
-//		dataset = new TimeSeriesCollection();
-//		plot = new XYPlot();
-//		plot.setDataset(dataset);
-//		chart = new JFreeChart(plot);
-//		chartPanel = new ChartPanel(chart);
-//		chartPanel.setMouseWheelEnabled(true);
 	}
 	
 	public void setData(String name, List<AnalysisResult> lst) {
@@ -51,6 +44,9 @@ public class TechJFreeChart {
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(timeSeries);
 		JFreeChart chart = ChartFactory.createTimeSeriesChart("", "", "", dataset);
+		XYPlot plot = (XYPlot) chart.getPlot();
+		DateAxis axis = (DateAxis) plot.getDomainAxis();
+		axis.setDateFormatOverride(new SimpleDateFormat("yyyy-MM-dd"));
 		chartPanel = new ChartPanel(chart);
 	}
 	
