@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import name.qd.techAnalyst.Constants.AnalyzerType;
+import name.qd.techAnalyst.analyzer.AnalystUtils;
 import name.qd.techAnalyst.analyzer.TechAnalyzer;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.vo.AnalysisResult;
@@ -39,6 +40,19 @@ public class ABI implements TechAnalyzer {
 			log.error("ABI analyze failed.", e);
 		}
 		return lstResult;
+	}
+	
+	@Override
+	public List<AnalysisResult> customResult(List<AnalysisResult> lst, Object... objs) {
+		int ma = (int) objs[0];
+		return AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);
+	}
+	
+	@Override
+	public List<String> customDescreption() {
+		List<String> lst = new ArrayList<>();
+		lst.add("MA:");
+		return lst;
 	}
 
 	@Override

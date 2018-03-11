@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jfree.chart.ui.ApplicationFrame;
 import org.knowm.xchart.style.Styler.YAxisPosition;
 
 import name.qd.techAnalyst.Analyzer;
@@ -35,7 +36,8 @@ public class TechClient {
 	private Logger log;
 	private TechAnalyzerManager analyzerManager;
 	private DataSource twseDataManager;
-	private TechChartUI techChartUI = new TechChartUI("");
+//	private TechChartUI techChartUI = new TechChartUI("");
+	private TechJFreeChart jFreechart = new TechJFreeChart();
 	
 	private JFrame frame = new JFrame("Tech Analyze");
 	private JPanel selectPanel = new JPanel();
@@ -50,7 +52,8 @@ public class TechClient {
 	private JDatePickerImpl dpTo = new JDatePickerImpl(new JDatePanelImpl(new DayModel()), null);
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnRemove = new JButton("Remove");
-	private JPanel chartPanel = techChartUI.getChartPanel();
+//	private JPanel chartPanel = jFreechart.getChartPanel();
+	private JPanel chartPanel;
 	
 	private int group = 0;
 
@@ -81,7 +84,7 @@ public class TechClient {
 		selectPanel.add(btnRemove);
 		
 		frame.add(selectPanel, BorderLayout.NORTH);
-		frame.add(chartPanel, BorderLayout.CENTER);
+//		frame.add(chartPanel, BorderLayout.CENTER);
 		
 		setComboData();
 		setButtonListener();
@@ -119,7 +122,7 @@ public class TechClient {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String analyzer = comboTech.getSelectedItem().toString();
-				techChartUI.removeData(analyzer);
+				jFreechart.removeData(analyzer);
 				frame.revalidate();
 				chartPanel.repaint();
 			}
@@ -138,9 +141,19 @@ public class TechClient {
 			axis = YAxisPosition.Right;
 		}
 		
-		techChartUI.setData(analyzer.name(), lst, group++, axis);
-		frame.revalidate();
+		jFreechart.setData(analyzer.name(), lst);
+		
+		if(chartPanel != null) {
+			frame.remove(chartPanel);
+		}
+		chartPanel = jFreechart.getChartPanel();
+		frame.add(chartPanel, BorderLayout.CENTER);
+		
+		chartPanel.revalidate();
 		chartPanel.repaint();
+		chartPanel.setVisible(true);
+		frame.revalidate();
+		frame.repaint();
 	}
 	
 	private List<AnalysisResult> getAnalysisResult(Analyzer analyzer, String product, Date from, Date to) {

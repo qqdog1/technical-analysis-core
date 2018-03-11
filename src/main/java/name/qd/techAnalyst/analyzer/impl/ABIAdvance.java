@@ -40,10 +40,19 @@ public class ABIAdvance implements TechAnalyzer {
 		}
 		return lstResult;
 	}
+	
+	@Override
+	public List<AnalysisResult> customResult(List<AnalysisResult> lst, Object... objs) {
+		return null;
+	}
+	
+	@Override
+	public List<String> customDescreption() {
+		return null;
+	}
 
 	@Override
 	public AnalyzerType getAnalyzerType() {
 		return AnalyzerType.MARKET;
 	}
-
 }

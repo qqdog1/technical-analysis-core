@@ -17,11 +17,11 @@ import org.knowm.xchart.style.markers.SeriesMarkers;
 
 import name.qd.techAnalyst.vo.AnalysisResult;
 
-public class TechChartUI {
+public class TechXChart {
 	private XYChart chart;
 	private Set<String> setAnalyzer = new HashSet<>();
 
-	public TechChartUI(String title) {
+	public TechXChart(String title) {
 		chart = new XYChartBuilder().width(800).height(600).title(title).build();
 		chart.getStyler().setDatePattern("yyyy-MM-dd");
 	}

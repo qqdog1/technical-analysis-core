@@ -40,6 +40,16 @@ public class ADL implements TechAnalyzer {
 		}
 		return lst;
 	}
+	
+	@Override
+	public List<AnalysisResult> customResult(List<AnalysisResult> lst, Object... objs) {
+		return null;
+	}
+	
+	@Override
+	public List<String> customDescreption() {
+		return null;
+	}
 
 	@Override
 	public AnalyzerType getAnalyzerType() {

@@ -10,5 +10,7 @@ import name.qd.techAnalyst.vo.AnalysisResult;
 public interface TechAnalyzer {
 	public String getCacheName(String product);
 	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to);
+	public List<AnalysisResult> customResult(List<AnalysisResult> lst, Object ... objs);
+	public List<String> customDescreption();
 	public AnalyzerType getAnalyzerType();
 }

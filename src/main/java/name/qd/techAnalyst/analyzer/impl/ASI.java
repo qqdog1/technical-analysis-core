@@ -23,6 +23,16 @@ public class ASI implements TechAnalyzer {
 	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) {
 		return null;
 	}
+	
+	@Override
+	public List<AnalysisResult> customResult(List<AnalysisResult> lst, Object... objs) {
+		return null;
+	}
+	
+	@Override
+	public List<String> customDescreption() {
+		return null;
+	}
 
 	@Override
 	public AnalyzerType getAnalyzerType() {
