@@ -36,7 +36,6 @@ public class TechClient {
 	private Logger log;
 	private TechAnalyzerManager analyzerManager;
 	private DataSource twseDataManager;
-//	private TechChartUI techChartUI = new TechChartUI("");
 	private TechJFreeChart jFreechart = new TechJFreeChart();
 	
 	private JFrame frame = new JFrame("Tech Analyze");

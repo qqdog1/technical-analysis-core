@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import name.qd.techAnalyst.Constants.AnalyzerType;
 import name.qd.techAnalyst.analyzer.TechAnalyzer;
 import name.qd.techAnalyst.dataSource.DataSource;
+import name.qd.techAnalyst.util.StringCombineUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 
@@ -18,7 +19,7 @@ public class AveragePrice implements TechAnalyzer {
 	
 	@Override
 	public String getCacheName(String product) {
-		return AveragePrice.class.getSimpleName();
+		return StringCombineUtil.combine(AveragePrice.class.getSimpleName(), product);
 	}
 
 	@Override
