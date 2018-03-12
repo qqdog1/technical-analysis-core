@@ -52,7 +52,6 @@ public class TechClient {
 	private JDatePickerImpl dpTo = new JDatePickerImpl(new JDatePanelImpl(new DayModel()), null);
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnRemove = new JButton("Remove");
-//	private JPanel chartPanel = jFreechart.getChartPanel();
 	private JPanel chartPanel;
 	
 	private int group = 0;
@@ -61,6 +60,7 @@ public class TechClient {
 		initFrame();
 		initLogger();
 		initManager();
+		initActionListener();
 	}
 	
 	private void initFrame() {
@@ -84,10 +84,6 @@ public class TechClient {
 		selectPanel.add(btnRemove);
 		
 		frame.add(selectPanel, BorderLayout.NORTH);
-//		frame.add(chartPanel, BorderLayout.CENTER);
-		
-		setComboData();
-		setButtonListener();
 	}
 	
 	private void initLogger() {
@@ -100,10 +96,26 @@ public class TechClient {
 		twseDataManager = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 	}
 	
+	private void initActionListener() {
+		setComboListener();
+		setComboData();
+		setButtonListener();
+	}
+	
 	private void setComboData() {
 		for(Analyzer analyzer : Analyzer.values()) {
 			comboTech.addItem(analyzer.name());
 		}
+	}
+	
+	private void setComboListener() {
+		comboTech.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String analyzer = comboTech.getSelectedItem().toString();
+				System.out.println(analyzer);
+			}
+		});
 	}
 	
 	private void setButtonListener() {
@@ -132,15 +144,6 @@ public class TechClient {
 	private void runAnalyzer(Analyzer analyzer, String product, Date from, Date to) {
 		List<AnalysisResult> lst = getAnalysisResult(analyzer, product, from, to);
 		
-		YAxisPosition axis = YAxisPosition.Left;
-		if(group % 2 == 0) {
-			axis = YAxisPosition.Left;
-			group = 0;
-		} else {
-			group = 1;
-			axis = YAxisPosition.Right;
-		}
-		
 		jFreechart.setData(analyzer.name(), lst);
 		
 		if(chartPanel != null) {
@@ -151,7 +154,6 @@ public class TechClient {
 		
 		chartPanel.revalidate();
 		chartPanel.repaint();
-		chartPanel.setVisible(true);
 		frame.revalidate();
 		frame.repaint();
 	}
