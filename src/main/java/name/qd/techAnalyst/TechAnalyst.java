@@ -36,7 +36,7 @@ public class TechAnalyst {
 		analyzerManager = new TechAnalyzerManager();
 		twseDataManager = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 //		chartUI = new TechXChart("QQ");
-		new TechClient();
+//		new TechClient();
 		
 		List<AnalysisResult> lst = null;
 		VerifyResult vf = null;
