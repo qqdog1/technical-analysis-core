@@ -56,8 +56,6 @@ public class TechClient {
 	private List<JTextField> lstTextField = new ArrayList<>();
 	private GridBagConstraints gridBagConstraints = new GridBagConstraints();
 	
-	private int group = 0;
-
 	public TechClient() {
 		initFrame();
 		initLogger();
@@ -185,25 +183,24 @@ public class TechClient {
 			public void actionPerformed(ActionEvent e) {
 				String analyzer = comboTech.getSelectedItem().toString();
 				jFreechart.removeData(analyzer);
-				frame.revalidate();
-				chartPanel.repaint();
+				paintResult();
 			}
 		});
 	}
 	
 	private void runAnalyzer(Analyzer analyzer, String product, Date from, Date to) {
 		List<AnalysisResult> lst = getAnalysisResult(analyzer, product, from, to);
-		paintResult(analyzer.name(), lst);
+		jFreechart.setData(analyzer.name(), lst);
+		paintResult();
 	}
 	
 	private void runCustomAnalyzer(Analyzer analyzer, String product, Date from, Date to, String ... inputs) {
 		List<AnalysisResult> lst = getCustomAnalysisResult(analyzer, product, from, to, inputs);
-		paintResult(analyzer.name(), lst);
+		jFreechart.setData(analyzer.name(), lst);
+		paintResult();
 	}
 	
-	private void paintResult(String name, List<AnalysisResult> lst) {
-		jFreechart.setData(name, lst);
-		
+	private void paintResult() {
 		if(chartPanel != null) {
 			frame.remove(chartPanel);
 		}

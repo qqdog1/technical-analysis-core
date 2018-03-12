@@ -35,14 +35,14 @@ public class TechAnalyst {
 		
 		analyzerManager = new TechAnalyzerManager();
 		twseDataManager = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
-		chartUI = new TechXChart("QQ");
+//		chartUI = new TechXChart("QQ");
 		new TechClient();
 		
 		List<AnalysisResult> lst = null;
 		VerifyResult vf = null;
 		try {
-			Date from = TimeUtil.getDateTimeFormat().parse("20110101-00:00:00:000");
-			Date to = TimeUtil.getDateTimeFormat().parse("20180307-00:00:00:000");
+			Date from = TimeUtil.getDateTimeFormat().parse("20160101-00:00:00:000");
+			Date to = TimeUtil.getDateTimeFormat().parse("20161231-00:00:00:000");
 			String product = "0050";
 			
 			Analyzer analyzer = Analyzer.ABI;
