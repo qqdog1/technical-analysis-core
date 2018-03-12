@@ -43,13 +43,13 @@ public class ABI implements TechAnalyzer {
 	}
 	
 	@Override
-	public List<AnalysisResult> customResult(List<AnalysisResult> lst, Object... objs) {
-		int ma = (int) objs[0];
+	public List<AnalysisResult> customResult(List<AnalysisResult> lst, String ... inputs) {
+		int ma = Integer.parseInt(inputs[0]);
 		return AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);
 	}
 	
 	@Override
-	public List<String> customDescreption() {
+	public List<String> getCustomDescreption() {
 		List<String> lst = new ArrayList<>();
 		lst.add("MA:");
 		return lst;

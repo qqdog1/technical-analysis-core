@@ -69,13 +69,22 @@ public class TechAnalyzerManager {
 		return lst;
 	}
 	
-	public List<AnalysisResult> getCustomAnalysisResult(DataSource dataManager, Analyzer analyzer, String product, Date from, Date to, Object ... objs) {
+	public List<AnalysisResult> getCustomAnalysisResult(DataSource dataManager, Analyzer analyzer, String product, Date from, Date to, String ... inputs) {
 		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
 			return null;
 		}
-		return techAnalyzer.customResult(getAnalysisResult(dataManager, analyzer, product, from, to), objs);
+		return techAnalyzer.customResult(getAnalysisResult(dataManager, analyzer, product, from, to), inputs);
+	}
+	
+	public List<String> getCustomDescription(Analyzer analyzer) {
+		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
+		if(techAnalyzer == null) {
+			log.error("Analyzer not exist. {}", analyzer);
+			return null;
+		}
+		return techAnalyzer.getCustomDescreption();
 	}
 	
 	private void putAnalysisResult(String cacheName, List<AnalysisResult> lst) {

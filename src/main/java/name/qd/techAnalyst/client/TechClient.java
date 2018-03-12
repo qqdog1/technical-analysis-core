@@ -1,11 +1,13 @@
 package name.qd.techAnalyst.client;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +20,6 @@ import javax.swing.JTextField;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jfree.chart.ui.ApplicationFrame;
-import org.knowm.xchart.style.Styler.YAxisPosition;
 
 import name.qd.techAnalyst.Analyzer;
 import name.qd.techAnalyst.TechAnalyst;
@@ -53,6 +53,9 @@ public class TechClient {
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnRemove = new JButton("Remove");
 	private JPanel chartPanel;
+	private List<JLabel> lstLabel = new ArrayList<>();
+	private List<JTextField> lstTextField = new ArrayList<>();
+	private GridBagConstraints gridBagConstraints = new GridBagConstraints();
 	
 	private int group = 0;
 
@@ -71,19 +74,27 @@ public class TechClient {
 		frame.setVisible(true);
 		
 		frame.getContentPane().setLayout(new BorderLayout());
+		
+		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 		selectPanel.setLayout(new GridBagLayout());
-		selectPanel.add(labelTA);
-		selectPanel.add(comboTech);
-		selectPanel.add(labelProduct);
-		selectPanel.add(tfProduct);
-		selectPanel.add(labelFrom);
-		selectPanel.add(dpFrom);
-		selectPanel.add(labelTo);
-		selectPanel.add(dpTo);
-		selectPanel.add(btnAdd);
-		selectPanel.add(btnRemove);
+		addToSelectPanel(labelTA, 0, 0);
+		addToSelectPanel(comboTech, 1, 0);
+		addToSelectPanel(labelProduct, 2, 0);
+		addToSelectPanel(tfProduct, 3, 0);
+		addToSelectPanel(labelFrom, 4, 0);
+		addToSelectPanel(dpFrom, 5, 0);
+		addToSelectPanel(labelTo, 6, 0);
+		addToSelectPanel(dpTo, 7, 0);
+		addToSelectPanel(btnAdd, 8, 0);
+		addToSelectPanel(btnRemove, 9, 0);
 		
 		frame.add(selectPanel, BorderLayout.NORTH);
+	}
+	
+	private void addToSelectPanel(Component comp, int x, int y) {
+		gridBagConstraints.gridx = x;
+		gridBagConstraints.gridy = y;
+		selectPanel.add(comp, gridBagConstraints);
 	}
 	
 	private void initLogger() {
@@ -113,9 +124,32 @@ public class TechClient {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String analyzer = comboTech.getSelectedItem().toString();
-				System.out.println(analyzer);
+				List<String> lst = getCustomDesception(Analyzer.valueOf(analyzer));
+				clearCustom();
+				if(lst != null) {
+					for(int i = 0 ; i < lst.size() ; i++) {
+						JLabel label = new JLabel(lst.get(i));
+						lstLabel.add(label);
+						JTextField textField = new JTextField(6);
+						lstTextField.add(textField);
+						addToSelectPanel(label, i*2, 1);
+						addToSelectPanel(textField, i*2+1, 1);
+					}
+				}
+				frame.revalidate();
 			}
 		});
+	}
+	
+	private void clearCustom() {
+		for(JLabel label : lstLabel) {
+			selectPanel.remove(label);
+		}
+		for(JTextField textField : lstTextField) {
+			selectPanel.remove(textField);
+		}
+		lstLabel = new ArrayList<>();
+		lstTextField = new ArrayList<>();
 	}
 	
 	private void setButtonListener() {
@@ -126,6 +160,23 @@ public class TechClient {
 				String product = tfProduct.getText();
 				Date from = (Date) dpFrom.getModel().getValue();
 				Date to = (Date) dpTo.getModel().getValue();
+				if(lstTextField.size() > 0) {
+					boolean isCustom = false;
+					List<String> lstCustomInput = new ArrayList<>();
+					for(JTextField textField : lstTextField) {
+						String input = textField.getText();
+						if(!input.equals("")) {
+							isCustom = true;
+						}
+						lstCustomInput.add(input);
+					}
+					if(isCustom) {
+						String[] s = new String[lstCustomInput.size()];
+						lstCustomInput.toArray(s);
+						runCustomAnalyzer(Analyzer.valueOf(analyzer), product, from, to, s);
+						return;
+					}
+				}
 				runAnalyzer(Analyzer.valueOf(analyzer), product, from, to);
 			}
 		});
@@ -143,8 +194,16 @@ public class TechClient {
 	
 	private void runAnalyzer(Analyzer analyzer, String product, Date from, Date to) {
 		List<AnalysisResult> lst = getAnalysisResult(analyzer, product, from, to);
-		
-		jFreechart.setData(analyzer.name(), lst);
+		paintResult(analyzer.name(), lst);
+	}
+	
+	private void runCustomAnalyzer(Analyzer analyzer, String product, Date from, Date to, String ... inputs) {
+		List<AnalysisResult> lst = getCustomAnalysisResult(analyzer, product, from, to, inputs);
+		paintResult(analyzer.name(), lst);
+	}
+	
+	private void paintResult(String name, List<AnalysisResult> lst) {
+		jFreechart.setData(name, lst);
 		
 		if(chartPanel != null) {
 			frame.remove(chartPanel);
@@ -164,6 +223,18 @@ public class TechClient {
 			System.out.println(result.getKeyString() + ":" + result.getValue());
 		}
 		return lst;
+	}
+	
+	private List<AnalysisResult> getCustomAnalysisResult(Analyzer analyzer, String product, Date from, Date to, String ...inputs) {
+		List<AnalysisResult> lst = analyzerManager.getCustomAnalysisResult(twseDataManager, analyzer, product, from, to, inputs);
+		for(AnalysisResult result : lst) {
+			System.out.println(result.getKeyString() + ":" + result.getValue());
+		}
+		return lst;
+	}
+	
+	private List<String> getCustomDesception(Analyzer analyzer) {
+		return analyzerManager.getCustomDescription(analyzer);
 	}
 	
 	public static void main(String[] s) {

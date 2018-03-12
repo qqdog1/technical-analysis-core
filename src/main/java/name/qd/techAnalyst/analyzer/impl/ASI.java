@@ -25,12 +25,12 @@ public class ASI implements TechAnalyzer {
 	}
 	
 	@Override
-	public List<AnalysisResult> customResult(List<AnalysisResult> lst, Object... objs) {
+	public List<AnalysisResult> customResult(List<AnalysisResult> lst, String ... inputs) {
 		return null;
 	}
 	
 	@Override
-	public List<String> customDescreption() {
+	public List<String> getCustomDescreption() {
 		return null;
 	}
 
