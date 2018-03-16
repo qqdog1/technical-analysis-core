@@ -42,6 +42,7 @@ public class TechAnalyzerFactory {
 			break;
 		case ADL:
 			map.put(analyzer, new ADL());
+			break;
 		case AVERAGE_PRICE:
 			map.put(analyzer, new AveragePrice());
 			break;

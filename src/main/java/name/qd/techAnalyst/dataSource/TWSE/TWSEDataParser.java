@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import name.qd.techAnalyst.util.StringCombineUtil;
 import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
@@ -32,6 +33,28 @@ public class TWSEDataParser {
 			}
 		}
 		return lst;
+	}
+	
+	public ProductClosingInfo readProdClosingInfo(String date, String prodId) throws FileNotFoundException, IOException, ParseException {
+		ProductClosingInfo prodInfo = null;
+		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		prodId = StringCombineUtil.combine("\"", prodId, "\"");
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), "Big5"))) {
+			for(String line; (line = br.readLine()) != null; ) {
+				if(line.contains(prodId)) {
+					List<String> lst = parseTWSEcsv(line);
+					prodInfo = new ProductClosingInfo();
+					prodInfo.setDate(sdf.parse(date));
+					prodInfo.setFilledShare(Long.parseLong(lst.get(2)));
+					prodInfo.setFilledAmount(Double.parseDouble(lst.get(4)));
+					prodInfo.setOpenPrice(Double.parseDouble(lst.get(5)));
+					prodInfo.setUpperPrice(Double.parseDouble(lst.get(6)));
+					prodInfo.setLowerPrice(Double.parseDouble(lst.get(7)));
+					prodInfo.setClosePrice(Double.parseDouble(lst.get(8)));
+				}
+			}
+		}
+		return prodInfo;
 	}
 	
 	public DailyClosingInfo readDailyClosingInfo(String date) throws FileNotFoundException, IOException, ParseException {

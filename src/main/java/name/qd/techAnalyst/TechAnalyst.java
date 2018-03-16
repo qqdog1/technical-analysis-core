@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.knowm.xchart.style.Styler.YAxisPosition;
 
 import name.qd.techAnalyst.Constants.Exchange;
 import name.qd.techAnalyst.analyzer.AnalystUtils;
@@ -15,7 +14,6 @@ import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
 import name.qd.techAnalyst.backtest.BackTesting;
 import name.qd.techAnalyst.backtest.WPVerifierFactory;
 import name.qd.techAnalyst.client.TechClient;
-import name.qd.techAnalyst.client.TechXChart;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.dataSource.DataSourceFactory;
 import name.qd.techAnalyst.util.TimeUtil;
@@ -28,14 +26,12 @@ public class TechAnalyst {
 	private Logger log;
 	private TechAnalyzerManager analyzerManager;
 	private DataSource twseDataManager;
-	private TechXChart chartUI;
 	
 	private TechAnalyst() {
 		initLogger();
 		
 		analyzerManager = new TechAnalyzerManager();
 		twseDataManager = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
-//		chartUI = new TechXChart("QQ");
 //		new TechClient();
 		
 		List<AnalysisResult> lst = null;

@@ -40,16 +40,29 @@ public class TWSEDataSource implements DataSource {
 	
 	@Override
 	public List<ProductClosingInfo> getProductClosingInfo(String product, Date from, Date to) throws Exception {
-		List<String[]> lstYearMonth = TimeUtil.getYearMonthBetween(from, to);
-		checkAndDownloadProdClosing(lstYearMonth, product);
+		List<String> lstDate = TimeUtil.getDateBetween(from, to);
+		checkAndDownloadDailyClosing(lstDate);
 		ArrayList<ProductClosingInfo> lstProd = new ArrayList<ProductClosingInfo>();
-		for(String[] yearMonth : lstYearMonth) {
-			File file = new File(TWSEConstants.getProdClosingFilePath(yearMonth[0], yearMonth[1], product));
+		for(String date : lstDate) {
+			File file = new File(TWSEConstants.getDailyClosingFilePath(date));
 			if(file.exists()) {
-				lstProd.addAll(parser.readProdClosingInfo(yearMonth[0], yearMonth[1], product));
+				ProductClosingInfo prodInfo = parser.readProdClosingInfo(date, product);
+				if(prodInfo != null) {
+					lstProd.add(prodInfo);
+				}
 			}
 		}
 		return lstProd;
+//		List<String[]> lstYearMonth = TimeUtil.getYearMonthBetween(from, to);
+//		checkAndDownloadProdClosing(lstYearMonth, product);
+//		ArrayList<ProductClosingInfo> lstProd = new ArrayList<ProductClosingInfo>();
+//		for(String[] yearMonth : lstYearMonth) {
+//			File file = new File(TWSEConstants.getProdClosingFilePath(yearMonth[0], yearMonth[1], product));
+//			if(file.exists()) {
+//				lstProd.addAll(parser.readProdClosingInfo(yearMonth[0], yearMonth[1], product));
+//			}
+//		}
+//		return lstProd;
 	}
 	
 	@Override
@@ -77,7 +90,7 @@ public class TWSEDataSource implements DataSource {
 				log.info("Download product closing info. {},{}{}", product, yearMonth[0], yearMonth[1]);
 				poller.downloadProdClosingInfo(yearMonth[0], yearMonth[1], product);
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -95,7 +108,7 @@ public class TWSEDataSource implements DataSource {
 				log.info("Download daily closing info. {}", lstDate.get(i));
 				poller.downloadDailyClosingInfo(lstDate.get(i));
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

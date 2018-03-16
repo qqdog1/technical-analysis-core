@@ -30,7 +30,13 @@ public class ADL implements TechAnalyzer {
 			for(ProductClosingInfo info : lstProduct) {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(info.getDate());
-				double d = (info.getClosePrice()-info.getLowerPrice())-(info.getUpperPrice()-info.getClosePrice())/(info.getUpperPrice()-info.getLowerPrice());
+				double maxRange = (info.getUpperPrice()-info.getLowerPrice());
+				double d;
+				if(maxRange == 0) {
+					d = 0;
+				} else {
+					d = (info.getClosePrice()-info.getLowerPrice())-(info.getUpperPrice()-info.getClosePrice())/(maxRange);
+				}
 				d = d * info.getFilledShare();
 				result.setValue(d);
 				lst.add(result);
@@ -43,12 +49,29 @@ public class ADL implements TechAnalyzer {
 	
 	@Override
 	public List<AnalysisResult> customResult(List<AnalysisResult> lst, String ... inputs) {
-		return null;
+		List<AnalysisResult> lstResult = new ArrayList<>();
+		String accu = inputs[0];
+		if(!"Y".equals(accu)) {
+			return lst;
+		}
+		AnalysisResult lastResult = new AnalysisResult();
+		lastResult.setValue(0);
+		for(AnalysisResult result : lst) {
+			AnalysisResult analysisResult = new AnalysisResult();
+			analysisResult.setDate(result.getDate());
+			analysisResult.setValue(lastResult.getValue().get(0)+result.getValue().get(0));
+			lstResult.add(analysisResult);
+			lastResult = analysisResult;
+		}
+		
+		return lstResult;
 	}
 	
 	@Override
 	public List<String> getCustomDescreption() {
-		return null;
+		List<String> lst = new ArrayList<>();
+		lst.add("Accumulate(Y/N):");
+		return lst;
 	}
 
 	@Override

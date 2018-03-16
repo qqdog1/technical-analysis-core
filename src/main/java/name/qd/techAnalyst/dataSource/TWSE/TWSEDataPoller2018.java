@@ -42,7 +42,7 @@ public class TWSEDataPoller2018 extends TWSEDataPoller {
 		String filePathName = TWSEConstants.getDailyClosingFilePath(date);
 		Path path = new File(filePathName).toPath();
 		if(Files.exists(path)) return;
-		
+
 		HttpUrl.Builder urlBuilder = httpUrl.newBuilder();
 		urlBuilder.addPathSegments("MI_INDEX");
 		urlBuilder.addEncodedQueryParameter("response", "csv");
