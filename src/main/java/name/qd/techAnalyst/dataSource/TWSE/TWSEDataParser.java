@@ -51,6 +51,7 @@ public class TWSEDataParser {
 					prodInfo.setUpperPrice(Double.parseDouble(lst.get(6)));
 					prodInfo.setLowerPrice(Double.parseDouble(lst.get(7)));
 					prodInfo.setClosePrice(Double.parseDouble(lst.get(8)));
+					prodInfo.setAvgPrice(prodInfo.getFilledAmount() / prodInfo.getFilledShare());
 				}
 			}
 		}
