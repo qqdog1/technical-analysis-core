@@ -14,41 +14,55 @@ import name.qd.techAnalyst.util.StringCombineUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 
-public class ADL implements TechAnalyzer {
-	private static Logger log = LoggerFactory.getLogger(ADL.class);
+public class SI implements TechAnalyzer {
+	private static Logger log = LoggerFactory.getLogger(SI.class);
 
 	@Override
 	public String getCacheName(String product) {
-		return StringCombineUtil.combine(ADL.class.getSimpleName(), product);
+		return StringCombineUtil.combine(SI.class.getSimpleName(), product);
 	}
 
 	@Override
 	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) {
-		List<AnalysisResult> lst = new ArrayList<>();
+		List<AnalysisResult> lstResult = new ArrayList<>();
 		try {
-			List<ProductClosingInfo> lstProduct = dataManager.getProductClosingInfo(product, from, to);
-			for(ProductClosingInfo info : lstProduct) {
+			List<ProductClosingInfo> lstProducts = dataManager.getProductClosingInfo(product, from, to);
+			for(int i = 1 ; i < lstProducts.size() ; i++) {
+				ProductClosingInfo lastInfo = lstProducts.get(i-1);
+				ProductClosingInfo info = lstProducts.get(i);
+				double a = Math.abs(info.getUpperPrice() - lastInfo.getClosePrice());
+				double b = Math.abs(info.getLowerPrice() - lastInfo.getClosePrice());
+				double c = Math.abs(info.getUpperPrice() - lastInfo.getLowerPrice());
+				double d = Math.abs(lastInfo.getClosePrice() - lastInfo.getOpenPrice());
+				double e = info.getClosePrice() - lastInfo.getClosePrice();
+				double f = info.getClosePrice() - info.getOpenPrice();
+				double g = lastInfo.getClosePrice() - lastInfo.getOpenPrice();
+				double x = e + (f/2) + g;
+				double k = Math.max(a, b);
+				double r = 0;
+				if(a >= b && a >= c) {
+					r = a + (b/2) + (d/4);
+				} else if(b >= a && b >= c) {
+					r = b + (a/2) + (d/4);
+				} else if(c >= a && c >= b) {
+					r = c + (d/4);
+				}
+				double l = 3;
+				double si = 50 * x / r * k / l;
+				
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(info.getDate());
-				double maxRange = (info.getUpperPrice()-info.getLowerPrice());
-				double d;
-				if(maxRange == 0) {
-					d = 0;
-				} else {
-					d = (info.getClosePrice()-info.getLowerPrice())-(info.getUpperPrice()-info.getClosePrice())/(maxRange);
-				}
-				d = d * info.getFilledShare();
-				result.setValue(d);
-				lst.add(result);
+				result.setValue(si);
+				lstResult.add(result);
 			}
 		} catch (Exception e) {
-			log.error("Analyze ADL failed.", e);
+			log.error("Analyze SI failed.", e);
 		}
-		return lst;
+		return lstResult;
 	}
-	
+
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) {
+	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) {
 		List<AnalysisResult> lst = analyze(dataManager, product, from, to);
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		String accu = inputs[0];
@@ -67,7 +81,7 @@ public class ADL implements TechAnalyzer {
 		
 		return lstResult;
 	}
-	
+
 	@Override
 	public List<String> getCustomDescreption() {
 		List<String> lst = new ArrayList<>();

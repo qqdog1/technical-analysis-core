@@ -8,6 +8,7 @@ import name.qd.techAnalyst.analyzer.impl.ABI;
 import name.qd.techAnalyst.analyzer.impl.ABIAdvance;
 import name.qd.techAnalyst.analyzer.impl.ABIDecline;
 import name.qd.techAnalyst.analyzer.impl.ADL;
+import name.qd.techAnalyst.analyzer.impl.SI;
 import name.qd.techAnalyst.analyzer.impl.price.AveragePrice;
 import name.qd.techAnalyst.analyzer.impl.price.ClosePrice;
 
@@ -42,6 +43,9 @@ public class TechAnalyzerFactory {
 			break;
 		case ADL:
 			map.put(analyzer, new ADL());
+			break;
+		case SI:
+			map.put(analyzer, new SI());
 			break;
 		case AVERAGE_PRICE:
 			map.put(analyzer, new AveragePrice());

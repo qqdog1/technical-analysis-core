@@ -42,7 +42,7 @@ public class ABIDecline implements TechAnalyzer {
 	}
 	
 	@Override
-	public List<AnalysisResult> customResult(List<AnalysisResult> lst, String ... inputs) {
+	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) {
 		return null;
 	}
 	

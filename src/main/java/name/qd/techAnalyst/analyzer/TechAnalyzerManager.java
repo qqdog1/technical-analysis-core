@@ -75,7 +75,7 @@ public class TechAnalyzerManager {
 			log.error("Analyzer not exist. {}", analyzer);
 			return null;
 		}
-		return techAnalyzer.customResult(getAnalysisResult(dataManager, analyzer, product, from, to), inputs);
+		return techAnalyzer.customResult(dataManager, product, from, to, inputs);
 	}
 	
 	public List<String> getCustomDescription(Analyzer analyzer) {
