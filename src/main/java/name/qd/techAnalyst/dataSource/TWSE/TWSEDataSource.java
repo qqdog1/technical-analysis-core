@@ -6,9 +6,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,16 +56,6 @@ public class TWSEDataSource implements DataSource {
 			}
 		}
 		return lstProd;
-//		List<String[]> lstYearMonth = TimeUtil.getYearMonthBetween(from, to);
-//		checkAndDownloadProdClosing(lstYearMonth, product);
-//		ArrayList<ProductClosingInfo> lstProd = new ArrayList<ProductClosingInfo>();
-//		for(String[] yearMonth : lstYearMonth) {
-//			File file = new File(TWSEConstants.getProdClosingFilePath(yearMonth[0], yearMonth[1], product));
-//			if(file.exists()) {
-//				lstProd.addAll(parser.readProdClosingInfo(yearMonth[0], yearMonth[1], product));
-//			}
-//		}
-//		return lstProd;
 	}
 	
 	@Override
@@ -82,22 +75,20 @@ public class TWSEDataSource implements DataSource {
 		return lstInfo;
 	}
 	
-	private void checkAndDownloadProdClosing(List<String[]> lst, String product) throws IOException {
-		for(String[] yearMonth : lst) {
-			File file = new File(TWSEConstants.getProdClosingFilePath(yearMonth[0], yearMonth[1], product));
-			if(!file.exists()) {
-				checkFolderExist(TWSEConstants.getProdClosingFolder(product));
-				log.info("Download product closing info. {},{}{}", product, yearMonth[0], yearMonth[1]);
-				poller.downloadProdClosingInfo(yearMonth[0], yearMonth[1], product);
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+	@Override
+	public Map<Date, List<ProductClosingInfo>> getAllProductClosingInfo(Date from, Date to) throws Exception {
+		List<String> lstDate = TimeUtil.getDateBetween(from, to);
+		checkAndDownloadDailyClosing(lstDate);
+		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		Map<Date, List<ProductClosingInfo>> map = new HashMap<>();
+		for(String date : lstDate) {
+			File file = new File(TWSEConstants.getDailyClosingFilePath(date));
+			if(file.exists()) {
+				List<ProductClosingInfo> lstProd = parser.readAllProductClosingInfo(date);
+				map.put(sdf.parse(date), lstProd);
 			}
 		}
-		String[] lastYearMonth = lst.get(lst.size() - 1);
-		poller.downloadProdClosingInfo(lastYearMonth[0], lastYearMonth[1], product);
+		return map;
 	}
 	
 	private void checkAndDownloadDailyClosing(List<String> lstDate) throws IOException {

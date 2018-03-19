@@ -7,8 +7,14 @@ import name.qd.techAnalyst.Analyzer;
 import name.qd.techAnalyst.analyzer.impl.ABI;
 import name.qd.techAnalyst.analyzer.impl.ABIAdvance;
 import name.qd.techAnalyst.analyzer.impl.ABIDecline;
+import name.qd.techAnalyst.analyzer.impl.AD;
 import name.qd.techAnalyst.analyzer.impl.ADL;
+import name.qd.techAnalyst.analyzer.impl.AD_Issues;
+import name.qd.techAnalyst.analyzer.impl.AD_Ratio;
+import name.qd.techAnalyst.analyzer.impl.AdvancingVolume;
+import name.qd.techAnalyst.analyzer.impl.DecliningVolume;
 import name.qd.techAnalyst.analyzer.impl.SI;
+import name.qd.techAnalyst.analyzer.impl.UnchangedVolume;
 import name.qd.techAnalyst.analyzer.impl.price.AveragePrice;
 import name.qd.techAnalyst.analyzer.impl.price.ClosePrice;
 
@@ -44,8 +50,26 @@ public class TechAnalyzerFactory {
 		case ADL:
 			map.put(analyzer, new ADL());
 			break;
+		case AD:
+			map.put(analyzer, new AD());
+			break;
+		case AD_Ratio:
+			map.put(analyzer, new AD_Ratio());
+			break;
+		case AD_Issues:
+			map.put(analyzer, new AD_Issues());
+			break;
 		case SI:
 			map.put(analyzer, new SI());
+			break;
+		case AdvancingVolume:
+			map.put(analyzer, new AdvancingVolume());
+			break;
+		case DecliningVolume:
+			map.put(analyzer, new DecliningVolume());
+			break;
+		case UnchangedVolume:
+			map.put(analyzer, new UnchangedVolume());
 			break;
 		case AVERAGE_PRICE:
 			map.put(analyzer, new AveragePrice());

@@ -10,16 +10,15 @@ import org.slf4j.LoggerFactory;
 import name.qd.techAnalyst.Constants.AnalyzerType;
 import name.qd.techAnalyst.analyzer.TechAnalyzer;
 import name.qd.techAnalyst.dataSource.DataSource;
-import name.qd.techAnalyst.util.StringCombineUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
-import name.qd.techAnalyst.vo.ProductClosingInfo;
+import name.qd.techAnalyst.vo.DailyClosingInfo;
 
-public class ADL implements TechAnalyzer {
-	private static Logger log = LoggerFactory.getLogger(ADL.class);
-
+public class AD implements TechAnalyzer {
+	private static Logger log = LoggerFactory.getLogger(AD.class);
+	
 	@Override
 	public String getCacheName(String product) {
-		return StringCombineUtil.combine(ADL.class.getSimpleName(), product);
+		return AD.class.getSimpleName();
 	}
 
 	@Override
@@ -27,25 +26,18 @@ public class ADL implements TechAnalyzer {
 		List<AnalysisResult> lst = new ArrayList<>();
 		List<AnalysisResult> lstResult = null;
 		try {
-			List<ProductClosingInfo> lstProduct = dataManager.getProductClosingInfo(product, from, to);
-			for(ProductClosingInfo info : lstProduct) {
+			List<DailyClosingInfo> lstDaily = dataManager.getDailyClosingInfo(from, to);
+			for(DailyClosingInfo info : lstDaily) {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(info.getDate());
-				double maxRange = (info.getUpperPrice()-info.getLowerPrice());
-				double d;
-				if(maxRange == 0) {
-					d = 0;
-				} else {
-					d = (info.getClosePrice()-info.getLowerPrice())-(info.getUpperPrice()-info.getClosePrice())/(maxRange);
-				}
-				d = d * info.getFilledShare();
-				result.setValue(d);
+				int value = info.getAdvance()-info.getDecline();
+				result.setValue(value);
 				lst.add(result);
 			}
 			
 			lstResult = accu(lst);
 		} catch (Exception e) {
-			log.error("Analyze ADL failed.", e);
+			log.error("AD analyze failed.", e);
 		}
 		return lstResult;
 	}
@@ -61,14 +53,15 @@ public class ADL implements TechAnalyzer {
 			lstResult.add(analysisResult);
 			lastResult = analysisResult;
 		}
+		
 		return lstResult;
 	}
-	
+
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) {
+	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) {
 		return null;
 	}
-	
+
 	@Override
 	public List<String> getCustomDescreption() {
 		return null;
@@ -76,6 +69,6 @@ public class ADL implements TechAnalyzer {
 
 	@Override
 	public AnalyzerType getAnalyzerType() {
-		return AnalyzerType.PRODUCT;
+		return AnalyzerType.MARKET;
 	}
 }

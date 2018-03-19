@@ -5,18 +5,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.junit.Test;
+
 import name.qd.techAnalyst.dataSource.TWSE.TWSEDataParser;
+import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 
 public class TWSEDataParserTest {
-	public static void main(String[] s) {
-		new TWSEDataParserTest();
-	}
 	
-	private TWSEDataParserTest() {
+	@Test
+	public void TWSEDataParserTestT() {
 		TWSEDataParser parser = new TWSEDataParser();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		try {
 			List<ProductClosingInfo> lst = parser.readProdClosingInfo("2016", "04", "2453");
 			for(ProductClosingInfo p : lst) {
@@ -41,6 +42,21 @@ public class TWSEDataParserTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testParseDailyProducts() {
+		TWSEDataParser parser = new TWSEDataParser();
+		try {
+			List<ProductClosingInfo> lst = parser.readAllProductClosingInfo("20180305");
+			for(ProductClosingInfo info : lst) {
+				System.out.println(info.getFilledShare() + ":" + info.getFilledAmount() + ":" + 
+						info.getOpenPrice() + ":" + info.getUpperPrice() + ":" + 
+						info.getLowerPrice() + ":" + info.getClosePrice() + ":" + info.getADStatus());
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

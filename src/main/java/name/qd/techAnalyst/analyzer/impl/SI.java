@@ -66,7 +66,7 @@ public class SI implements TechAnalyzer {
 		List<AnalysisResult> lst = analyze(dataManager, product, from, to);
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		String accu = inputs[0];
-		if(!"Y".equals(accu)) {
+		if(!"Y".equalsIgnoreCase(accu)) {
 			return lst;
 		}
 		AnalysisResult lastResult = new AnalysisResult();
@@ -85,7 +85,7 @@ public class SI implements TechAnalyzer {
 	@Override
 	public List<String> getCustomDescreption() {
 		List<String> lst = new ArrayList<>();
-		lst.add("Accumulate(Y/N):");
+		lst.add("Accumulate(Y/N)=ASI:");
 		return lst;
 	}
 

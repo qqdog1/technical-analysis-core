@@ -43,6 +43,7 @@ public class TWSEDataParser {
 			for(String line; (line = br.readLine()) != null; ) {
 				if(line.contains(prodId)) {
 					List<String> lst = parseTWSEcsv(line);
+					if(lst == null) continue;
 					prodInfo = new ProductClosingInfo();
 					prodInfo.setDate(sdf.parse(date));
 					prodInfo.setFilledShare(Long.parseLong(lst.get(2)));
@@ -59,29 +60,90 @@ public class TWSEDataParser {
 	}
 	
 	public DailyClosingInfo readDailyClosingInfo(String date) throws FileNotFoundException, IOException, ParseException {
-		DailyClosingInfo dailyClosingInfo = null;
+		DailyClosingInfo dailyClosingInfo = new DailyClosingInfo();
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), "Big5"))) {
 			for(String line; (line = br.readLine()) != null; ) {
+				List<String> lst = parseTWSEcsv(line);
+				if(lst == null) return null;
 				if(line.contains(TWSEConstants.ADVANCE)) {
-					dailyClosingInfo = new DailyClosingInfo();
-					List<String> lst = parseTWSEcsv(line);
 					String sAdvance = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setAdvance(Integer.parseInt(sAdvance));
 					dailyClosingInfo.setDate(sdf.parse(date));
 				} else if(line.contains(TWSEConstants.DECLINE)) {
-					List<String> lst = parseTWSEcsv(line);
 					String decline = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setDecline(Integer.parseInt(decline));
 				} else if(line.contains(TWSEConstants.UNCHANGED)) {
-					List<String> lst = parseTWSEcsv(line);
 					String unchanged = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setUnchanged(Integer.parseInt(unchanged));
 				}
 			}
 		}
 		return dailyClosingInfo;
+	}
+	
+	public List<ProductClosingInfo> readAllProductClosingInfo(String date) throws FileNotFoundException, IOException, ParseException {
+		List<ProductClosingInfo> lst = new ArrayList<>();
+		
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), "Big5"))) {
+			boolean start = false;
+			while(true) {
+				String line = br.readLine();
+				if(line == null) {
+					break;
+				}
+				
+				if(start) {
+					ProductClosingInfo info = parseProductCloseInfo(line, date);
+					if(info != null) {
+						lst.add(info);
+					}
+				}
+				
+				if(line.contains("\"1101\"")) {
+					start = true;
+					ProductClosingInfo info = parseProductCloseInfo(line, date);
+					if(info != null) {
+						lst.add(info);
+					}
+				} else {
+					continue;
+				}
+			}
+		}
+		return lst;
+	}
+	
+	private ProductClosingInfo parseProductCloseInfo(String line, String date) {
+		List<String> lst = parseTWSEcsv(line);
+		if(lst == null || lst.size() < 16) return null;
+		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		ProductClosingInfo prodInfo = new ProductClosingInfo();
+		try {
+			prodInfo = new ProductClosingInfo();
+			prodInfo.setDate(sdf.parse(date));
+			prodInfo.setFilledShare(Long.parseLong(lst.get(2)));
+			prodInfo.setFilledAmount(Double.parseDouble(lst.get(4)));
+			if("--".equals(lst.get(5))) {
+				return null;
+			}
+			prodInfo.setOpenPrice(Double.parseDouble(lst.get(5)));
+			prodInfo.setUpperPrice(Double.parseDouble(lst.get(6)));
+			prodInfo.setLowerPrice(Double.parseDouble(lst.get(7)));
+			prodInfo.setClosePrice(Double.parseDouble(lst.get(8)));
+			prodInfo.setAvgPrice(prodInfo.getFilledAmount() / prodInfo.getFilledShare());
+			if("+".equals(lst.get(9))) {
+				prodInfo.setADStatus(ProductClosingInfo.ADVANCE);
+			} else if("-".equals(lst.get(9))) {
+				prodInfo.setADStatus(ProductClosingInfo.DECLINE);
+			} else {
+				prodInfo.setADStatus(ProductClosingInfo.UNCHANGE);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return prodInfo;
 	}
 	
 	private String toTWSEDateFormat(String year, String month) {
@@ -97,7 +159,7 @@ public class TWSEDataParser {
 		}
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		List<String> lst = parseTWSEcsv(sData);
-		
+		if(lst == null) return null;
 		ProductClosingInfo prod = new ProductClosingInfo();
 		prod.setDate(sdf.parse(TimeUtil.getOutputFromROC(lst.get(0))));
 		prod.setFilledShare(Long.parseLong(lst.get(1)));
@@ -116,6 +178,9 @@ public class TWSEDataParser {
 			int iIndex = 0;
 			int iComma = sData.indexOf(",");
 			int iQuotation = sData.indexOf("\"");
+			if(iComma == -1) {
+				return null;
+			}
 			if(iComma == 0) {
 				iIndex = 1;
 			} else if(iComma == -1 && iQuotation == -1) {

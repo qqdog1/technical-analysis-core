@@ -3,6 +3,10 @@ package name.qd.techAnalyst.vo;
 import java.util.Date;
 
 public class ProductClosingInfo {
+	public static int ADVANCE = 1;
+	public static int DECLINE = 2;
+	public static int UNCHANGE = 4;
+	
 	private Date date;
 	private long filledShare;
 	private double openPrice;
@@ -11,6 +15,7 @@ public class ProductClosingInfo {
 	private double lowerPrice;
 	private double avgPrice;
 	private double filledAmount;
+	private int ADStatus;
 	
 	public Date getDate() {
 		return date;
@@ -59,5 +64,11 @@ public class ProductClosingInfo {
 	}
 	public void setFilledAmount(double filledAmount) {
 		this.filledAmount = filledAmount;
+	}
+	public int getADStatus() {
+		return ADStatus;
+	}
+	public void setADStatus(int ADStatus) {
+		this.ADStatus = ADStatus;
 	}
 }
