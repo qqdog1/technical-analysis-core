@@ -16,34 +16,34 @@ public class TWSEDataParserTest {
 	
 	@Test
 	public void TWSEDataParserTestT() {
-		TWSEDataParser parser = new TWSEDataParser();
-		SimpleDateFormat sdf = TimeUtil.getDateFormat();
-		try {
-			List<ProductClosingInfo> lst = parser.readProdClosingInfo("2016", "04", "2453");
-			for(ProductClosingInfo p : lst) {
-				
-				System.out.println(sdf.format(p.getDate()) + p.getFilledShare() + p.getOpenPrice() + p.getUpperPrice()+p.getLowerPrice()+p.getClosePrice());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			DailyClosingInfo d = parser.readDailyClosingInfo("20160801");
-			if(d != null) {
-				System.out.println(d.getAdvance());
-				System.out.println(d.getDecline());
-				System.out.println(d.getUnchanged());
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+//		TWSEDataParser parser = new TWSEDataParser();
+//		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+//		try {
+//			List<ProductClosingInfo> lst = parser.readProdClosingInfo("2016", "04", "2453");
+//			for(ProductClosingInfo p : lst) {
+//				
+//				System.out.println(sdf.format(p.getDate()) + p.getFilledShare() + p.getOpenPrice() + p.getUpperPrice()+p.getLowerPrice()+p.getClosePrice());
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		try {
+//			DailyClosingInfo d = parser.readDailyClosingInfo("20160801");
+//			if(d != null) {
+//				System.out.println(d.getAdvance());
+//				System.out.println(d.getDecline());
+//				System.out.println(d.getUnchanged());
+//			}
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	@Test

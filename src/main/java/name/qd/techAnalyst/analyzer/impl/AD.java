@@ -13,6 +13,10 @@ import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
 
+/**
+ * 騰落
+ * 上漲家數 - 下跌家數  累加
+ */
 public class AD implements TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(AD.class);
 	

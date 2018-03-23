@@ -14,6 +14,9 @@ import name.qd.techAnalyst.util.StringCombineUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 
+/**
+ * $&*@(#$&(*#&($
+ */
 public class SI implements TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(SI.class);
 

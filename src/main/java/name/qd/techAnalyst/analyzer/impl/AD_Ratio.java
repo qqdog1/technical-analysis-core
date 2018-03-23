@@ -14,6 +14,9 @@ import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
 
+/**
+ * 上漲家數 / 下跌家數
+ */
 public class AD_Ratio implements TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(AD_Ratio.class);
 	

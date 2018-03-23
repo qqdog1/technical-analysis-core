@@ -13,7 +13,6 @@ import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 import name.qd.techAnalyst.vo.VerifyResult;
-import name.qd.techAnalyst.vo.VerifyResult.VerifyDetail;
 
 public class ADLVerify implements BackTesting {
 	private static Logger log = LoggerFactory.getLogger(ADLVerify.class);

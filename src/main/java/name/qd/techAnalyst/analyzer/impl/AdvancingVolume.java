@@ -34,13 +34,16 @@ public class AdvancingVolume implements TechAnalyzer {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(date);
 				double volume = 0;
+				int count = 0;
 				for(ProductClosingInfo info : map.get(date)) {
 					if(info.getADStatus() == ProductClosingInfo.ADVANCE) {
 						volume += info.getFilledShare();
+						count++;
 					}
 				}
 				if(volume != 0) {
 					result.setValue(volume);
+					result.setValue(count);
 					lstResult.add(result);
 				}
 			}

@@ -14,6 +14,10 @@ import name.qd.techAnalyst.util.StringCombineUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 
+/**
+ * 累積派發線
+ * (收-低) - (高-收) / (高-低) * 成交量  累加
+ */
 public class ADL implements TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ADL.class);
 
