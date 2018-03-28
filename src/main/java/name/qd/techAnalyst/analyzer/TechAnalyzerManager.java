@@ -16,6 +16,7 @@ import name.qd.fileCache.FileCacheManager;
 import name.qd.fileCache.cache.CacheManager;
 import name.qd.fileCache.cache.FileCacheObject;
 import name.qd.techAnalyst.Analyzer;
+import name.qd.techAnalyst.Constants.AnalyzerType;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.util.TimeUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
@@ -26,9 +27,10 @@ public class TechAnalyzerManager {
 	private Map<String, Date> mapFirst = new HashMap<String, Date>();
 	private Map<String, Date> mapLast = new HashMap<String, Date>();
 	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
-	private TechAnalyzerFactory techAnalyzerFactory = TechAnalyzerFactory.getInstance();
+	private TechAnalyzerFactory techAnalyzerFactory = new TechAnalyzerFactory();
+	private static TechAnalyzerManager instance = new TechAnalyzerManager();
 	
-	public TechAnalyzerManager() {
+	private TechAnalyzerManager() {
 		try {
 			fileCacheManager = new FileCacheManager("./cache/");
 		} catch (Exception e) {
@@ -36,7 +38,11 @@ public class TechAnalyzerManager {
 		}
 	}
 	
-	public List<AnalysisResult> getAnalysisResult(DataSource dataManager, Analyzer analyzer, String product, Date from, Date to) {
+	public static TechAnalyzerManager getInstance() {
+		return instance;
+	}
+	
+	public List<AnalysisResult> getAnalysisResult(DataSource dataManager, Analyzer analyzer, String product, Date from, Date to) throws Exception {
 		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
@@ -69,7 +75,7 @@ public class TechAnalyzerManager {
 		return lst;
 	}
 	
-	public List<AnalysisResult> getCustomAnalysisResult(DataSource dataManager, Analyzer analyzer, String product, Date from, Date to, String ... inputs) {
+	public List<AnalysisResult> getCustomAnalysisResult(DataSource dataManager, Analyzer analyzer, String product, Date from, Date to, String ... inputs) throws Exception {
 		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
@@ -85,6 +91,15 @@ public class TechAnalyzerManager {
 			return null;
 		}
 		return techAnalyzer.getCustomDescreption();
+	}
+	
+	public AnalyzerType getAnalyzerType(Analyzer analyzer) {
+		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
+		if(techAnalyzer == null) {
+			log.error("Analyzer not exist. {}", analyzer);
+			return null;
+		}
+		return techAnalyzer.getAnalyzerType();
 	}
 	
 	private void putAnalysisResult(String cacheName, List<AnalysisResult> lst) {
@@ -188,7 +203,7 @@ public class TechAnalyzerManager {
 		}
 	}
 	
-	private void updateCache(DataSource dataManager, TechAnalyzer analyzer, String product, Date from, Date to) {
+	private void updateCache(DataSource dataManager, TechAnalyzer analyzer, String product, Date from, Date to) throws Exception {
 		String cacheName = analyzer.getCacheName(product);
 		Date first = getFirstDate(cacheName, from);
 		Date last = getLastDate(cacheName, to);

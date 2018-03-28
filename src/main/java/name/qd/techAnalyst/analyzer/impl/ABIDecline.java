@@ -22,7 +22,7 @@ public class ABIDecline implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) {
+	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		try {
 			List<DailyClosingInfo> lstDaily = dataManager.getDailyClosingInfo(from, to);
@@ -37,12 +37,13 @@ public class ABIDecline implements TechAnalyzer {
 			}
 		} catch (Exception e) {
 			log.error("ABI analyze failed.", e);
+			throw e;
 		}
 		return lstResult;
 	}
 	
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) {
+	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) throws Exception {
 		return null;
 	}
 	

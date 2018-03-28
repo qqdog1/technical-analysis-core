@@ -26,7 +26,7 @@ public class AD_Issues implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) {
+	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		try {
 			List<DailyClosingInfo> lst = dataManager.getDailyClosingInfo(from, to);
@@ -38,12 +38,13 @@ public class AD_Issues implements TechAnalyzer {
 			}
 		} catch (Exception e) {
 			log.error("AD_Issues analyze failed.", e);
+			throw e;
 		}
 		return lstResult;
 	}
 
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) {
+	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
 		List<AnalysisResult> lst = analyze(dataManager, product, from, to);
 		return AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);

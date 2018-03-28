@@ -13,7 +13,6 @@ import name.qd.techAnalyst.analyzer.AnalystUtils;
 import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
 import name.qd.techAnalyst.backtest.BackTesting;
 import name.qd.techAnalyst.backtest.WPVerifierFactory;
-import name.qd.techAnalyst.client.TechClient;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.dataSource.DataSourceFactory;
 import name.qd.techAnalyst.util.TimeUtil;
@@ -30,7 +29,7 @@ public class TechAnalyst {
 	private TechAnalyst() {
 		initLogger();
 		
-		analyzerManager = new TechAnalyzerManager();
+		analyzerManager = TechAnalyzerManager.getInstance();
 		twseDataManager = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 //		new TechClient();
 		
@@ -85,10 +84,19 @@ public class TechAnalyst {
 	}
 	
 	private List<AnalysisResult> getAnalysisResult(Analyzer analyzer, String product, Date from, Date to) {
-		List<AnalysisResult> lst = analyzerManager.getAnalysisResult(twseDataManager, analyzer, product, from, to);
-		for(AnalysisResult result : lst) {
-			System.out.println(result.getKeyString() + ":" + result.getValue());
+		List<AnalysisResult> lst = null;
+		try {
+			lst = analyzerManager.getAnalysisResult(twseDataManager, analyzer, product, from, to);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
+		if(lst != null) {
+			for(AnalysisResult result : lst) {
+				System.out.println(result.getKeyString() + ":" + result.getValue());
+			}
+		}
+		
 		return lst;
 	}
 	

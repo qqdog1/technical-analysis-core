@@ -1,6 +1,7 @@
 package name.qd.techAnalyst.client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -23,6 +24,7 @@ import org.apache.logging.log4j.Logger;
 
 import name.qd.techAnalyst.Analyzer;
 import name.qd.techAnalyst.TechAnalyst;
+import name.qd.techAnalyst.Constants.AnalyzerType;
 import name.qd.techAnalyst.Constants.Exchange;
 import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
 import name.qd.techAnalyst.client.datePicker.DayModel;
@@ -51,10 +53,12 @@ public class TechClient {
 	private JDatePickerImpl dpTo = new JDatePickerImpl(new JDatePanelImpl(new DayModel()), null);
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnRemove = new JButton("Remove");
+	private JButton btnRemoveAll = new JButton("RemoveAll");
 	private JPanel chartPanel;
 	private List<JLabel> lstLabel = new ArrayList<>();
 	private List<JTextField> lstTextField = new ArrayList<>();
 	private GridBagConstraints gridBagConstraints = new GridBagConstraints();
+	private Color disableColor = new Color(238,238,238);
 	
 	public TechClient() {
 		initFrame();
@@ -64,7 +68,7 @@ public class TechClient {
 	}
 	
 	private void initFrame() {
-		frame.setSize(1024, 768);
+		frame.setSize(1200, 768);
 		frame.setMinimumSize(new Dimension(1024, 768));
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,6 +88,7 @@ public class TechClient {
 		addToSelectPanel(dpTo, 7, 0);
 		addToSelectPanel(btnAdd, 8, 0);
 		addToSelectPanel(btnRemove, 9, 0);
+		addToSelectPanel(btnRemoveAll, 10, 0);
 		
 		frame.add(selectPanel, BorderLayout.NORTH);
 	}
@@ -100,7 +105,7 @@ public class TechClient {
 	}
 	
 	private void initManager() {
-		analyzerManager = new TechAnalyzerManager();
+		analyzerManager = TechAnalyzerManager.getInstance();
 		twseDataManager = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 	}
 	
@@ -120,8 +125,21 @@ public class TechClient {
 		comboTech.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String analyzer = comboTech.getSelectedItem().toString();
-				List<String> lst = getCustomDesception(Analyzer.valueOf(analyzer));
+				String analyzerString = comboTech.getSelectedItem().toString();
+				Analyzer analyzer = Analyzer.valueOf(analyzerString);
+				List<String> lst = getCustomDesception(analyzer);
+				AnalyzerType analyzerType = getAnalyzerType(analyzer);
+				switch(analyzerType) {
+				case PRODUCT:
+					tfProduct.setEnabled(true);
+					tfProduct.setBackground(Color.WHITE);
+					break;
+				case MARKET:
+					tfProduct.setEnabled(false);
+					tfProduct.setBackground(disableColor);
+					break;
+				}
+				
 				clearCustom();
 				if(lst != null) {
 					for(int i = 0 ; i < lst.size() ; i++) {
@@ -157,24 +175,28 @@ public class TechClient {
 				String product = tfProduct.getText();
 				Date from = (Date) dpFrom.getModel().getValue();
 				Date to = (Date) dpTo.getModel().getValue();
-				if(lstTextField.size() > 0) {
-					boolean isCustom = false;
-					List<String> lstCustomInput = new ArrayList<>();
-					for(JTextField textField : lstTextField) {
-						String input = textField.getText();
-						if(!input.equals("")) {
-							isCustom = true;
+				try {
+					if(lstTextField.size() > 0) {
+						boolean isCustom = false;
+						List<String> lstCustomInput = new ArrayList<>();
+						for(JTextField textField : lstTextField) {
+							String input = textField.getText();
+							if(!input.equals("")) {
+								isCustom = true;
+							}
+							lstCustomInput.add(input);
 						}
-						lstCustomInput.add(input);
+						if(isCustom) {
+							String[] s = new String[lstCustomInput.size()];
+							lstCustomInput.toArray(s);
+							runCustomAnalyzer(Analyzer.valueOf(analyzer), product, from, to, s);
+							return;
+						}
 					}
-					if(isCustom) {
-						String[] s = new String[lstCustomInput.size()];
-						lstCustomInput.toArray(s);
-						runCustomAnalyzer(Analyzer.valueOf(analyzer), product, from, to, s);
-						return;
-					}
+					runAnalyzer(Analyzer.valueOf(analyzer), product, from, to);
+				} catch (Exception ex) {
+					// TODO
 				}
-				runAnalyzer(Analyzer.valueOf(analyzer), product, from, to);
 			}
 		});
 		
@@ -186,15 +208,23 @@ public class TechClient {
 				paintResult();
 			}
 		});
+		
+		btnRemoveAll.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				jFreechart.removeAll();
+				paintResult();
+			}
+		});
 	}
 	
-	private void runAnalyzer(Analyzer analyzer, String product, Date from, Date to) {
+	private void runAnalyzer(Analyzer analyzer, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = getAnalysisResult(analyzer, product, from, to);
 		jFreechart.setData(analyzer.name(), lst);
 		paintResult();
 	}
 	
-	private void runCustomAnalyzer(Analyzer analyzer, String product, Date from, Date to, String ... inputs) {
+	private void runCustomAnalyzer(Analyzer analyzer, String product, Date from, Date to, String ... inputs) throws Exception {
 		List<AnalysisResult> lst = getCustomAnalysisResult(analyzer, product, from, to, inputs);
 		jFreechart.setData(analyzer.name(), lst);
 		paintResult();
@@ -213,7 +243,7 @@ public class TechClient {
 		frame.repaint();
 	}
 	
-	private List<AnalysisResult> getAnalysisResult(Analyzer analyzer, String product, Date from, Date to) {
+	private List<AnalysisResult> getAnalysisResult(Analyzer analyzer, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = analyzerManager.getAnalysisResult(twseDataManager, analyzer, product, from, to);
 		for(AnalysisResult result : lst) {
 			System.out.println(result.getKeyString() + ":" + result.getValue());
@@ -221,7 +251,7 @@ public class TechClient {
 		return lst;
 	}
 	
-	private List<AnalysisResult> getCustomAnalysisResult(Analyzer analyzer, String product, Date from, Date to, String ...inputs) {
+	private List<AnalysisResult> getCustomAnalysisResult(Analyzer analyzer, String product, Date from, Date to, String ...inputs) throws Exception {
 		List<AnalysisResult> lst = analyzerManager.getCustomAnalysisResult(twseDataManager, analyzer, product, from, to, inputs);
 		for(AnalysisResult result : lst) {
 			System.out.println(result.getKeyString() + ":" + result.getValue());
@@ -231,6 +261,10 @@ public class TechClient {
 	
 	private List<String> getCustomDesception(Analyzer analyzer) {
 		return analyzerManager.getCustomDescription(analyzer);
+	}
+	
+	private AnalyzerType getAnalyzerType(Analyzer analyzer) {
+		return analyzerManager.getAnalyzerType(analyzer);
 	}
 	
 	public static void main(String[] s) {

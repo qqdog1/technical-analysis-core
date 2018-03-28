@@ -43,4 +43,19 @@ public class AnalystUtils {
 		}
 		return lstResult;
 	}
+	
+	public static List<AnalysisResult> accu(List<AnalysisResult> lst) {
+		List<AnalysisResult> lstResult = new ArrayList<>();
+		AnalysisResult lastResult = new AnalysisResult();
+		lastResult.setValue(0);
+		for(AnalysisResult result : lst) {
+			AnalysisResult analysisResult = new AnalysisResult();
+			analysisResult.setDate(result.getDate());
+			analysisResult.setValue(lastResult.getValue().get(0)+result.getValue().get(0));
+			lstResult.add(analysisResult);
+			lastResult = analysisResult;
+		}
+		
+		return lstResult;
+	}
 }

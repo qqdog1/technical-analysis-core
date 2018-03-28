@@ -30,7 +30,8 @@ public class TWSEDataParser {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), "Big5"))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				if(line.contains(prodId)) {
-					prodInfo = parseProductCloseInfo(line, date);
+					List<String> lst = parseLineToArray(line);
+					prodInfo = parseProductCloseInfo(lst, date);
 				}
 			}
 		}
@@ -62,7 +63,7 @@ public class TWSEDataParser {
 		return dailyClosingInfo;
 	}
 	
-	public List<ProductClosingInfo> readAllProductClosingInfo(String date) throws FileNotFoundException, IOException, ParseException {
+	public List<ProductClosingInfo> readAllNormalStock(String date) throws FileNotFoundException, IOException, ParseException {
 		List<ProductClosingInfo> lst = new ArrayList<>();
 		
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), "Big5"))) {
@@ -73,8 +74,11 @@ public class TWSEDataParser {
 					break;
 				}
 				
+				List<String> lstValue = parseLineToArray(line);
+				if(!isNormalStock(lstValue)) continue;
+				
 				if(start) {
-					ProductClosingInfo info = parseProductCloseInfo(line, date);
+					ProductClosingInfo info = parseProductCloseInfo(lstValue, date);
 					if(info != null) {
 						lst.add(info);
 					}
@@ -82,7 +86,7 @@ public class TWSEDataParser {
 				
 				if(line.contains("\"1101\"")) {
 					start = true;
-					ProductClosingInfo info = parseProductCloseInfo(line, date);
+					ProductClosingInfo info = parseProductCloseInfo(lstValue, date);
 					if(info != null) {
 						lst.add(info);
 					}
@@ -94,9 +98,7 @@ public class TWSEDataParser {
 		return lst;
 	}
 	
-	private ProductClosingInfo parseProductCloseInfo(String line, String date) {
-		List<String> lst = parseLineToArray(line);
-		if(!isNormalStock(lst)) return null;
+	private ProductClosingInfo parseProductCloseInfo(List<String> lst, String date) {
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		ProductClosingInfo prodInfo = new ProductClosingInfo();
 		try {

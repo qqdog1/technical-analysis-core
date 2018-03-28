@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import name.qd.techAnalyst.Constants.AnalyzerType;
+import name.qd.techAnalyst.analyzer.AnalystUtils;
 import name.qd.techAnalyst.analyzer.TechAnalyzer;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.vo.AnalysisResult;
@@ -26,9 +27,8 @@ public class AD implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) {
+	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = new ArrayList<>();
-		List<AnalysisResult> lstResult = null;
 		try {
 			List<DailyClosingInfo> lstDaily = dataManager.getDailyClosingInfo(from, to);
 			for(DailyClosingInfo info : lstDaily) {
@@ -38,37 +38,28 @@ public class AD implements TechAnalyzer {
 				result.setValue(value);
 				lst.add(result);
 			}
-			
-			lstResult = accu(lst);
 		} catch (Exception e) {
 			log.error("AD analyze failed.", e);
+			throw e;
 		}
-		return lstResult;
+		return lst;
 	}
 	
-	private List<AnalysisResult> accu(List<AnalysisResult> lst) {
-		List<AnalysisResult> lstResult = new ArrayList<>();
-		AnalysisResult lastResult = new AnalysisResult();
-		lastResult.setValue(0);
-		for(AnalysisResult result : lst) {
-			AnalysisResult analysisResult = new AnalysisResult();
-			analysisResult.setDate(result.getDate());
-			analysisResult.setValue(lastResult.getValue().get(0)+result.getValue().get(0));
-			lstResult.add(analysisResult);
-			lastResult = analysisResult;
-		}
-		
-		return lstResult;
-	}
-
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) {
-		return null;
+	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
+		List<AnalysisResult> lst = analyze(dataManager, product, from, to);
+		String accu = inputs[0];
+		if(!"Y".equalsIgnoreCase(accu)) {
+			return lst;
+		}
+		return AnalystUtils.accu(lst);
 	}
 
 	@Override
 	public List<String> getCustomDescreption() {
-		return null;
+		List<String> lst = new ArrayList<>();
+		lst.add("Accumulate(Y/N):");
+		return lst;
 	}
 
 	@Override

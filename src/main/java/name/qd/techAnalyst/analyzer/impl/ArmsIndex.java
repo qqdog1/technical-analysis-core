@@ -11,18 +11,16 @@ import name.qd.techAnalyst.Analyzer;
 import name.qd.techAnalyst.Constants.AnalyzerType;
 import name.qd.techAnalyst.analyzer.AnalystUtils;
 import name.qd.techAnalyst.analyzer.TechAnalyzer;
-import name.qd.techAnalyst.analyzer.TechAnalyzerFactory;
+import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
 import name.qd.techAnalyst.dataSource.DataSource;
-import name.qd.techAnalyst.util.StringCombineUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
-import name.qd.techAnalyst.vo.DailyClosingInfo;
 
 /**
  * (上漲家數 / 下跌家數) / (上漲成交量 / 下跌成交量)
  */
 public class ArmsIndex implements TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ArmsIndex.class);
-	private TechAnalyzerFactory factory = TechAnalyzerFactory.getInstance();
+	private TechAnalyzerManager manager = TechAnalyzerManager.getInstance();
 	
 	@Override
 	public String getCacheName(String product) {
@@ -30,32 +28,43 @@ public class ArmsIndex implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) {
+	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
+		List<AnalysisResult> lst = new ArrayList<>();
 		try {
-			List<DailyClosingInfo> lstDaily = dataManager.getDailyClosingInfo(from, to);
-			List<AnalysisResult> lstAdvanceVolume = factory.getAnalyzer(Analyzer.AdvancingVolume).analyze(dataManager, product, from, to);
-			List<AnalysisResult> lstDeclineVolume = factory.getAnalyzer(Analyzer.DecliningVolume).analyze(dataManager, product, from, to);
-			List<AnalysisResult> lstUnchangeVolume = factory.getAnalyzer(Analyzer.UnchangedVolume).analyze(dataManager, product, from, to);
+			List<AnalysisResult> lstAdvanceVolume = manager.getAnalysisResult(dataManager, Analyzer.AdvancingVolume, product, from, to);
+			List<AnalysisResult> lstDeclineVolume = manager.getAnalysisResult(dataManager, Analyzer.DecliningVolume, product, from, to);
 			
-			for(int i = 0 ; i < lstDaily.size() ; i++) {
-				int ad = lstDaily.get(i).getAdvance();
-				double addd = lstAdvanceVolume.get(i).getValue().get(1);
-				int de = lstDaily.get(i).getDecline();
-				double deee = lstDeclineVolume.get(i).getValue().get(1);
-				int un = lstDaily.get(i).getUnchanged();
-				double unnn = lstUnchangeVolume.get(i).getValue().get(1);
-				System.out.println(StringCombineUtil.combine(lstDaily.get(i).getDate().toString(), ",", lstAdvanceVolume.get(i).getDate().toString(), ",", lstDeclineVolume.get(i).getDate().toString()));
-				System.out.println("[" + ad + ":" + addd + "],[" + de + ":" + deee + "],[" + un + ":" + unnn + "]");
+			if(lstAdvanceVolume.size() != lstDeclineVolume.size()) {
+				throw new Exception("AdvanceVolume data count != DeclineVolume data count");
 			}
 			
+			for(int i = 0 ; i < lstAdvanceVolume.size() ; i++) {
+				AnalysisResult advanceResult = lstAdvanceVolume.get(i);
+				AnalysisResult declineResult = lstDeclineVolume.get(i);
+				
+				if(advanceResult.getDate().getTime() != declineResult.getDate().getTime()) {
+					throw new Exception("AdvanceVolume data Date != DeclineVolume data Date");
+				}
+				
+				double adCount = advanceResult.getValue().get(1);
+				double deCount = declineResult.getValue().get(1);
+				double adVolume = advanceResult.getValue().get(0);
+				double deVolume = declineResult.getValue().get(0);
+				
+				AnalysisResult result = new AnalysisResult();
+				result.setDate(advanceResult.getDate());
+				result.setValue((adCount/deCount)/(adVolume/deVolume));
+				lst.add(result);
+			}
 		} catch (Exception e) {
 			log.error("Analyze ArmsIndex failed.", e);
+			throw e;
 		}
-		return null;
+		return lst;
 	}
 
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) {
+	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
 		List<AnalysisResult> lst = analyze(dataManager, product, from, to);
 		return AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);

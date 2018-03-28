@@ -60,6 +60,11 @@ public class TechJFreeChart {
 		prepareChartPanel();
 	}
 	
+	public void removeAll() {
+		mapTimeSeries.clear();
+		prepareChartPanel();
+	}
+	
 	private void prepareChartPanel() {
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		TimeSeriesCollection dataset2 = new TimeSeriesCollection();

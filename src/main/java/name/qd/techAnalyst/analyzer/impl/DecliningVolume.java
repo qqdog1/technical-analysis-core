@@ -26,7 +26,7 @@ public class DecliningVolume implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) {
+	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		try {
 			Map<Date, List<ProductClosingInfo>> map = dataManager.getAllProductClosingInfo(from, to);
@@ -56,12 +56,13 @@ public class DecliningVolume implements TechAnalyzer {
 			});
 		} catch (Exception e) {
 			log.error("DecliningVolume analyze failed.", e);
+			throw e;
 		}
 		return lstResult;
 	}
 
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) {
+	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
 		List<AnalysisResult> lst = analyze(dataManager, product, from, to);
 		return AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);

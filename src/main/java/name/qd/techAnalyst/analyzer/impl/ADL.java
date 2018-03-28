@@ -27,7 +27,7 @@ public class ADL implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) {
+	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = new ArrayList<>();
 		List<AnalysisResult> lstResult = null;
 		try {
@@ -50,6 +50,7 @@ public class ADL implements TechAnalyzer {
 			lstResult = accu(lst);
 		} catch (Exception e) {
 			log.error("Analyze ADL failed.", e);
+			throw e;
 		}
 		return lstResult;
 	}
@@ -69,7 +70,7 @@ public class ADL implements TechAnalyzer {
 	}
 	
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) {
+	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) throws Exception {
 		return null;
 	}
 	

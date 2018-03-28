@@ -20,14 +20,9 @@ import name.qd.techAnalyst.analyzer.impl.price.AveragePrice;
 import name.qd.techAnalyst.analyzer.impl.price.ClosePrice;
 
 public class TechAnalyzerFactory {
-	private static TechAnalyzerFactory instance = new TechAnalyzerFactory();
 	private Map<Analyzer, TechAnalyzer> map = new HashMap<>();
 	
-	private TechAnalyzerFactory() {
-	}
-	
-	public static TechAnalyzerFactory getInstance() {
-		return instance;
+	public TechAnalyzerFactory() {
 	}
 	
 	public TechAnalyzer getAnalyzer(Analyzer analyzer) {

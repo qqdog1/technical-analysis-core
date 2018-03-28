@@ -50,7 +50,7 @@ public class TWSEDataParserTest {
 	public void testParseDailyProducts() {
 		TWSEDataParser parser = new TWSEDataParser();
 		try {
-			List<ProductClosingInfo> lst = parser.readAllProductClosingInfo("20180305");
+			List<ProductClosingInfo> lst = parser.readAllNormalStock("20180305");
 			for(ProductClosingInfo info : lst) {
 				System.out.println(info.getFilledShare() + ":" + info.getFilledAmount() + ":" + 
 						info.getOpenPrice() + ":" + info.getUpperPrice() + ":" + 

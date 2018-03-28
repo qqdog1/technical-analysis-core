@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import name.qd.techAnalyst.Constants.AnalyzerType;
+import name.qd.techAnalyst.analyzer.AnalystUtils;
 import name.qd.techAnalyst.analyzer.TechAnalyzer;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.util.StringCombineUtil;
@@ -26,7 +27,7 @@ public class SI implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) {
+	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		try {
 			List<ProductClosingInfo> lstProducts = dataManager.getProductClosingInfo(product, from, to);
@@ -52,6 +53,9 @@ public class SI implements TechAnalyzer {
 				}
 				double l = 3;
 				double si = 50 * x / r * k / l;
+				if(Double.isNaN(si)) {
+					si = 0;
+				}
 				
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(info.getDate());
@@ -60,29 +64,19 @@ public class SI implements TechAnalyzer {
 			}
 		} catch (Exception e) {
 			log.error("Analyze SI failed.", e);
+			throw e;
 		}
 		return lstResult;
 	}
 
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) {
+	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
 		List<AnalysisResult> lst = analyze(dataManager, product, from, to);
-		List<AnalysisResult> lstResult = new ArrayList<>();
 		String accu = inputs[0];
 		if(!"Y".equalsIgnoreCase(accu)) {
 			return lst;
 		}
-		AnalysisResult lastResult = new AnalysisResult();
-		lastResult.setValue(0);
-		for(AnalysisResult result : lst) {
-			AnalysisResult analysisResult = new AnalysisResult();
-			analysisResult.setDate(result.getDate());
-			analysisResult.setValue(lastResult.getValue().get(0)+result.getValue().get(0));
-			lstResult.add(analysisResult);
-			lastResult = analysisResult;
-		}
-		
-		return lstResult;
+		return AnalystUtils.accu(lst);
 	}
 
 	@Override
