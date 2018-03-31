@@ -66,7 +66,7 @@ public class ArmsIndex implements TechAnalyzer {
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = analyze(dataManager, product, from, to);
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, Analyzer.ArmsIndex, product, from, to);
 		return AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);
 	}
 	

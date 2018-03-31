@@ -7,9 +7,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import name.qd.techAnalyst.Analyzer;
 import name.qd.techAnalyst.Constants.AnalyzerType;
 import name.qd.techAnalyst.analyzer.AnalystUtils;
 import name.qd.techAnalyst.analyzer.TechAnalyzer;
+import name.qd.techAnalyst.analyzer.TechAnalyzerManager;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
@@ -46,7 +48,7 @@ public class AD_Issues implements TechAnalyzer {
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = analyze(dataManager, product, from, to);
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, Analyzer.AD_Issues, product, from, to);
 		return AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);
 	}
 

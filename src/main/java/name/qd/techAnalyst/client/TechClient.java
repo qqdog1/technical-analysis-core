@@ -196,6 +196,7 @@ public class TechClient {
 					runAnalyzer(Analyzer.valueOf(analyzer), product, from, to);
 				} catch (Exception ex) {
 					// TODO
+					log.error(ex);
 				}
 			}
 		});

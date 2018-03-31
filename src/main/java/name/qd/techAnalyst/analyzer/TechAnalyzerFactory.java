@@ -13,6 +13,8 @@ import name.qd.techAnalyst.analyzer.impl.AD_Issues;
 import name.qd.techAnalyst.analyzer.impl.AD_Ratio;
 import name.qd.techAnalyst.analyzer.impl.AdvancingVolume;
 import name.qd.techAnalyst.analyzer.impl.ArmsIndex;
+import name.qd.techAnalyst.analyzer.impl.Aroon_DOWN;
+import name.qd.techAnalyst.analyzer.impl.Aroon_UP;
 import name.qd.techAnalyst.analyzer.impl.DecliningVolume;
 import name.qd.techAnalyst.analyzer.impl.SI;
 import name.qd.techAnalyst.analyzer.impl.UnchangedVolume;
@@ -69,6 +71,12 @@ public class TechAnalyzerFactory {
 			break;
 		case ArmsIndex:
 			map.put(analyzer, new ArmsIndex());
+			break;
+		case Aroon_UP:
+			map.put(analyzer, new Aroon_UP());
+			break;
+		case Aroon_DOWN:
+			map.put(analyzer, new Aroon_DOWN());
 			break;
 		case AVERAGE_PRICE:
 			map.put(analyzer, new AveragePrice());
