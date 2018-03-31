@@ -20,6 +20,9 @@ import name.qd.techAnalyst.analyzer.impl.SI;
 import name.qd.techAnalyst.analyzer.impl.UnchangedVolume;
 import name.qd.techAnalyst.analyzer.impl.price.AveragePrice;
 import name.qd.techAnalyst.analyzer.impl.price.ClosePrice;
+import name.qd.techAnalyst.analyzer.impl.price.LowerPrice;
+import name.qd.techAnalyst.analyzer.impl.price.OpenPrice;
+import name.qd.techAnalyst.analyzer.impl.price.UpperPrice;
 
 public class TechAnalyzerFactory {
 	private Map<Analyzer, TechAnalyzer> map = new HashMap<>();
@@ -60,15 +63,7 @@ public class TechAnalyzerFactory {
 		case SI:
 			map.put(analyzer, new SI());
 			break;
-		case AdvancingVolume:
-			map.put(analyzer, new AdvancingVolume());
-			break;
-		case DecliningVolume:
-			map.put(analyzer, new DecliningVolume());
-			break;
-		case UnchangedVolume:
-			map.put(analyzer, new UnchangedVolume());
-			break;
+		
 		case ArmsIndex:
 			map.put(analyzer, new ArmsIndex());
 			break;
@@ -78,11 +73,29 @@ public class TechAnalyzerFactory {
 		case Aroon_DOWN:
 			map.put(analyzer, new Aroon_DOWN());
 			break;
+		case AdvancingVolume:
+			map.put(analyzer, new AdvancingVolume());
+			break;
+		case DecliningVolume:
+			map.put(analyzer, new DecliningVolume());
+			break;
+		case UnchangedVolume:
+			map.put(analyzer, new UnchangedVolume());
+			break;
 		case AVERAGE_PRICE:
 			map.put(analyzer, new AveragePrice());
 			break;
 		case CLOSE_PRICE:
 			map.put(analyzer, new ClosePrice());
+			break;
+		case OPEN_PRICE:
+			map.put(analyzer, new OpenPrice());
+			break;
+		case UPPER_PRICE:
+			map.put(analyzer, new UpperPrice());
+			break;
+		case LOWER_PRICE:
+			map.put(analyzer, new LowerPrice());
 			break;
 		}
 	}

@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import name.qd.techAnalyst.dataSource.DataSource;
-import name.qd.techAnalyst.vo.AnalysisResult;
-import name.qd.techAnalyst.vo.VerifyResult;
+import name.qd.techAnalyst.vo.ActionResult;
 
 public interface BackTesting {
-	public VerifyResult verify(DataSource dataSource, List<AnalysisResult> lst, String product, Date from, Date to, Object ... customObjs);
+	public List<ActionResult> getAction(DataSource dataSource, String product, Date from, Date to, String ... custom) throws Exception ;
+	public List<String> getCustomDescreption();
 }

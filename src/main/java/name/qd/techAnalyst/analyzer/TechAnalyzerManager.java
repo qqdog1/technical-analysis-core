@@ -42,7 +42,7 @@ public class TechAnalyzerManager {
 		return instance;
 	}
 	
-	public List<AnalysisResult> getAnalysisResult(DataSource dataManager, Analyzer analyzer, String product, Date from, Date to) throws Exception {
+	public List<AnalysisResult> getAnalysisResult(DataSource dataSource, Analyzer analyzer, String product, Date from, Date to) throws Exception {
 		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
@@ -55,7 +55,7 @@ public class TechAnalyzerManager {
 		if(!isDateInRange(techAnalyzer, product, from, to)) {
 			log.info("Result data not in range.");
 			// analyze new data and cache
-			updateCache(dataManager, techAnalyzer, product, from, to);
+			updateCache(dataSource, techAnalyzer, product, from, to);
 		}
 		
 		ArrayList<AnalysisResult> lst = new ArrayList<AnalysisResult>();

@@ -10,14 +10,12 @@ import java.util.List;
 import name.qd.fileCache.cache.FileCacheObject;
 import name.qd.fileCache.common.TransInputStream;
 import name.qd.fileCache.common.TransOutputStream;
-import name.qd.techAnalyst.Constants.Action;
 import name.qd.techAnalyst.util.TimeUtil;
 
 public class AnalysisResult implements FileCacheObject {
 	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
 	private Date date;
 	private List<Double> values = new ArrayList<>();
-	private Action action = Action.NONE;
 	
 	public Date getDate() {
 		return date;
@@ -34,12 +32,6 @@ public class AnalysisResult implements FileCacheObject {
 	public void setValue(double value) {
 		values.add(value);
 	}
-	public Action getAction() {
-		return action;
-	}
-	public void setAction(Action action) {
-		this.action = action;
-	}
 	@Override
 	public byte[] parseToFileFormat() throws IOException {
 		TransOutputStream tOut = new TransOutputStream();
@@ -48,7 +40,6 @@ public class AnalysisResult implements FileCacheObject {
 		for(double d : values) {
 			tOut.writeDouble(d);
 		}
-		tOut.writeString(action.name());
 		return tOut.toByteArray();
 	}
 	@Override
@@ -60,11 +51,9 @@ public class AnalysisResult implements FileCacheObject {
 		for(int i = 0 ; i < size; i++) {
 			values.add(tIn.getDouble());
 		}
-		String act = tIn.getString();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(timestamp);
 		date = calendar.getTime();
-		action = Action.valueOf(act);
 	}
 	@Override
 	public String getKeyString() {

@@ -7,6 +7,6 @@ public enum Analyzer {
 	
 	ArmsIndex, Aroon_UP, Aroon_DOWN,
 	AdvancingVolume, DecliningVolume, UnchangedVolume,
-	AVERAGE_PRICE, CLOSE_PRICE,
+	AVERAGE_PRICE, CLOSE_PRICE, OPEN_PRICE, UPPER_PRICE, LOWER_PRICE, 
 	;
 }
