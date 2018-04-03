@@ -54,6 +54,7 @@ public class TechClient {
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnRemove = new JButton("Remove");
 	private JButton btnRemoveAll = new JButton("RemoveAll");
+	private JButton btnBackTest = new JButton("BackTest");
 	private JPanel chartPanel;
 	private List<JLabel> lstLabel = new ArrayList<>();
 	private List<JTextField> lstTextField = new ArrayList<>();
@@ -89,6 +90,7 @@ public class TechClient {
 		addToSelectPanel(btnAdd, 8, 0);
 		addToSelectPanel(btnRemove, 9, 0);
 		addToSelectPanel(btnRemoveAll, 10, 0);
+		addToSelectPanel(btnBackTest, 11, 0);
 		
 		frame.add(selectPanel, BorderLayout.NORTH);
 	}
@@ -215,6 +217,13 @@ public class TechClient {
 			public void actionPerformed(ActionEvent e) {
 				jFreechart.removeAll();
 				paintResult();
+			}
+		});
+		
+		btnBackTest.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 	}

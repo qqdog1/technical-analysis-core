@@ -102,8 +102,8 @@ public class TWSEDataParser {
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		ProductClosingInfo prodInfo = new ProductClosingInfo();
 		try {
-			prodInfo = new ProductClosingInfo();
 			prodInfo.setDate(sdf.parse(date));
+			prodInfo.setProduct(lst.get(0));
 			prodInfo.setFilledShare(Long.parseLong(lst.get(2)));
 			prodInfo.setFilledAmount(Double.parseDouble(lst.get(4)));
 			if("--".equals(lst.get(5))) {

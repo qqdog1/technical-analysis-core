@@ -7,6 +7,7 @@ public class ProductClosingInfo {
 	public static int DECLINE = 2;
 	public static int UNCHANGE = 4;
 	
+	private String product;
 	private Date date;
 	private long filledShare;
 	private double openPrice;
@@ -17,6 +18,12 @@ public class ProductClosingInfo {
 	private double filledAmount;
 	private int ADStatus;
 	
+	public String getProduct() {
+		return product;
+	}
+	public void setProduct(String product) {
+		this.product = product;
+	}
 	public Date getDate() {
 		return date;
 	}
