@@ -143,7 +143,7 @@ public class BuySellRecorder {
 		webDriver = new ChromeDriver();
 		dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 		captchaSolver = new CaptchaSolver();
-		dir = "D:/SimpleConnect_Maven/techanalyst/bsr/data/" + sdf.format(date) + "/";
+		dir = "D:/SimpleConnect_Maven/techanalyst/file/TWSE/bsr/" + sdf.format(date) + "/";
 		
 		if(!Files.exists(new File(dir).toPath())) {
 			try {
