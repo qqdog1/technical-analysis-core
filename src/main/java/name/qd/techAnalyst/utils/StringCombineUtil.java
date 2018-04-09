@@ -1,4 +1,4 @@
-package name.qd.techAnalyst.util;
+package name.qd.techAnalyst.utils;
 
 public class StringCombineUtil {
 	public static String combine(String ... strings) {

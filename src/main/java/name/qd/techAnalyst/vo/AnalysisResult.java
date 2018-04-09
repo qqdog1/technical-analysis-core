@@ -10,7 +10,7 @@ import java.util.List;
 import name.qd.fileCache.cache.FileCacheObject;
 import name.qd.fileCache.common.TransInputStream;
 import name.qd.fileCache.common.TransOutputStream;
-import name.qd.techAnalyst.util.TimeUtil;
+import name.qd.techAnalyst.utils.TimeUtil;
 
 public class AnalysisResult implements FileCacheObject {
 	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();

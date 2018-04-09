@@ -1,4 +1,4 @@
-package name.qd.techAnalyst.util;
+package name.qd.techAnalyst.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import name.qd.techAnalyst.Constants.AnalyzerType;
 import name.qd.techAnalyst.analyzer.TechAnalyzer;
 import name.qd.techAnalyst.dataSource.DataSource;
-import name.qd.techAnalyst.util.StringCombineUtil;
+import name.qd.techAnalyst.utils.StringCombineUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 

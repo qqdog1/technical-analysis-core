@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import name.qd.techAnalyst.dataSource.TWSE.TWSEDataParser;
-import name.qd.techAnalyst.util.TimeUtil;
+import name.qd.techAnalyst.utils.TimeUtil;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 
