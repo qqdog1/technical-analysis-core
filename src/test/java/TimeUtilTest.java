@@ -1,3 +1,4 @@
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,6 +24,17 @@ public class TimeUtilTest {
 		for(String s : lst) {
 			Assert.assertEquals(s, sdf.format(calendar.getTime()));
 			calendar.add(Calendar.DATE, 1);
+		}
+	}
+	
+	@Test
+	public void AD2ROCTest() {
+		String s = "20110101";
+		try {
+			String date = TimeUtil.AD2ROC(s);
+			Assert.assertEquals(date, "100/01/01");
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 	}
 }

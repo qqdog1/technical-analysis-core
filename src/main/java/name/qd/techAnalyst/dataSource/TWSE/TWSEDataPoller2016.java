@@ -40,7 +40,7 @@ public class TWSEDataPoller2016 extends TWSEDataPoller {
 	}
 	
 	protected void tryDownloadDailyClosingInfo(String date) throws IOException {
-		String POSTDate = TimeUtil.AD2ROC(date);
+		String POSTDate = TimeUtil.YearAD2ROC(date);
 		HttpURLConnection connection = (HttpURLConnection) new URL(DAILY_CLOSING_INFO).openConnection();
 		connection.setRequestMethod("POST");
 		connection.setDoOutput(true);

@@ -28,7 +28,6 @@ public class TWSEConstants {
 	}
 	
 	public static String getDailyClosingFilePath(String date) {
-		return StringCombineUtil.combine(getDailyClosingFolder(date.substring(0, 4)),
-				DAILY_CLOSING_FILE_PREFIX, date, ".csv");
+		return StringCombineUtil.combine(getDailyClosingFolder(date.substring(0, 4)), DAILY_CLOSING_FILE_PREFIX, date, ".csv");
 	}
 }

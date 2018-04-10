@@ -7,6 +7,7 @@ public class Constants {
 	
 	public enum Exchange {
 		TWSE,
+		TPEX,
 		;
 	}
 	
