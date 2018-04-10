@@ -37,6 +37,7 @@ public class BuySellRecorder {
 	private CaptchaSolver captchaSolver;
 	private String captchaPath = "bsr/abc.jpg";
 	private List<String> lst = new ArrayList<>();
+	private List<String> lstRemain = new ArrayList<>();
 	private Date date = TimeUtil.getToday();
 	private SimpleDateFormat sdf = TimeUtil.getDateFormat();
 	private String dir;
@@ -94,21 +95,22 @@ public class BuySellRecorder {
 	}
 	
 	private void startDownload() {
-		List<String> lstTemp = new ArrayList<>();
 		webDriver.get("http://bsr.twse.com.tw/bshtm/bsMenu.aspx");
 		for(String product : lst) {
 			try {
 				if(isFileExist(product)) {
 					log.info("File already exist. {}", product);
+					lstRemain.remove(product);
 					continue;
 				}
 				downloadData(product);
 			} catch (Exception e) {
 				log.error("Download {} failed.", product);
-				lstTemp.add(product);
-				continue;
+				break;
 			}
+			
 			log.info("Download {} success.", product);
+			lstRemain.remove(product);
 			
 			try {
 				Thread.sleep(2000);
@@ -121,10 +123,17 @@ public class BuySellRecorder {
 			moveFile(product);
 		}
 		
-		lst = lstTemp;
+		lst = new ArrayList<>();
+		lst.addAll(lstRemain);
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		if(lst.size() > 0) {
-			log.info("List not empty. Download remain data.");
+			log.info("List not empty. Download remain data. {}", lst.size());
 			startDownload();
 		}
 	}
@@ -142,6 +151,8 @@ public class BuySellRecorder {
 				lst.add(productInfo.getProduct());
 			}
 		}
+		
+		lstRemain.addAll(lst);
 	}
 	
 	private boolean isFileExist(String product) {
