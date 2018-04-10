@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import name.qd.techAnalyst.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtil;
 
 public class TimeUtilTest {
 	@Test
