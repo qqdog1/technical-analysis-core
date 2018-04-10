@@ -30,11 +30,12 @@ public class TimeUtilTest {
 	@Test
 	public void AD2ROCTest() {
 		String s = "20110101";
+		String date = null;
 		try {
-			String date = TimeUtil.AD2ROC(s);
-			Assert.assertEquals(date, "100/01/01");
+			date = TimeUtil.AD2ROC(s);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		Assert.assertEquals(date, "100/01/01");
 	}
 }

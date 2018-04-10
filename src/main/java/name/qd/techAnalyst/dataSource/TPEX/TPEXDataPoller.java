@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.concurrent.TimeUnit;
 
-import name.qd.techAnalyst.util.TimeUtil;
+import name.qd.techAnalyst.utils.TimeUtil;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

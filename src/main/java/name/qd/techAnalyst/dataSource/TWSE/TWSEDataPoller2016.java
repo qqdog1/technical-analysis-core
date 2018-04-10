@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.text.ParseException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +24,12 @@ public class TWSEDataPoller2016 extends TWSEDataPoller {
 	}
 	
 	protected void tryDownloadDailyClosingInfo(String date) throws IOException {
-		String POSTDate = TimeUtil.AD2ROC(date);
+		String POSTDate = null;
+		try {
+			POSTDate = TimeUtil.AD2ROC(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		HttpURLConnection connection = (HttpURLConnection) new URL(DAILY_CLOSING_INFO).openConnection();
 		connection.setRequestMethod("POST");
 		connection.setDoOutput(true);
