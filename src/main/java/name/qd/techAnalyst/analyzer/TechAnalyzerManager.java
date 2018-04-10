@@ -18,7 +18,7 @@ import name.qd.fileCache.cache.FileCacheObject;
 import name.qd.techAnalyst.Analyzer;
 import name.qd.techAnalyst.Constants.AnalyzerType;
 import name.qd.techAnalyst.dataSource.DataSource;
-import name.qd.techAnalyst.util.TimeUtil;
+import name.qd.techAnalyst.utils.TimeUtil;
 import name.qd.techAnalyst.vo.AnalysisResult;
 
 public class TechAnalyzerManager {

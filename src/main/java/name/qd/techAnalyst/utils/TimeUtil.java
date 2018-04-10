@@ -1,31 +1,28 @@
-package name.qd.techAnalyst.util;
+package name.qd.techAnalyst.utils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import name.qd.techAnalyst.utils.StringCombineUtil;
-
 public class TimeUtil {
 	private static SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMdd");
 	private static SimpleDateFormat sdfDateTime = new SimpleDateFormat("yyyyMMdd-HH:mm:ss:SSS");
 	
-	public static String YearAD2ROC(String AD) {
-		return String.valueOf(YearAD2ROC(Integer.parseInt(AD)));
+	public static String AD2ROC(String AD) {
+		return String.valueOf(AD2ROC(Integer.parseInt(AD)));
 	}
 	
-	public static String YearROC2AD(String ROC) {
-		return String.valueOf(YearROC2AD(Integer.parseInt(ROC)));
+	public static String ROC2AD(String ROC) {
+		return String.valueOf(ROC2AD(Integer.parseInt(ROC)));
 	}
 	
-	public static int YearAD2ROC(int AD) {
+	public static int AD2ROC(int AD) {
 		return AD - 1911;
 	}
 	
-	public static int YearROC2AD(int ROC) {
+	public static int ROC2AD(int ROC) {
 		return ROC + 1911;
 	}
 	
@@ -56,19 +53,7 @@ public class TimeUtil {
 	// 100/01/01 -> 20110101
 	public static String getOutputFromROC(String date) {
 		String[] dateInfo = date.split("/");
-		return StringCombineUtil.combine(YearROC2AD(dateInfo[0]), dateInfo[1], dateInfo[2]);
-	}
-	
-	// 20110101 -> 100/01/01
-	public static String AD2ROC(String data) throws ParseException {
-		Date date = sdfDate.parse(data);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		int year = calendar.get(Calendar.YEAR);
-		year = YearAD2ROC(year);
-		return StringCombineUtil.combine(String.valueOf(year), "/", 
-				String.format("%02d", calendar.get(Calendar.MONTH)+1), "/",
-				String.format("%02d", calendar.get(Calendar.DAY_OF_MONTH)));
+		return StringCombineUtil.combine(ROC2AD(dateInfo[0]), dateInfo[1], dateInfo[2]);
 	}
 	
 	public static Date getToday() {

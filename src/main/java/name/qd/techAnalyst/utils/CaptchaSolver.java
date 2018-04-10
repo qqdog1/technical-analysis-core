@@ -1,4 +1,4 @@
-package name.qd.bsr;
+package name.qd.techAnalyst.utils;
 
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.opencv_core.Mat;

@@ -9,16 +9,6 @@ public abstract class TWSEDataPoller {
 		this.nextPoller = nextPoller;
 	}
 	
-	public void downloadProdClosingInfo(String year, String month, String prodId) {
-		try {
-			tryDownloadProdClosingInfo(year, month, prodId);
-		} catch (IOException e) {
-			if(nextPoller != null) {
-				nextPoller.downloadProdClosingInfo(year, month, prodId);
-			}
-		}
-	}
-	
 	public void downloadDailyClosingInfo(String date) {
 		try {
 			tryDownloadDailyClosingInfo(date);
@@ -29,6 +19,5 @@ public abstract class TWSEDataPoller {
 		}
 	}
 	
-	protected abstract void tryDownloadProdClosingInfo(String year, String month, String prodId) throws IOException;
 	protected abstract void tryDownloadDailyClosingInfo(String date) throws IOException;
 }

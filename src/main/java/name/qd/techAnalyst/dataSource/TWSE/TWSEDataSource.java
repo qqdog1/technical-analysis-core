@@ -17,7 +17,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import name.qd.techAnalyst.dataSource.DataSource;
-import name.qd.techAnalyst.util.TimeUtil;
+import name.qd.techAnalyst.utils.TimeUtil;
+import name.qd.techAnalyst.vo.BuySellInfo;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 
@@ -38,7 +39,6 @@ public class TWSEDataSource implements DataSource {
 	private void initFolder() {
 		checkFolderExist(TWSEConstants.FILE_DIR);
 		checkFolderExist(TWSEConstants.FILE_DIR + TWSEConstants.DAILY_CLOSING_INFO_DIR);
-		checkFolderExist(TWSEConstants.FILE_DIR + TWSEConstants.PRODUCT_CLOSING_INFO_DIR);
 	}
 	
 	@Override
@@ -89,6 +89,17 @@ public class TWSEDataSource implements DataSource {
 			}
 		}
 		return map;
+	}
+	
+	@Override
+	public List<BuySellInfo> getBuySellInfo(Date date, String product) throws Exception {
+		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		String dateString = sdf.format(date);
+		File file = new File(TWSEConstants.getBuySellInfoFilePath(dateString, product));
+		if(file.exists()) {
+			return parser.getBuySellInfo(product, dateString);
+		}
+		return new ArrayList<>();
 	}
 	
 	private void checkAndDownloadDailyClosing(List<String> lstDate) throws IOException {

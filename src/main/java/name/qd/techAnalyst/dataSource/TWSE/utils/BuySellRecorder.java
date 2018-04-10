@@ -1,4 +1,4 @@
-package name.qd.bsr;
+package name.qd.techAnalyst.dataSource.TWSE.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,7 +24,8 @@ import name.qd.techAnalyst.Constants.Exchange;
 import name.qd.techAnalyst.TechAnalyst;
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.dataSource.DataSourceFactory;
-import name.qd.techAnalyst.util.TimeUtil;
+import name.qd.techAnalyst.utils.CaptchaSolver;
+import name.qd.techAnalyst.utils.TimeUtil;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 
 public class BuySellRecorder {
@@ -33,7 +34,7 @@ public class BuySellRecorder {
 	private BufferedImage bufferedImage;
 	private DataSource dataSource;
 	private CaptchaSolver captchaSolver;
-	private String filePath = "bsr/abc.jpg";
+	private String captchaPath = "bsr/abc.jpg";
 	private List<String> lst = new ArrayList<>();
 	private Date date = TimeUtil.getToday();
 	private SimpleDateFormat sdf = TimeUtil.getDateFormat();
@@ -54,9 +55,8 @@ public class BuySellRecorder {
 	
 	private void downloadData(String product) throws Exception {
 		downloadCaptcha();
-		String ans = captchaSolver.solve(filePath);
+		String ans = captchaSolver.solve(captchaPath);
 		downloadFile(product, ans);
-		moveFile(product);
 	}
 	
 	private void moveFile(String product) {
@@ -86,7 +86,7 @@ public class BuySellRecorder {
 		URL url;
 		url = new URL(images.get(1).getAttribute("src"));
 		bufferedImage = ImageIO.read(url);
-		ImageIO.write(bufferedImage, "jpg", new File(filePath));
+		ImageIO.write(bufferedImage, "jpg", new File(captchaPath));
 	}
 	
 	private void startDownload() {
@@ -112,6 +112,11 @@ public class BuySellRecorder {
 				e.printStackTrace();
 			}
 		}
+		
+		for(String product : lst) {
+			moveFile(product);
+		}
+		
 		lst = lstTemp;
 		
 		if(lst.size() > 0) {

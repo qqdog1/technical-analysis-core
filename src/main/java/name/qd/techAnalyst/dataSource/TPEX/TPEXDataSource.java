@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import name.qd.techAnalyst.dataSource.DataSource;
 import name.qd.techAnalyst.dataSource.TWSE.TWSEDataSource;
+import name.qd.techAnalyst.vo.BuySellInfo;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 
@@ -40,6 +41,11 @@ public class TPEXDataSource implements DataSource {
 
 	@Override
 	public Map<Date, List<ProductClosingInfo>> getAllProductClosingInfo(Date from, Date to) throws Exception {
+		return null;
+	}
+	
+	@Override
+	public List<BuySellInfo> getBuySellInfo(Date date, String product) throws Exception {
 		return null;
 	}
 	

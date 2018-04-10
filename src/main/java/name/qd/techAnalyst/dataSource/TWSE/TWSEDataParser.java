@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,8 +14,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import name.qd.techAnalyst.util.StringCombineUtil;
-import name.qd.techAnalyst.util.TimeUtil;
+import name.qd.techAnalyst.utils.StringCombineUtil;
+import name.qd.techAnalyst.utils.TimeUtil;
+import name.qd.techAnalyst.vo.BuySellInfo;
 import name.qd.techAnalyst.vo.DailyClosingInfo;
 import name.qd.techAnalyst.vo.ProductClosingInfo;
 
@@ -92,6 +94,28 @@ public class TWSEDataParser {
 					}
 				} else {
 					continue;
+				}
+			}
+		}
+		return lst;
+	}
+	
+	public List<BuySellInfo> getBuySellInfo(String product, String date) throws UnsupportedEncodingException, FileNotFoundException, IOException {
+		List<BuySellInfo> lst = new ArrayList<>();
+		
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getBuySellInfoFilePath(date, product)), "Big5"))) {
+			boolean start = false;
+			for(String line; (line = br.readLine()) != null; ) {
+				if(line.startsWith("1")) {
+					start = true;
+				}
+				
+				if(start) {
+					String[] ss = line.split(",");
+					for(String s : ss) {
+						System.out.print(s.trim() + ":");
+					}
+					System.out.println(ss.length);
 				}
 			}
 		}

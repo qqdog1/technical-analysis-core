@@ -1,6 +1,6 @@
 package name.qd.techAnalyst.dataSource.TPEX;
 
-import name.qd.techAnalyst.util.StringCombineUtil;
+import name.qd.techAnalyst.utils.StringCombineUtil;
 
 public class TPEXConstants {
 	public static final String FILE_DIR = "./file/TPEX/";
