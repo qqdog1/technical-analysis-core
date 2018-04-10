@@ -13,20 +13,20 @@ public class TPEXDataPollerTest {
 
 	@Test
 	public void dlDailyInfoTest() {
-		TPEXDataPoller poller = new TPEXDataPoller();
-		try {
-			Date from = TimeUtil.getDateFormat().parse("20180401");
-			Date to = TimeUtil.getToday();
-			
-			List<String> lst = TimeUtil.getDateBetween(from, to);
-			
-			for(String s : lst) {
-				poller.downloadDailyClosingInfo(s);
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		TPEXDataPoller poller = new TPEXDataPoller();
+//		try {
+//			Date from = TimeUtil.getDateFormat().parse("20180401");
+//			Date to = TimeUtil.getToday();
+//			
+//			List<String> lst = TimeUtil.getDateBetween(from, to);
+//			
+//			for(String s : lst) {
+//				poller.downloadDailyClosingInfo(s);
+//			}
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 }
