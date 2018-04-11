@@ -1,6 +1,7 @@
 package name.qd.analysis.dataSource.TWSE;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import name.qd.analysis.dataSource.TWSE.TWSEDataParser;
 import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.vo.BuySellInfo;
 import name.qd.analysis.vo.DailyClosingInfo;
 import name.qd.analysis.vo.ProductClosingInfo;
 
@@ -57,6 +59,20 @@ public class TWSEDataParserTest {
 						info.getLowerPrice() + ":" + info.getClosePrice() + ":" + info.getADStatus());
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void buySellParserTest() {
+		TWSEDataParser parser = new TWSEDataParser();
+		
+		try {
+			List<BuySellInfo> lst = parser.getBuySellInfo("2433", "20180403");
+			for(BuySellInfo info : lst) {
+				System.out.println(info.getProduct() + ":" + info.getSeqNo() + ":" + info.getBrokerName() + ":" + info.getPrice() + ":" + info.getBuyShare() + ":" + info.getSellShare());
+			}
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

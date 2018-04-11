@@ -88,7 +88,7 @@ public class BSRBrokerParser {
 	public static void main(String[] args) {
 		BSRBrokerParser parser = new BSRBrokerParser();
 		try {
-			parser.parse("20180410");
+			parser.parse("20180411");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

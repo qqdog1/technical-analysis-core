@@ -111,11 +111,27 @@ public class TWSEDataParser {
 				}
 				
 				if(start) {
-					String[] ss = line.split(",");
-					for(String s : ss) {
-						System.out.print(s.trim() + ":");
+					String[] s = line.split(",");
+					
+					BuySellInfo info1 = new BuySellInfo();
+					info1.setProduct(product);
+					info1.setSeqNo(Integer.parseInt(s[0]));
+					info1.setBrokerName(s[1]);
+					info1.setPrice(Double.parseDouble(s[2]));
+					info1.setBuyShare(Double.parseDouble(s[3]));
+					info1.setSellShare(Double.parseDouble(s[4]));
+					lst.add(info1);
+					
+					if(!"".equals(s[6])) {
+						BuySellInfo info2 = new BuySellInfo();
+						info2.setProduct(product);
+						info2.setSeqNo(Integer.parseInt(s[6]));
+						info2.setBrokerName(s[7]);
+						info2.setPrice(Double.parseDouble(s[8]));
+						info2.setBuyShare(Double.parseDouble(s[9]));
+						info2.setSellShare(Double.parseDouble(s[10]));
+						lst.add(info2);
 					}
-					System.out.println(ss.length);
 				}
 			}
 		}

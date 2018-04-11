@@ -3,8 +3,8 @@ package name.qd.analysis.vo;
 public class BuySellInfo {
 	private String product;
 	private int seqNo;
-	private String brokerNo;
 	private String brokerName;
+	private double price;
 	private double buyShare;
 	private double sellShare;
 	public String getProduct() {
@@ -19,17 +19,17 @@ public class BuySellInfo {
 	public void setSeqNo(int seqNo) {
 		this.seqNo = seqNo;
 	}
-	public String getBrokerNo() {
-		return brokerNo;
-	}
-	public void setBrokerNo(String brokerNo) {
-		this.brokerNo = brokerNo;
-	}
 	public String getBrokerName() {
 		return brokerName;
 	}
 	public void setBrokerName(String brokerName) {
 		this.brokerName = brokerName;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	public double getBuyShare() {
 		return buyShare;
