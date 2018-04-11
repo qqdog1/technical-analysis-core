@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import name.qd.analysis.TechAnalyst;
 import name.qd.analysis.Constants.AnalyzerType;
@@ -121,6 +122,7 @@ public class TechClient {
 		for(Analyzer analyzer : Analyzer.values()) {
 			comboTech.addItem(analyzer.name());
 		}
+		AutoCompleteDecorator.decorate(comboTech);
 	}
 	
 	private void setComboListener() {
