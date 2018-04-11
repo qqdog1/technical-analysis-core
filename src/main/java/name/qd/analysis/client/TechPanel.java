@@ -3,7 +3,6 @@ package name.qd.analysis.client;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -14,16 +13,14 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import name.qd.analysis.TechAnalyst;
 import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.Constants.Exchange;
 import name.qd.analysis.client.datePicker.DayModel;
@@ -35,13 +32,13 @@ import name.qd.analysis.vo.AnalysisResult;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 
-public class TechClient {
-	private Logger log;
+public class TechPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
+	private Logger log = LoggerFactory.getLogger(TechPanel.class);
 	private TechAnalyzerManager analyzerManager;
 	private DataSource twseDataManager;
 	private TechJFreeChart jFreechart = new TechJFreeChart();
 	
-	private JFrame frame = new JFrame("Tech Analyze");
 	private JPanel selectPanel = new JPanel();
 	
 	private JLabel labelTA = new JLabel("Tech Analyzer:");
@@ -62,21 +59,14 @@ public class TechClient {
 	private GridBagConstraints gridBagConstraints = new GridBagConstraints();
 	private Color disableColor = new Color(238,238,238);
 	
-	public TechClient() {
+	public TechPanel() {
 		initFrame();
-		initLogger();
 		initManager();
 		initActionListener();
 	}
 	
 	private void initFrame() {
-		frame.setSize(1200, 768);
-		frame.setMinimumSize(new Dimension(1024, 768));
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-		
-		frame.getContentPane().setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout());
 		
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
 		selectPanel.setLayout(new GridBagLayout());
@@ -93,18 +83,13 @@ public class TechClient {
 		addToSelectPanel(btnRemoveAll, 10, 0);
 		addToSelectPanel(btnBackTest, 11, 0);
 		
-		frame.add(selectPanel, BorderLayout.NORTH);
+		add(selectPanel, BorderLayout.NORTH);
 	}
 	
 	private void addToSelectPanel(Component comp, int x, int y) {
 		gridBagConstraints.gridx = x;
 		gridBagConstraints.gridy = y;
 		selectPanel.add(comp, gridBagConstraints);
-	}
-	
-	private void initLogger() {
-		System.setProperty("log4j.configurationFile", "./config/log4j2.xml");
-		log = LogManager.getLogger(TechAnalyst.class);
 	}
 	
 	private void initManager() {
@@ -155,7 +140,7 @@ public class TechClient {
 						addToSelectPanel(textField, i*2+1, 1);
 					}
 				}
-				frame.revalidate();
+				revalidate();
 			}
 		});
 	}
@@ -200,7 +185,7 @@ public class TechClient {
 					runAnalyzer(Analyzer.valueOf(analyzer), product, from, to);
 				} catch (Exception ex) {
 					// TODO
-					log.error(ex);
+					log.error("Run Analyzer failed.", ex);
 				}
 			}
 		});
@@ -244,15 +229,15 @@ public class TechClient {
 	
 	private void paintResult() {
 		if(chartPanel != null) {
-			frame.remove(chartPanel);
+			remove(chartPanel);
 		}
 		chartPanel = jFreechart.getChartPanel();
-		frame.add(chartPanel, BorderLayout.CENTER);
+		add(chartPanel, BorderLayout.CENTER);
 		
 		chartPanel.revalidate();
 		chartPanel.repaint();
-		frame.revalidate();
-		frame.repaint();
+		revalidate();
+		repaint();
 	}
 	
 	private List<AnalysisResult> getAnalysisResult(Analyzer analyzer, String product, Date from, Date to) throws Exception {
@@ -280,6 +265,6 @@ public class TechClient {
 	}
 	
 	public static void main(String[] s) {
-		new TechClient();
+		new TechPanel();
 	}
 }
