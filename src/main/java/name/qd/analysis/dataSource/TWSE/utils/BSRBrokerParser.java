@@ -1,4 +1,4 @@
-package name.qd.analysis.utils;
+package name.qd.analysis.dataSource.TWSE.utils;
 
 public class BSRBrokerParser {
 	

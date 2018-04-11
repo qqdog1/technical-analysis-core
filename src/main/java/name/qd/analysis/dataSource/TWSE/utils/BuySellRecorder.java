@@ -35,7 +35,7 @@ public class BuySellRecorder {
 	private BufferedImage bufferedImage;
 	private DataSource dataSource;
 	private TWSECaptchaSolver captchaSolver;
-	private String captchaPath = "bsr/abc.jpg";
+	private String captchaPath = "bsr/twse.jpg";
 	private List<String> lst = new ArrayList<>();
 	private List<String> lstRemain = new ArrayList<>();
 	private Date date = TimeUtil.getToday();
