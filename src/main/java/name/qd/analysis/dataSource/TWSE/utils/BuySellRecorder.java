@@ -25,7 +25,7 @@ import name.qd.analysis.TechAnalyst;
 import name.qd.analysis.Constants.Exchange;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.DataSourceFactory;
-import name.qd.analysis.utils.CaptchaSolver;
+import name.qd.analysis.utils.TWSECaptchaSolver;
 import name.qd.analysis.utils.TimeUtil;
 import name.qd.analysis.vo.ProductClosingInfo;
 
@@ -34,20 +34,21 @@ public class BuySellRecorder {
 	private WebDriver webDriver;
 	private BufferedImage bufferedImage;
 	private DataSource dataSource;
-	private CaptchaSolver captchaSolver;
+	private TWSECaptchaSolver captchaSolver;
 	private String captchaPath = "bsr/abc.jpg";
 	private List<String> lst = new ArrayList<>();
 	private List<String> lstRemain = new ArrayList<>();
 	private Date date = TimeUtil.getToday();
 	private SimpleDateFormat sdf = TimeUtil.getDateFormat();
 	private String dir;
+	private int total;
 	
 	private BuySellRecorder() {
 		initLogger();
 		init();
 		downloadData();
 		end();
-		log.info("Done.");
+		log.info("Done. {}", total);
 	}
 	
 	private void downloadData() {
@@ -152,6 +153,7 @@ public class BuySellRecorder {
 			}
 		}
 		
+		total = lst.size();
 		lstRemain.addAll(lst);
 	}
 	
@@ -162,7 +164,7 @@ public class BuySellRecorder {
 	private void init() {
 		webDriver = new ChromeDriver();
 		dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
-		captchaSolver = new CaptchaSolver();
+		captchaSolver = new TWSECaptchaSolver();
 		dir = "D:/SimpleConnect_Maven/techanalyst/file/TWSE/bsr/" + sdf.format(date) + "/";
 		
 		if(!Files.exists(new File(dir).toPath())) {

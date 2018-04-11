@@ -14,10 +14,10 @@ import static org.bytedeco.javacpp.opencv_imgproc.getStructuringElement;
 import static org.bytedeco.javacpp.opencv_imgproc.threshold;
 import static org.bytedeco.javacpp.opencv_photo.fastNlMeansDenoising;
 
-public class CaptchaSolver {
+public class TWSECaptchaSolver {
 	private TessBaseAPI tess;
 	
-	public CaptchaSolver() {
+	public TWSECaptchaSolver() {
 		tess = new TessBaseAPI();
 		if (tess.Init("./bsr/tessdata/", "eng") != 0) {
             throw new IllegalStateException("Could not initialize tesseract.");
@@ -57,7 +57,6 @@ public class CaptchaSolver {
         outText = tess.GetUTF8Text();
         String s = outText.getString();
 
-        // Destroy used object and release memory
         outText.deallocate();
 
         return s.replaceAll("[^0-9-A-Z]", "");
