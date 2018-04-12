@@ -8,14 +8,14 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.text.ParseException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.utils.StringCombineUtil;
 import name.qd.analysis.utils.TimeUtil;
 
 public class TWSEDataPoller2016 extends TWSEDataPoller {
-	private static Logger logger = LogManager.getLogger(TWSEDataPoller2016.class);
+	private static Logger logger = LoggerFactory.getLogger(TWSEDataPoller2016.class);
 	
 	private static final String DAILY_CLOSING_INFO = "http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX.php";
 	

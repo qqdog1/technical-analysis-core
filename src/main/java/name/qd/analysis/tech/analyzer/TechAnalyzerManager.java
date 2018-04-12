@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
@@ -22,7 +22,7 @@ import name.qd.fileCache.cache.CacheManager;
 import name.qd.fileCache.cache.FileCacheObject;
 
 public class TechAnalyzerManager {
-	private Logger log = LogManager.getLogger(TechAnalyzerManager.class);
+	private static Logger log = LoggerFactory.getLogger(TechAnalyzerManager.class);
 	private FileCacheManager fileCacheManager;
 	private Map<String, Date> mapFirst = new HashMap<String, Date>();
 	private Map<String, Date> mapLast = new HashMap<String, Date>();

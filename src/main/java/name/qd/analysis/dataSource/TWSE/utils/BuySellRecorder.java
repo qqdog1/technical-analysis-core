@@ -14,14 +14,13 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import name.qd.analysis.TechAnalyst;
 import name.qd.analysis.Constants.Exchange;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.DataSourceFactory;
@@ -30,7 +29,7 @@ import name.qd.analysis.utils.TimeUtil;
 import name.qd.analysis.vo.ProductClosingInfo;
 
 public class BuySellRecorder {
-	private Logger log;
+	private Logger log = LoggerFactory.getLogger(BuySellRecorder.class);
 	private WebDriver webDriver;
 	private BufferedImage bufferedImage;
 	private DataSource dataSource;
@@ -44,7 +43,6 @@ public class BuySellRecorder {
 	private int total;
 	
 	private BuySellRecorder() {
-		initLogger();
 		init();
 		downloadData();
 		end();
@@ -174,11 +172,6 @@ public class BuySellRecorder {
 				log.error("Create dir failed.", e);
 			}
 		}
-	}
-	
-	private void initLogger() {
-		System.setProperty("log4j.configurationFile", "./config/log4j2_bsr.xml");
-		log = LogManager.getLogger(TechAnalyst.class);
 	}
 	
 	private void end() {

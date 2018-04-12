@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.utils.TimeUtil;
@@ -23,7 +23,7 @@ import name.qd.analysis.vo.DailyClosingInfo;
 import name.qd.analysis.vo.ProductClosingInfo;
 
 public class TWSEDataSource implements DataSource {
-	private Logger log = LogManager.getLogger(TWSEDataSource.class);
+	private Logger log = LoggerFactory.getLogger(TWSEDataSource.class);
 	private TWSEDataPoller poller;
 	private TWSEDataParser parser;
 	
