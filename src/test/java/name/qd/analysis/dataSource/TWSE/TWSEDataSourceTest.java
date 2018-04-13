@@ -11,9 +11,9 @@ import org.junit.Test;
 import name.qd.analysis.Constants.Exchange;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.DataSourceFactory;
+import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.utils.StringCombineUtil;
 import name.qd.analysis.utils.TimeUtil;
-import name.qd.analysis.vo.ProductClosingInfo;
 
 public class TWSEDataSourceTest {
 

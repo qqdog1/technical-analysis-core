@@ -14,9 +14,9 @@ import name.qd.analysis.Constants.OrderTriggerType;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.tech.Analyzer;
 import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
-import name.qd.analysis.vo.ActionResult;
-import name.qd.analysis.vo.AnalysisResult;
-import name.qd.analysis.vo.OrderProgress;
+import name.qd.analysis.tech.vo.ActionResult;
+import name.qd.analysis.tech.vo.AnalysisResult;
+import name.qd.analysis.tech.vo.OrderProgress;
 
 public class BackTestingManager {
 	private static Logger log = LoggerFactory.getLogger(BackTestingManager.class);

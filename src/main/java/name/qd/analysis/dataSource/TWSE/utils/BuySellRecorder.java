@@ -24,9 +24,9 @@ import org.slf4j.LoggerFactory;
 import name.qd.analysis.Constants.Exchange;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.DataSourceFactory;
+import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.utils.TWSECaptchaSolver;
 import name.qd.analysis.utils.TimeUtil;
-import name.qd.analysis.vo.ProductClosingInfo;
 
 public class BuySellRecorder {
 	private Logger log = LoggerFactory.getLogger(BuySellRecorder.class);

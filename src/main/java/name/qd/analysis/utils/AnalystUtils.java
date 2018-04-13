@@ -3,8 +3,8 @@ package name.qd.analysis.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.qd.analysis.vo.AnalysisResult;
-import name.qd.analysis.vo.ProductClosingInfo;
+import name.qd.analysis.dataSource.vo.ProductClosingInfo;
+import name.qd.analysis.tech.vo.AnalysisResult;
 
 public class AnalystUtils {
 	public static List<AnalysisResult> NDaysAvg(List<ProductClosingInfo> lst, int days) {

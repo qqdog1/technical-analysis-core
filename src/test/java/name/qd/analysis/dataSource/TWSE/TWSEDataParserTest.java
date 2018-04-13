@@ -5,14 +5,15 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
 import name.qd.analysis.dataSource.TWSE.TWSEDataParser;
+import name.qd.analysis.dataSource.vo.BuySellInfo;
+import name.qd.analysis.dataSource.vo.DailyClosingInfo;
+import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.utils.TimeUtil;
-import name.qd.analysis.vo.BuySellInfo;
-import name.qd.analysis.vo.DailyClosingInfo;
-import name.qd.analysis.vo.ProductClosingInfo;
 
 public class TWSEDataParserTest {
 	
@@ -71,6 +72,25 @@ public class TWSEDataParserTest {
 			List<BuySellInfo> lst = parser.getBuySellInfo("2433", "20180403");
 			for(BuySellInfo info : lst) {
 				System.out.println(info.getProduct() + ":" + info.getSeqNo() + ":" + info.getBrokerName() + ":" + info.getPrice() + ":" + info.getBuyShare() + ":" + info.getSellShare());
+			}
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void bsTest() {
+		TWSEDataParser parser = new TWSEDataParser();
+		
+		try {
+			Map<String, List<BuySellInfo>> map = parser.getBuySellInfo("20180411");
+			for(String product : map.keySet()) {
+				System.out.println(product);
+				
+				List<BuySellInfo> lst = map.get(product);
+				for(BuySellInfo info : lst) {
+					System.out.println(info.getProduct() + ":" + info.getSeqNo() + ":" + info.getBrokerName() + ":" + info.getPrice() + ":" + info.getBuyShare() + ":" + info.getSellShare());
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
+import name.qd.analysis.dataSource.vo.DailyClosingInfo;
 import name.qd.analysis.tech.Analyzer;
 import name.qd.analysis.tech.analyzer.TechAnalyzer;
 import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
+import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
-import name.qd.analysis.vo.AnalysisResult;
-import name.qd.analysis.vo.DailyClosingInfo;
 
 /**
  * 上漲家數 - 下跌家數

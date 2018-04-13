@@ -1,12 +1,21 @@
-package name.qd.analysis.vo;
+package name.qd.analysis.dataSource.vo;
+
+import java.util.Date;
 
 public class BuySellInfo {
+	private Date date;
 	private String product;
 	private int seqNo;
 	private String brokerName;
 	private double price;
-	private double buyShare;
-	private double sellShare;
+	private long buyShare;
+	private long sellShare;
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	public String getProduct() {
 		return product;
 	}
@@ -31,16 +40,16 @@ public class BuySellInfo {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public double getBuyShare() {
+	public long getBuyShare() {
 		return buyShare;
 	}
-	public void setBuyShare(double buyShare) {
+	public void setBuyShare(long buyShare) {
 		this.buyShare = buyShare;
 	}
-	public double getSellShare() {
+	public long getSellShare() {
 		return sellShare;
 	}
-	public void setSellShare(double sellShare) {
+	public void setSellShare(long sellShare) {
 		this.sellShare = sellShare;
 	}
 }

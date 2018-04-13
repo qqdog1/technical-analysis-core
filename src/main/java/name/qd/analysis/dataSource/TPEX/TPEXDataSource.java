@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.TWSE.TWSEDataSource;
-import name.qd.analysis.vo.BuySellInfo;
-import name.qd.analysis.vo.DailyClosingInfo;
-import name.qd.analysis.vo.ProductClosingInfo;
+import name.qd.analysis.dataSource.vo.BuySellInfo;
+import name.qd.analysis.dataSource.vo.DailyClosingInfo;
+import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 
 public class TPEXDataSource implements DataSource {
 	private Logger log = LoggerFactory.getLogger(TWSEDataSource.class);
@@ -45,7 +45,12 @@ public class TPEXDataSource implements DataSource {
 	}
 	
 	@Override
-	public List<BuySellInfo> getBuySellInfo(Date date, String product) throws Exception {
+	public Map<Date, List<BuySellInfo>> getBuySellInfo(String product, Date from, Date to) throws Exception {
+		return null;
+	}
+	
+	@Override
+	public Map<Date, Map<String, List<BuySellInfo>>> getBuySellInfo(Date from, Date to) throws Exception {
 		return null;
 	}
 	

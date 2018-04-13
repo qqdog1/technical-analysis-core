@@ -28,7 +28,7 @@ import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.DataSourceFactory;
 import name.qd.analysis.tech.Analyzer;
 import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
-import name.qd.analysis.vo.AnalysisResult;
+import name.qd.analysis.tech.vo.AnalysisResult;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 

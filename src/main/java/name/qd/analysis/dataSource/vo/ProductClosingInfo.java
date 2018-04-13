@@ -1,4 +1,4 @@
-package name.qd.analysis.vo;
+package name.qd.analysis.dataSource.vo;
 
 import java.util.Date;
 

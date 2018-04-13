@@ -17,10 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.dataSource.DataSource;
+import name.qd.analysis.dataSource.vo.BuySellInfo;
+import name.qd.analysis.dataSource.vo.DailyClosingInfo;
+import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.utils.TimeUtil;
-import name.qd.analysis.vo.BuySellInfo;
-import name.qd.analysis.vo.DailyClosingInfo;
-import name.qd.analysis.vo.ProductClosingInfo;
 
 public class TWSEDataSource implements DataSource {
 	private Logger log = LoggerFactory.getLogger(TWSEDataSource.class);
@@ -92,14 +92,29 @@ public class TWSEDataSource implements DataSource {
 	}
 	
 	@Override
-	public List<BuySellInfo> getBuySellInfo(Date date, String product) throws Exception {
+	public Map<Date, List<BuySellInfo>> getBuySellInfo(String product, Date from, Date to) throws Exception {
+		Map<Date, List<BuySellInfo>> map = new HashMap<>();
+		List<String> lstDate = TimeUtil.getDateBetween(from, to);
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
-		String dateString = sdf.format(date);
-		File file = new File(TWSEConstants.getBuySellInfoFilePath(dateString, product));
-		if(file.exists()) {
-			return parser.getBuySellInfo(product, dateString);
+		for(String date : lstDate) {
+			File file = new File(TWSEConstants.getBuySellInfoFilePath(date, product));
+			if(file.exists()) {
+				List<BuySellInfo> lst = parser.getBuySellInfo(product, date);
+				map.put(sdf.parse(date), lst);
+			}
 		}
-		return new ArrayList<>();
+		return map;
+	}
+	
+	@Override
+	public Map<Date, Map<String, List<BuySellInfo>>> getBuySellInfo(Date from, Date to) throws Exception {
+		Map<Date, Map<String, List<BuySellInfo>>> map = new HashMap<>();
+		List<String> lstDate = TimeUtil.getDateBetween(from, to);
+		for(String date : lstDate) {
+			Map<String, List<BuySellInfo>> mapProduct = parser.getBuySellInfo(date);
+			map.put(TimeUtil.getDateFormat().parse(date), mapProduct);
+		}
+		return map;
 	}
 	
 	private void checkAndDownloadDailyClosing(List<String> lstDate) throws IOException {

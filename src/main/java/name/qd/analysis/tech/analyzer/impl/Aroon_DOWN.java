@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
+import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.tech.analyzer.TechAnalyzer;
+import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.StringCombineUtil;
-import name.qd.analysis.vo.AnalysisResult;
-import name.qd.analysis.vo.ProductClosingInfo;
 
 public class Aroon_DOWN implements TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(Aroon_DOWN.class);

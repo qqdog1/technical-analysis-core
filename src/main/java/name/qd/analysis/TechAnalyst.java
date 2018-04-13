@@ -10,16 +10,16 @@ import org.slf4j.LoggerFactory;
 import name.qd.analysis.Constants.Exchange;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.DataSourceFactory;
+import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.tech.Analyzer;
 import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.backTest.BackTesting;
 import name.qd.analysis.tech.backTest.BackTestingFactory;
+import name.qd.analysis.tech.vo.AnalysisResult;
+import name.qd.analysis.tech.vo.VerifyResult;
+import name.qd.analysis.tech.vo.VerifyResult.VerifyDetail;
 import name.qd.analysis.utils.AnalystUtils;
 import name.qd.analysis.utils.TimeUtil;
-import name.qd.analysis.vo.AnalysisResult;
-import name.qd.analysis.vo.ProductClosingInfo;
-import name.qd.analysis.vo.VerifyResult;
-import name.qd.analysis.vo.VerifyResult.VerifyDetail;
 
 public class TechAnalyst {
 	private Logger log = LoggerFactory.getLogger(TechAnalyst.class);
@@ -51,9 +51,6 @@ public class TechAnalyst {
 			//
 			analyzer = Analyzer.ADL;
 //			outputResult(analyzer, product, from, to);
-			
-			twseDataManager.getBuySellInfo(to, "1225");
-			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

@@ -12,12 +12,12 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
+import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.tech.Analyzer;
 import name.qd.analysis.tech.analyzer.TechAnalyzer;
 import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
+import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
-import name.qd.analysis.vo.AnalysisResult;
-import name.qd.analysis.vo.ProductClosingInfo;
 
 public class UnchangedVolume implements TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(UnchangedVolume.class);

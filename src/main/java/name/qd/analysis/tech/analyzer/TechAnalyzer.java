@@ -5,7 +5,7 @@ import java.util.List;
 
 import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
-import name.qd.analysis.vo.AnalysisResult;
+import name.qd.analysis.tech.vo.AnalysisResult;
 
 public interface TechAnalyzer {
 	public String getCacheName(String product);

@@ -6,19 +6,26 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import name.qd.analysis.dataSource.vo.BuySellInfo;
+import name.qd.analysis.dataSource.vo.DailyClosingInfo;
+import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.utils.StringCombineUtil;
 import name.qd.analysis.utils.TimeUtil;
-import name.qd.analysis.vo.BuySellInfo;
-import name.qd.analysis.vo.DailyClosingInfo;
-import name.qd.analysis.vo.ProductClosingInfo;
 
 public class TWSEDataParser {
 	private static Logger log = LoggerFactory.getLogger(TWSEDataParser.class);
@@ -100,8 +107,49 @@ public class TWSEDataParser {
 		return lst;
 	}
 	
-	public List<BuySellInfo> getBuySellInfo(String product, String date) throws UnsupportedEncodingException, FileNotFoundException, IOException {
+	public Map<String, List<BuySellInfo>> getBuySellInfo(String date) throws IOException {
+		Map<String, List<BuySellInfo>> map = new HashMap<>();
+		
+		Path path = Paths.get(TWSEConstants.getBuySellInfoFolder(date));
+		
+		Files.walk(path).forEach(p->{
+			if(!Files.isDirectory(p)) {
+				List<BuySellInfo> lst;
+				try {
+					String product = p.getFileName().toString().split("\\.")[0];
+					lst = getBuySellInfo(p, date, product);
+					if(lst.size() > 0) {
+						map.put(product, lst);
+					}
+				} catch (IOException | ParseException e) {
+					log.error("Read file failed. {}", p, e);
+				}
+			}
+		});
+		return map;
+	}
+	
+	private List<BuySellInfo> getBuySellInfo(Path path, String date, String product) throws IOException, ParseException {
 		List<BuySellInfo> lst = new ArrayList<>();
+		
+		List<String> lstLine = Files.readAllLines(path, Charset.forName("Big5"));
+		
+		boolean start = false;
+		for(String line : lstLine) {
+			if(line.startsWith("1")) {
+				start = true;
+			}
+			
+			if(start) {
+				setBuySellInfo(lst, TimeUtil.getDateFormat().parse(date), product, line);
+			}
+		}
+		return lst;
+	}
+	
+	public List<BuySellInfo> getBuySellInfo(String product, String date) throws UnsupportedEncodingException, FileNotFoundException, ParseException, IOException {
+		List<BuySellInfo> lst = new ArrayList<>();
+		Date d = TimeUtil.getDateFormat().parse(date);
 		
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getBuySellInfoFilePath(date, product)), "Big5"))) {
 			boolean start = false;
@@ -111,31 +159,37 @@ public class TWSEDataParser {
 				}
 				
 				if(start) {
-					String[] s = line.split(",");
-					
-					BuySellInfo info1 = new BuySellInfo();
-					info1.setProduct(product);
-					info1.setSeqNo(Integer.parseInt(s[0]));
-					info1.setBrokerName(s[1]);
-					info1.setPrice(Double.parseDouble(s[2]));
-					info1.setBuyShare(Double.parseDouble(s[3]));
-					info1.setSellShare(Double.parseDouble(s[4]));
-					lst.add(info1);
-					
-					if(!"".equals(s[6])) {
-						BuySellInfo info2 = new BuySellInfo();
-						info2.setProduct(product);
-						info2.setSeqNo(Integer.parseInt(s[6]));
-						info2.setBrokerName(s[7]);
-						info2.setPrice(Double.parseDouble(s[8]));
-						info2.setBuyShare(Double.parseDouble(s[9]));
-						info2.setSellShare(Double.parseDouble(s[10]));
-						lst.add(info2);
-					}
+					setBuySellInfo(lst, d, product, line);
 				}
 			}
 		}
 		return lst;
+	}
+	
+	private void setBuySellInfo(List<BuySellInfo> lst, Date date, String product, String line) {
+		String[] s = line.split(",");
+		
+		BuySellInfo info1 = new BuySellInfo();
+		info1.setDate(date);
+		info1.setProduct(product);
+		info1.setSeqNo(Integer.parseInt(s[0].trim()));
+		info1.setBrokerName(s[1].trim());
+		info1.setPrice(Double.parseDouble(s[2].trim()));
+		info1.setBuyShare(Long.parseLong(s[3].trim()));
+		info1.setSellShare(Long.parseLong(s[4].trim()));
+		lst.add(info1);
+		
+		if(!"".equals(s[6].trim())) {
+			BuySellInfo info2 = new BuySellInfo();
+			info2.setDate(date);
+			info2.setProduct(product);
+			info2.setSeqNo(Integer.parseInt(s[6].trim()));
+			info2.setBrokerName(s[7].trim());
+			info2.setPrice(Double.parseDouble(s[8].trim()));
+			info2.setBuyShare(Long.parseLong(s[9].trim()));
+			info2.setSellShare(Long.parseLong(s[10].trim()));
+			lst.add(info2);
+		}
 	}
 	
 	private ProductClosingInfo parseProductCloseInfo(List<String> lst, String date) {
@@ -160,6 +214,8 @@ public class TWSEDataParser {
 				prodInfo.setADStatus(ProductClosingInfo.DECLINE);
 			} else if(" ".equals(lst.get(9))){
 				prodInfo.setADStatus(ProductClosingInfo.UNCHANGE);
+			} else {
+				return null;
 			}
 		} catch (ParseException | NumberFormatException e) {
 			log.error("Parse data failed. Date:[{}] [{}]", date, lst, e);

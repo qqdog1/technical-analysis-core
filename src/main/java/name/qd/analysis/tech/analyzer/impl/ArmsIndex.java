@@ -12,8 +12,8 @@ import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.tech.Analyzer;
 import name.qd.analysis.tech.analyzer.TechAnalyzer;
 import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
+import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
-import name.qd.analysis.vo.AnalysisResult;
 
 /**
  * (上漲家數 / 下跌家數) / (上漲成交量 / 下跌成交量)

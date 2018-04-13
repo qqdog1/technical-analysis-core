@@ -65,7 +65,7 @@ public class TPEXCaptchaSolver {
         }
 	}
 
-	protected void end() {
+	public void end() {
 		tess.End();
 	}
 

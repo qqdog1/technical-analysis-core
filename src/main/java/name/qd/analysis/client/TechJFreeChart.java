@@ -22,7 +22,7 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.time.TimeSeriesDataItem;
 
-import name.qd.analysis.vo.AnalysisResult;
+import name.qd.analysis.tech.vo.AnalysisResult;
 
 public class TechJFreeChart {
 	private ChartPanel chartPanel;

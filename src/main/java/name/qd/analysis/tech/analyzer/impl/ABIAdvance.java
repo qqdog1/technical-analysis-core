@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
+import name.qd.analysis.dataSource.vo.DailyClosingInfo;
 import name.qd.analysis.tech.analyzer.TechAnalyzer;
-import name.qd.analysis.vo.AnalysisResult;
-import name.qd.analysis.vo.DailyClosingInfo;
+import name.qd.analysis.tech.vo.AnalysisResult;
 
 public class ABIAdvance implements TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ABIAdvance.class);

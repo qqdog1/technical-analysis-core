@@ -41,9 +41,9 @@ public class BSRBrokerParser {
 	}
 	
 	private void parseData(String date) throws IOException {
-		Files.walk(Paths.get(dataDir + date)).forEach(m->{
+		Files.walk(Paths.get(dataDir + date)).forEach(path->{
 			try {
-				getBrokers(m);
+				getBrokers(path);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
