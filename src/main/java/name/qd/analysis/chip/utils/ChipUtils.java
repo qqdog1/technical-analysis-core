@@ -8,7 +8,7 @@ import name.qd.analysis.dataSource.vo.BuySellInfo;
 
 public class ChipUtils {
 
-	// most same product, same day (single file)
+	// lstInfo most be same product, same day (single file)
 	public static void bsInfoToOperate(List<BuySellInfo> lstInfo, Map<String, DailyOperate> map) {
 		for(BuySellInfo info : lstInfo) {
 			String brokerName = info.getBrokerName();

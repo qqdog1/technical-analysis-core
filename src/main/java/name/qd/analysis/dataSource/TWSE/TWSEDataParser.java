@@ -112,20 +112,22 @@ public class TWSEDataParser {
 		
 		Path path = Paths.get(TWSEConstants.getBuySellInfoFolder(date));
 		
-		Files.walk(path).forEach(p->{
-			if(!Files.isDirectory(p)) {
-				List<BuySellInfo> lst;
-				try {
-					String product = p.getFileName().toString().split("\\.")[0];
-					lst = getBuySellInfo(p, date, product);
-					if(lst.size() > 0) {
-						map.put(product, lst);
+		if(Files.exists(path)) {
+			Files.walk(path).forEach(p->{
+				if(!Files.isDirectory(p)) {
+					List<BuySellInfo> lst;
+					try {
+						String product = p.getFileName().toString().split("\\.")[0];
+						lst = getBuySellInfo(p, date, product);
+						if(lst.size() > 0) {
+							map.put(product, lst);
+						}
+					} catch (IOException | ParseException e) {
+						log.error("Read file failed. {}", p, e);
 					}
-				} catch (IOException | ParseException e) {
-					log.error("Read file failed. {}", p, e);
 				}
-			}
-		});
+			});
+		}
 		return map;
 	}
 	
