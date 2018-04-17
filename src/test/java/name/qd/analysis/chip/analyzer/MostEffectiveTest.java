@@ -2,6 +2,7 @@ package name.qd.analysis.chip.analyzer;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -23,7 +24,27 @@ public class MostEffectiveTest {
 			
 			DailyOperate operate = mostEffective.getMostEffectiveBroker(dataSource, from, to);
 			
-			System.out.println(operate.getBrokerName() + ":" + operate.getProduct() + ":" + operate.getPnl());
+			System.out.println(operate.getBrokerName() + ":" + operate.getProduct() + ":" + operate.getPnl() + ":" + operate.getTradeCost() + ":" + operate.getPnlRate());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void EffectiveList() {
+		MostEffective mostEffective = new MostEffective();
+		DataSource dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
+		try {
+			Date from = TimeUtil.getDateFormat().parse("20180403");
+			Date to = TimeUtil.getDateFormat().parse("20180413");
+			
+			List<DailyOperate> lst = mostEffective.getMostEffetiveList(dataSource, from, to);
+			
+			for(DailyOperate operate : lst) {
+				System.out.println(operate.getBrokerName() + ":" + operate.getProduct() + ":" + operate.getPnl() + ":" + operate.getTradeCost() + ":" + operate.getPnlRate());
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

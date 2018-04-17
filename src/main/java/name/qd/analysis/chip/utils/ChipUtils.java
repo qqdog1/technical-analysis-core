@@ -66,16 +66,20 @@ public class ChipUtils {
 	}
 	
 	private static void buyClose(BuySellInfo info, DailyOperate operate, long closeVolume) {
+		operate.setTradeCost(operate.getTradeCost() + operate.getAvgPrice() * closeVolume);
 		operate.setOpenShare(operate.getOpenShare() + closeVolume);
 		double pnl = (operate.getAvgPrice() - info.getPrice()) * closeVolume;
 		operate.setPnl(operate.getPnl() + pnl);
+		operate.setPnlRate();
 		info.setBuyShare(info.getBuyShare() - closeVolume);
 	}
 	
 	private static void sellClose(BuySellInfo info, DailyOperate operate, long closeVolume) {
+		operate.setTradeCost(operate.getTradeCost() + operate.getAvgPrice() * closeVolume);
 		operate.setOpenShare(operate.getOpenShare() - closeVolume);
 		double pnl = (info.getPrice() - operate.getAvgPrice()) * closeVolume;
 		operate.setPnl(operate.getPnl() + pnl);
+		operate.setPnlRate();
 		info.setSellShare(info.getSellShare() - closeVolume);
 	}
 	
