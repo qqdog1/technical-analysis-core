@@ -1,6 +1,6 @@
 package name.qd.analysis.tech;
 
-public enum Analyzer {
+public enum TechAnalyzers {
 	ABI, ABIAdvance, ABIDecline,
 	ADL, AD, AD_Ratio, AD_Issues,
 	SI,

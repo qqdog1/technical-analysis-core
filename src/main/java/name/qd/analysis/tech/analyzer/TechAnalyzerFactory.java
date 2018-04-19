@@ -3,7 +3,7 @@ package name.qd.analysis.tech.analyzer;
 import java.util.HashMap;
 import java.util.Map;
 
-import name.qd.analysis.tech.Analyzer;
+import name.qd.analysis.tech.TechAnalyzers;
 import name.qd.analysis.tech.analyzer.impl.ABI;
 import name.qd.analysis.tech.analyzer.impl.ABIAdvance;
 import name.qd.analysis.tech.analyzer.impl.ABIDecline;
@@ -25,19 +25,19 @@ import name.qd.analysis.tech.analyzer.impl.price.OpenPrice;
 import name.qd.analysis.tech.analyzer.impl.price.UpperPrice;
 
 public class TechAnalyzerFactory {
-	private Map<Analyzer, TechAnalyzer> map = new HashMap<>();
+	private Map<TechAnalyzers, TechAnalyzer> map = new HashMap<>();
 	
 	public TechAnalyzerFactory() {
 	}
 	
-	public TechAnalyzer getAnalyzer(Analyzer analyzer) {
+	public TechAnalyzer getAnalyzer(TechAnalyzers analyzer) {
 		if(!map.containsKey(analyzer)) {
 			createAnalyzer(analyzer);
 		}
 		return map.get(analyzer);
 	}
 	
-	private void createAnalyzer(Analyzer analyzer) {
+	private void createAnalyzer(TechAnalyzers analyzer) {
 		switch(analyzer) {
 		case ABI:
 			map.put(analyzer, new ABI());

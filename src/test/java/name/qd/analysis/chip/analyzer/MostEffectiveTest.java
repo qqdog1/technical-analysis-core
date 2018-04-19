@@ -16,13 +16,12 @@ public class MostEffectiveTest {
 
 	@Test
 	public void MostEffTest() {
-		MostEffective mostEffective = new MostEffective();
 		DataSource dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 		try {
 			Date from = TimeUtil.getDateFormat().parse("20180403");
 			Date to = TimeUtil.getDateFormat().parse("20180413");
 			
-			DailyOperate operate = mostEffective.getMostEffectiveBroker(dataSource, from, to);
+			DailyOperate operate = ChipAnalyzerManager.getInstance().getMostEffectiveBroker(dataSource, from, to);
 			
 			System.out.println(operate.getBrokerName() + ":" + operate.getProduct() + ":" + operate.getPnl() + ":" + operate.getTradeCost() + ":" + operate.getPnlRate());
 		} catch (ParseException e) {
@@ -34,13 +33,12 @@ public class MostEffectiveTest {
 	
 	@Test
 	public void EffectiveList() {
-		MostEffective mostEffective = new MostEffective();
 		DataSource dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 		try {
 			Date from = TimeUtil.getDateFormat().parse("20180403");
 			Date to = TimeUtil.getDateFormat().parse("20180413");
 			
-			List<DailyOperate> lst = mostEffective.getMostEffetiveList(dataSource, from, to);
+			List<DailyOperate> lst = ChipAnalyzerManager.getInstance().getMostEffetiveList(dataSource, from, to);
 			
 			for(DailyOperate operate : lst) {
 				System.out.println(operate.getBrokerName() + ":" + operate.getProduct() + ":" + operate.getPnl() + ":" + operate.getTradeCost() + ":" + operate.getPnlRate());

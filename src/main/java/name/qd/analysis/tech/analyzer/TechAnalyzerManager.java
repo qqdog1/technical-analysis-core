@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
-import name.qd.analysis.tech.Analyzer;
+import name.qd.analysis.tech.TechAnalyzers;
 import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.TimeUtil;
 import name.qd.fileCache.FileCacheManager;
@@ -42,7 +42,7 @@ public class TechAnalyzerManager {
 		return instance;
 	}
 	
-	public List<AnalysisResult> getAnalysisResult(DataSource dataSource, Analyzer analyzer, String product, Date from, Date to) throws Exception {
+	public List<AnalysisResult> getAnalysisResult(DataSource dataSource, TechAnalyzers analyzer, String product, Date from, Date to) throws Exception {
 		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
@@ -75,7 +75,7 @@ public class TechAnalyzerManager {
 		return lst;
 	}
 	
-	public List<AnalysisResult> getCustomAnalysisResult(DataSource dataManager, Analyzer analyzer, String product, Date from, Date to, String ... inputs) throws Exception {
+	public List<AnalysisResult> getCustomAnalysisResult(DataSource dataManager, TechAnalyzers analyzer, String product, Date from, Date to, String ... inputs) throws Exception {
 		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
@@ -84,7 +84,7 @@ public class TechAnalyzerManager {
 		return techAnalyzer.customResult(dataManager, product, from, to, inputs);
 	}
 	
-	public List<String> getCustomDescription(Analyzer analyzer) {
+	public List<String> getCustomDescription(TechAnalyzers analyzer) {
 		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
@@ -93,7 +93,7 @@ public class TechAnalyzerManager {
 		return techAnalyzer.getCustomDescreption();
 	}
 	
-	public AnalyzerType getAnalyzerType(Analyzer analyzer) {
+	public AnalyzerType getAnalyzerType(TechAnalyzers analyzer) {
 		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);

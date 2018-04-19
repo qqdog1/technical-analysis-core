@@ -26,7 +26,7 @@ import name.qd.analysis.Constants.Exchange;
 import name.qd.analysis.client.datePicker.DayModel;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.DataSourceFactory;
-import name.qd.analysis.tech.Analyzer;
+import name.qd.analysis.tech.TechAnalyzers;
 import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.vo.AnalysisResult;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
@@ -60,12 +60,12 @@ public class TechPanel extends JPanel {
 	private Color disableColor = new Color(238,238,238);
 	
 	public TechPanel() {
-		initFrame();
+		initPanel();
 		initManager();
 		initActionListener();
 	}
 	
-	private void initFrame() {
+	private void initPanel() {
 		this.setLayout(new BorderLayout());
 		
 		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -98,13 +98,13 @@ public class TechPanel extends JPanel {
 	}
 	
 	private void initActionListener() {
-		setComboListener();
 		setComboData();
+		setComboListener();
 		setButtonListener();
 	}
 	
 	private void setComboData() {
-		for(Analyzer analyzer : Analyzer.values()) {
+		for(TechAnalyzers analyzer : TechAnalyzers.values()) {
 			comboTech.addItem(analyzer.name());
 		}
 		AutoCompleteDecorator.decorate(comboTech);
@@ -115,7 +115,7 @@ public class TechPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String analyzerString = comboTech.getSelectedItem().toString();
-				Analyzer analyzer = Analyzer.valueOf(analyzerString);
+				TechAnalyzers analyzer = TechAnalyzers.valueOf(analyzerString);
 				List<String> lst = getCustomDesception(analyzer);
 				AnalyzerType analyzerType = getAnalyzerType(analyzer);
 				switch(analyzerType) {
@@ -178,11 +178,11 @@ public class TechPanel extends JPanel {
 						if(isCustom) {
 							String[] s = new String[lstCustomInput.size()];
 							lstCustomInput.toArray(s);
-							runCustomAnalyzer(Analyzer.valueOf(analyzer), product, from, to, s);
+							runCustomAnalyzer(TechAnalyzers.valueOf(analyzer), product, from, to, s);
 							return;
 						}
 					}
-					runAnalyzer(Analyzer.valueOf(analyzer), product, from, to);
+					runAnalyzer(TechAnalyzers.valueOf(analyzer), product, from, to);
 				} catch (Exception ex) {
 					// TODO
 					log.error("Run Analyzer failed.", ex);
@@ -215,13 +215,13 @@ public class TechPanel extends JPanel {
 		});
 	}
 	
-	private void runAnalyzer(Analyzer analyzer, String product, Date from, Date to) throws Exception {
+	private void runAnalyzer(TechAnalyzers analyzer, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = getAnalysisResult(analyzer, product, from, to);
 		jFreechart.setData(analyzer.name(), lst);
 		paintResult();
 	}
 	
-	private void runCustomAnalyzer(Analyzer analyzer, String product, Date from, Date to, String ... inputs) throws Exception {
+	private void runCustomAnalyzer(TechAnalyzers analyzer, String product, Date from, Date to, String ... inputs) throws Exception {
 		List<AnalysisResult> lst = getCustomAnalysisResult(analyzer, product, from, to, inputs);
 		jFreechart.setData(analyzer.name(), lst);
 		paintResult();
@@ -240,7 +240,7 @@ public class TechPanel extends JPanel {
 		repaint();
 	}
 	
-	private List<AnalysisResult> getAnalysisResult(Analyzer analyzer, String product, Date from, Date to) throws Exception {
+	private List<AnalysisResult> getAnalysisResult(TechAnalyzers analyzer, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = analyzerManager.getAnalysisResult(twseDataManager, analyzer, product, from, to);
 		for(AnalysisResult result : lst) {
 			System.out.println(result.getKeyString() + ":" + result.getValue());
@@ -248,7 +248,7 @@ public class TechPanel extends JPanel {
 		return lst;
 	}
 	
-	private List<AnalysisResult> getCustomAnalysisResult(Analyzer analyzer, String product, Date from, Date to, String ...inputs) throws Exception {
+	private List<AnalysisResult> getCustomAnalysisResult(TechAnalyzers analyzer, String product, Date from, Date to, String ...inputs) throws Exception {
 		List<AnalysisResult> lst = analyzerManager.getCustomAnalysisResult(twseDataManager, analyzer, product, from, to, inputs);
 		for(AnalysisResult result : lst) {
 			System.out.println(result.getKeyString() + ":" + result.getValue());
@@ -256,11 +256,11 @@ public class TechPanel extends JPanel {
 		return lst;
 	}
 	
-	private List<String> getCustomDesception(Analyzer analyzer) {
+	private List<String> getCustomDesception(TechAnalyzers analyzer) {
 		return analyzerManager.getCustomDescription(analyzer);
 	}
 	
-	private AnalyzerType getAnalyzerType(Analyzer analyzer) {
+	private AnalyzerType getAnalyzerType(TechAnalyzers analyzer) {
 		return analyzerManager.getAnalyzerType(analyzer);
 	}
 	

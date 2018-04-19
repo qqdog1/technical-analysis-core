@@ -6,7 +6,7 @@ import java.util.List;
 
 import name.qd.analysis.Constants.Action;
 import name.qd.analysis.dataSource.DataSource;
-import name.qd.analysis.tech.Analyzer;
+import name.qd.analysis.tech.TechAnalyzers;
 import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.backTest.BackTesting;
 import name.qd.analysis.tech.vo.ActionResult;
@@ -24,7 +24,7 @@ public class ABITesting implements BackTesting {
 		double sellPercent = Double.parseDouble(custom[2]);
 		
 		List<ActionResult> lst = new ArrayList<>();
-		List<AnalysisResult> lstResult = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, Analyzer.ABI, product, from, to);
+		List<AnalysisResult> lstResult = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ABI, product, from, to);
 		List<AnalysisResult> lstMAResult = AnalystUtils.NDaysAvgByAnalysisResult(lstResult, ma);
 		for(AnalysisResult result : lstMAResult) {
 			ActionResult action = new ActionResult();

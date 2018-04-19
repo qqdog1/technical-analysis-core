@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import name.qd.analysis.Constants.OrderPriceType;
 import name.qd.analysis.Constants.OrderTriggerType;
 import name.qd.analysis.dataSource.DataSource;
-import name.qd.analysis.tech.Analyzer;
+import name.qd.analysis.tech.TechAnalyzers;
 import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.vo.ActionResult;
 import name.qd.analysis.tech.vo.AnalysisResult;
@@ -30,7 +30,7 @@ public class BackTestingManager {
 	private BackTestingManager() {
 	}
 	
-	public List<OrderProgress> getOrderProgress(DataSource dataSource, Analyzer analyzer, String product, Date from, Date to, OrderPriceType orderPriceType, OrderTriggerType orderTriggerType, String ... custom) throws Exception {
+	public List<OrderProgress> getOrderProgress(DataSource dataSource, TechAnalyzers analyzer, String product, Date from, Date to, OrderPriceType orderPriceType, OrderTriggerType orderTriggerType, String ... custom) throws Exception {
 		List<ActionResult> lstAction = getActionResult(dataSource, analyzer, product, from, to, custom);
 		List<AnalysisResult> lstPrice = getPriceResult(dataSource, product, from, to, orderPriceType);
 		Map<Date, AnalysisResult> mapPrice = new HashMap<>();
@@ -151,29 +151,29 @@ public class BackTestingManager {
 	}
 	
 	private List<AnalysisResult> getPriceResult(DataSource dataSource, String product, Date from, Date to, OrderPriceType orderPriceType) throws Exception {
-		Analyzer analyzer = null;
+		TechAnalyzers analyzer = null;
 		switch (orderPriceType) {
 		case AVERAGE:
-			analyzer = Analyzer.AVERAGE_PRICE;
+			analyzer = TechAnalyzers.AVERAGE_PRICE;
 			break;
 		case CLOSE:
-			analyzer = Analyzer.CLOSE_PRICE;
+			analyzer = TechAnalyzers.CLOSE_PRICE;
 			break;
 		case OPEN:
-			analyzer = Analyzer.OPEN_PRICE;
+			analyzer = TechAnalyzers.OPEN_PRICE;
 			break;
 		case UPPER:
-			analyzer = Analyzer.UPPER_PRICE;
+			analyzer = TechAnalyzers.UPPER_PRICE;
 			break;
 		case LOWER:
-			analyzer = Analyzer.LOWER_PRICE;
+			analyzer = TechAnalyzers.LOWER_PRICE;
 		break;
 		}
 		
 		return TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, analyzer, product, from, to);
 	}
 	
-	private List<ActionResult> getActionResult(DataSource dataSource, Analyzer analyzer, String product, Date from, Date to, String ... custom) throws Exception {
+	private List<ActionResult> getActionResult(DataSource dataSource, TechAnalyzers analyzer, String product, Date from, Date to, String ... custom) throws Exception {
 		BackTesting testing = factory.getVerifier(analyzer);
 		if(testing == null) {
 			log.error("BackTesting not exist. {}", analyzer);

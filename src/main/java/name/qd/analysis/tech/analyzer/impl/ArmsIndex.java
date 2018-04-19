@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
-import name.qd.analysis.tech.Analyzer;
+import name.qd.analysis.tech.TechAnalyzers;
 import name.qd.analysis.tech.analyzer.TechAnalyzer;
 import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.vo.AnalysisResult;
@@ -31,8 +31,8 @@ public class ArmsIndex implements TechAnalyzer {
 	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = new ArrayList<>();
 		try {
-			List<AnalysisResult> lstAdvanceVolume = manager.getAnalysisResult(dataManager, Analyzer.AdvancingVolume, product, from, to);
-			List<AnalysisResult> lstDeclineVolume = manager.getAnalysisResult(dataManager, Analyzer.DecliningVolume, product, from, to);
+			List<AnalysisResult> lstAdvanceVolume = manager.getAnalysisResult(dataManager, TechAnalyzers.AdvancingVolume, product, from, to);
+			List<AnalysisResult> lstDeclineVolume = manager.getAnalysisResult(dataManager, TechAnalyzers.DecliningVolume, product, from, to);
 			
 			if(lstAdvanceVolume.size() != lstDeclineVolume.size()) {
 				throw new Exception("AdvanceVolume data count != DeclineVolume data count");
@@ -66,7 +66,7 @@ public class ArmsIndex implements TechAnalyzer {
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, Analyzer.ArmsIndex, product, from, to);
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.ArmsIndex, product, from, to);
 		return AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);
 	}
 	
