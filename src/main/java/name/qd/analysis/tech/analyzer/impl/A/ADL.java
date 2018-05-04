@@ -1,4 +1,4 @@
-package name.qd.analysis.tech.analyzer.impl;
+package name.qd.analysis.tech.analyzer.impl.A;
 
 import java.util.ArrayList;
 import java.util.Date;

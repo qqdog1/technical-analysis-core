@@ -1,4 +1,4 @@
-package name.qd.analysis.tech.analyzer.impl;
+package name.qd.analysis.tech.analyzer.impl.A;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,50 +17,45 @@ import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 
 /**
- * 騰落
- * 上漲家數 - 下跌家數  累加
+ * 上漲家數 / 下跌家數
  */
-public class AD implements TechAnalyzer {
-	private static Logger log = LoggerFactory.getLogger(AD.class);
+public class AD_Ratio implements TechAnalyzer {
+	private static Logger log = LoggerFactory.getLogger(AD_Ratio.class);
 	
 	@Override
 	public String getCacheName(String product) {
-		return AD.class.getSimpleName();
+		return AD_Ratio.class.getSimpleName();
 	}
 
 	@Override
 	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
-		List<AnalysisResult> lst = new ArrayList<>();
+		List<AnalysisResult> lstResult = new ArrayList<>();
 		try {
 			List<DailyClosingInfo> lstDaily = dataManager.getDailyClosingInfo(from, to);
-			for(DailyClosingInfo info : lstDaily) {
+			for(DailyClosingInfo dailyInfo : lstDaily) {
 				AnalysisResult result = new AnalysisResult();
-				result.setDate(info.getDate());
-				int value = info.getAdvance()-info.getDecline();
-				result.setValue(value);
-				lst.add(result);
+				result.setDate(dailyInfo.getDate());
+				result.setValue((double)dailyInfo.getAdvance()/(double)dailyInfo.getDecline());
+				lstResult.add(result);
 			}
 		} catch (Exception e) {
-			log.error("AD analyze failed.", e);
+			log.error("Analyze AD_Ratio failed.", e);
 			throw e;
 		}
-		return lst;
+		return lstResult;
 	}
-	
+
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.AD, product, from, to);
-		String accu = inputs[0];
-		if(!"Y".equalsIgnoreCase(accu)) {
-			return lst;
-		}
-		return AnalystUtils.accu(lst);
+		int ma = Integer.parseInt(inputs[0]);
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.AD_Ratio, product, from, to);
+		return AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);
 	}
 
 	@Override
 	public List<String> getCustomDescreption() {
 		List<String> lst = new ArrayList<>();
-		lst.add("Accumulate(Y/N):");
+		lst.add("MA:");
 		return lst;
 	}
 

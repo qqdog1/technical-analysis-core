@@ -1,4 +1,4 @@
-package name.qd.analysis.tech.analyzer.impl;
+package name.qd.analysis.tech.analyzer.impl.A;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,45 +17,50 @@ import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 
 /**
- * 上漲家數 - 下跌家數
+ * 騰落
+ * 上漲家數 - 下跌家數  累加
  */
-public class AD_Issues implements TechAnalyzer {
-	private static Logger log = LoggerFactory.getLogger(AD_Issues.class);
+public class AD implements TechAnalyzer {
+	private static Logger log = LoggerFactory.getLogger(AD.class);
 	
 	@Override
 	public String getCacheName(String product) {
-		return AD_Issues.class.getSimpleName();
+		return AD.class.getSimpleName();
 	}
 
 	@Override
 	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
-		List<AnalysisResult> lstResult = new ArrayList<>();
+		List<AnalysisResult> lst = new ArrayList<>();
 		try {
-			List<DailyClosingInfo> lst = dataManager.getDailyClosingInfo(from, to);
-			for(DailyClosingInfo info : lst) {
+			List<DailyClosingInfo> lstDaily = dataManager.getDailyClosingInfo(from, to);
+			for(DailyClosingInfo info : lstDaily) {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(info.getDate());
-				result.setValue(info.getAdvance()-info.getDecline());
-				lstResult.add(result);
+				int value = info.getAdvance()-info.getDecline();
+				result.setValue(value);
+				lst.add(result);
 			}
 		} catch (Exception e) {
-			log.error("AD_Issues analyze failed.", e);
+			log.error("AD analyze failed.", e);
 			throw e;
 		}
-		return lstResult;
+		return lst;
 	}
-
+	
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
-		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.AD_Issues, product, from, to);
-		return AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.AD, product, from, to);
+		String accu = inputs[0];
+		if(!"Y".equalsIgnoreCase(accu)) {
+			return lst;
+		}
+		return AnalystUtils.accu(lst);
 	}
 
 	@Override
 	public List<String> getCustomDescreption() {
 		List<String> lst = new ArrayList<>();
-		lst.add("MA:");
+		lst.add("Accumulate(Y/N):");
 		return lst;
 	}
 

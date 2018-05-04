@@ -4,20 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import name.qd.analysis.tech.TechAnalyzers;
-import name.qd.analysis.tech.analyzer.impl.ABI;
-import name.qd.analysis.tech.analyzer.impl.ABIAdvance;
-import name.qd.analysis.tech.analyzer.impl.ABIDecline;
-import name.qd.analysis.tech.analyzer.impl.AD;
-import name.qd.analysis.tech.analyzer.impl.ADL;
-import name.qd.analysis.tech.analyzer.impl.AD_Issues;
-import name.qd.analysis.tech.analyzer.impl.AD_Ratio;
-import name.qd.analysis.tech.analyzer.impl.AdvancingVolume;
-import name.qd.analysis.tech.analyzer.impl.ArmsIndex;
-import name.qd.analysis.tech.analyzer.impl.Aroon_DOWN;
-import name.qd.analysis.tech.analyzer.impl.Aroon_UP;
 import name.qd.analysis.tech.analyzer.impl.DecliningVolume;
 import name.qd.analysis.tech.analyzer.impl.SI;
 import name.qd.analysis.tech.analyzer.impl.UnchangedVolume;
+import name.qd.analysis.tech.analyzer.impl.A.ABI;
+import name.qd.analysis.tech.analyzer.impl.A.ABIAdvance;
+import name.qd.analysis.tech.analyzer.impl.A.ABIDecline;
+import name.qd.analysis.tech.analyzer.impl.A.AD;
+import name.qd.analysis.tech.analyzer.impl.A.ADL;
+import name.qd.analysis.tech.analyzer.impl.A.AD_Issues;
+import name.qd.analysis.tech.analyzer.impl.A.AD_Ratio;
+import name.qd.analysis.tech.analyzer.impl.A.ATR;
+import name.qd.analysis.tech.analyzer.impl.A.AdvancingVolume;
+import name.qd.analysis.tech.analyzer.impl.A.ArmsIndex;
+import name.qd.analysis.tech.analyzer.impl.A.Aroon_DOWN;
+import name.qd.analysis.tech.analyzer.impl.A.Aroon_UP;
 import name.qd.analysis.tech.analyzer.impl.price.AveragePrice;
 import name.qd.analysis.tech.analyzer.impl.price.ClosePrice;
 import name.qd.analysis.tech.analyzer.impl.price.LowerPrice;
@@ -72,6 +73,9 @@ public class TechAnalyzerFactory {
 			break;
 		case Aroon_DOWN:
 			map.put(analyzer, new Aroon_DOWN());
+			break;
+		case ATR:
+			map.put(analyzer, new ATR());
 			break;
 		case AdvancingVolume:
 			map.put(analyzer, new AdvancingVolume());

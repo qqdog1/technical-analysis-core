@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,12 +38,19 @@ public class BuySellRecorder {
 	private String captchaPath = "bsr/twse.jpg";
 	private List<String> lst = new ArrayList<>();
 	private List<String> lstRemain = new ArrayList<>();
-	private Date date = TimeUtil.getToday();
+	private Date date;
 	private SimpleDateFormat sdf = TimeUtil.getDateFormat();
 	private String dir;
 	private int total;
 	
 	private BuySellRecorder() {
+		date = TimeUtil.getToday();
+//		try {
+//			date = TimeUtil.getDateFormat().parse("20180503");
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+		
 		init();
 		downloadData();
 		end();

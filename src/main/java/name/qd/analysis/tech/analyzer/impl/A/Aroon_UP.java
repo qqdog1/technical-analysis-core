@@ -1,4 +1,4 @@
-package name.qd.analysis.tech.analyzer.impl;
+package name.qd.analysis.tech.analyzer.impl.A;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,12 +14,12 @@ import name.qd.analysis.tech.analyzer.TechAnalyzer;
 import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.StringCombineUtil;
 
-public class Aroon_DOWN implements TechAnalyzer {
-	private static Logger log = LoggerFactory.getLogger(Aroon_DOWN.class);
-	
+public class Aroon_UP implements TechAnalyzer {
+	private static Logger log = LoggerFactory.getLogger(Aroon_UP.class);
+
 	@Override
 	public String getCacheName(String product) {
-		return StringCombineUtil.combine(Aroon_DOWN.class.getSimpleName(), product);
+		return StringCombineUtil.combine(Aroon_UP.class.getSimpleName(), product);
 	}
 
 	@Override
@@ -36,11 +36,11 @@ public class Aroon_DOWN implements TechAnalyzer {
 			for(int i = n ; i < lstProducts.size() ; i++) {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(lstProducts.get(i).getDate());
-				double minPrice = 99999;
+				double maxPrice = 0;
 				int day = n;
 				for(int index = i-n ; index <= i ; index++) {
-					if(lstProducts.get(index).getLowerPrice() < minPrice) {
-						minPrice = lstProducts.get(index).getLowerPrice();
+					if(lstProducts.get(index).getUpperPrice() > maxPrice) {
+						maxPrice = lstProducts.get(index).getUpperPrice();
 						day = index - i + n;
 					}
 				}
