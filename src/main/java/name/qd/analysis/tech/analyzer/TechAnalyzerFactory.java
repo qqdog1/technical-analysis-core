@@ -19,6 +19,9 @@ import name.qd.analysis.tech.analyzer.impl.A.AdvancingVolume;
 import name.qd.analysis.tech.analyzer.impl.A.ArmsIndex;
 import name.qd.analysis.tech.analyzer.impl.A.Aroon_DOWN;
 import name.qd.analysis.tech.analyzer.impl.A.Aroon_UP;
+import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Lower;
+import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Middle;
+import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Upper;
 import name.qd.analysis.tech.analyzer.impl.price.AveragePrice;
 import name.qd.analysis.tech.analyzer.impl.price.ClosePrice;
 import name.qd.analysis.tech.analyzer.impl.price.LowerPrice;
@@ -64,7 +67,6 @@ public class TechAnalyzerFactory {
 		case SI:
 			map.put(analyzer, new SI());
 			break;
-		
 		case ArmsIndex:
 			map.put(analyzer, new ArmsIndex());
 			break;
@@ -100,6 +102,15 @@ public class TechAnalyzerFactory {
 			break;
 		case LOWER_PRICE:
 			map.put(analyzer, new LowerPrice());
+			break;
+		case BollingerBand_Lower:
+			map.put(analyzer, new BollingerBand_Lower());
+			break;
+		case BollingerBand_Middle:
+			map.put(analyzer, new BollingerBand_Middle());
+			break;
+		case BollingerBand_Upper:
+			map.put(analyzer, new BollingerBand_Upper());
 			break;
 		}
 	}

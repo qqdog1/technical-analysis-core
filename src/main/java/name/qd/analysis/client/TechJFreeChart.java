@@ -25,13 +25,17 @@ import org.jfree.data.time.TimeSeriesDataItem;
 import name.qd.analysis.tech.vo.AnalysisResult;
 
 public class TechJFreeChart {
+	public static final int LEFT = 0;
+	public static final int RIGHT = 1;
+	
 	private ChartPanel chartPanel;
-	private Map<String, TimeSeries> mapTimeSeries = new HashMap<>();
+	private Map<String, TimeSeries> mapLeft = new HashMap<>();
+	private Map<String, TimeSeries> mapRight = new HashMap<>();
 
 	public TechJFreeChart() {
 	}
 	
-	public void setData(String name, List<AnalysisResult> lst) {
+	public void setData(String name, List<AnalysisResult> lst, int side) {
 		List<Date> lstDate = new ArrayList<>();
 		List<Double> lstValue = new ArrayList<>();
 		for(AnalysisResult result : lst) {
@@ -39,29 +43,36 @@ public class TechJFreeChart {
 			lstValue.add(result.getValue().get(0));
 		}
 		
-		setData(name, lstDate, lstValue);
+		setData(name, lstDate, lstValue, side);
 	}
 	
-	public void setData(String name, List<Date> lstX, List<Double> lstY) {
+	public void setData(String name, List<Date> lstX, List<Double> lstY, int side) {
 		TimeSeries timeSeries = new TimeSeries(name);
 		for(int i = 0 ; i < lstX.size() ; i++) {
 			timeSeries.add(new TimeSeriesDataItem(new Day(lstX.get(i)), lstY.get(i)));
 		}
 		
-		mapTimeSeries.put(name, timeSeries);
+		if(side == LEFT) {
+			mapLeft.put(name, timeSeries);
+		} else if(side == RIGHT) {
+			mapRight.put(name, timeSeries);
+		}
 		
 		prepareChartPanel();
 	}
 	
 	public void removeData(String name) {
-		if(mapTimeSeries.containsKey(name)) {
-			mapTimeSeries.remove(name);
+		if(mapLeft.containsKey(name)) {
+			mapLeft.remove(name);
+		} else if(mapRight.containsKey(name)) {
+			mapRight.remove(name);
 		}
 		prepareChartPanel();
 	}
 	
 	public void removeAll() {
-		mapTimeSeries.clear();
+		mapLeft.clear();
+		mapRight.clear();
 		prepareChartPanel();
 	}
 	
@@ -78,23 +89,14 @@ public class TechJFreeChart {
         renderer.setSeriesPaint(0, Color.BLUE);
         plot.setRenderer(1, renderer);
 		
-		if(mapTimeSeries.size() > 1) {
-			int i = 0;
-			for(TimeSeries timeSeries : mapTimeSeries.values()) {
-				if(i%2 == 0) {
-					dataset.addSeries(timeSeries);
-				} else {
-					dataset2.addSeries(timeSeries);
-				}
-				i++;
-			}
-			plot.setDataset(1, dataset2);
-		} else {
-			for(TimeSeries timeSeries : mapTimeSeries.values()) {
-				dataset.addSeries(timeSeries);
-			}
+		for(TimeSeries timeSeries : mapLeft.values()) {
+			dataset.addSeries(timeSeries);
+		}
+		for(TimeSeries timeSeries : mapRight.values()) {
+			dataset2.addSeries(timeSeries);
 		}
 		
+		plot.setDataset(1, dataset2);
 		DateAxis axis = (DateAxis) plot.getDomainAxis();
 		axis.setDateFormatOverride(new SimpleDateFormat("yyyy-MM-dd"));
 		chartPanel = new ChartPanel(chart);

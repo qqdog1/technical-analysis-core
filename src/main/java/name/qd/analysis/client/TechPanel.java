@@ -49,7 +49,8 @@ public class TechPanel extends JPanel {
 	private JDatePickerImpl dpFrom = new JDatePickerImpl(new JDatePanelImpl(new DayModel()), null);
 	private JLabel labelTo = new JLabel("To:");
 	private JDatePickerImpl dpTo = new JDatePickerImpl(new JDatePanelImpl(new DayModel()), null);
-	private JButton btnAdd = new JButton("Add");
+	private JButton btnAddLeft = new JButton("←");
+	private JButton btnAddRight = new JButton("→");
 	private JButton btnRemove = new JButton("Remove");
 	private JButton btnRemoveAll = new JButton("RemoveAll");
 	private JButton btnBackTest = new JButton("BackTest");
@@ -78,10 +79,11 @@ public class TechPanel extends JPanel {
 		addToSelectPanel(dpFrom, 5, 0);
 		addToSelectPanel(labelTo, 6, 0);
 		addToSelectPanel(dpTo, 7, 0);
-		addToSelectPanel(btnAdd, 8, 0);
-		addToSelectPanel(btnRemove, 9, 0);
-		addToSelectPanel(btnRemoveAll, 10, 0);
-		addToSelectPanel(btnBackTest, 11, 0);
+		addToSelectPanel(btnAddLeft, 8, 0);
+		addToSelectPanel(btnAddRight, 9, 0);
+		addToSelectPanel(btnRemove, 10, 0);
+		addToSelectPanel(btnRemoveAll, 11, 0);
+		addToSelectPanel(btnBackTest, 12, 0);
 		
 		add(selectPanel, BorderLayout.NORTH);
 	}
@@ -157,7 +159,7 @@ public class TechPanel extends JPanel {
 	}
 	
 	private void setButtonListener() {
-		btnAdd.addActionListener(new ActionListener() {
+		btnAddLeft.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String analyzer = comboTech.getSelectedItem().toString();
@@ -178,11 +180,44 @@ public class TechPanel extends JPanel {
 						if(isCustom) {
 							String[] s = new String[lstCustomInput.size()];
 							lstCustomInput.toArray(s);
-							runCustomAnalyzer(TechAnalyzers.valueOf(analyzer), product, from, to, s);
+							runCustomAnalyzer(TechAnalyzers.valueOf(analyzer), product, from, to, TechJFreeChart.LEFT, s);
 							return;
 						}
 					}
-					runAnalyzer(TechAnalyzers.valueOf(analyzer), product, from, to);
+					runAnalyzer(TechAnalyzers.valueOf(analyzer), product, from, to, TechJFreeChart.LEFT);
+				} catch (Exception ex) {
+					// TODO
+					log.error("Run Analyzer failed.", ex);
+				}
+			}
+		});
+		
+		btnAddRight.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String analyzer = comboTech.getSelectedItem().toString();
+				String product = tfProduct.getText();
+				Date from = (Date) dpFrom.getModel().getValue();
+				Date to = (Date) dpTo.getModel().getValue();
+				try {
+					if(lstTextField.size() > 0) {
+						boolean isCustom = false;
+						List<String> lstCustomInput = new ArrayList<>();
+						for(JTextField textField : lstTextField) {
+							String input = textField.getText();
+							if(!input.equals("")) {
+								isCustom = true;
+							}
+							lstCustomInput.add(input);
+						}
+						if(isCustom) {
+							String[] s = new String[lstCustomInput.size()];
+							lstCustomInput.toArray(s);
+							runCustomAnalyzer(TechAnalyzers.valueOf(analyzer), product, from, to, TechJFreeChart.RIGHT, s);
+							return;
+						}
+					}
+					runAnalyzer(TechAnalyzers.valueOf(analyzer), product, from, to, TechJFreeChart.RIGHT);
 				} catch (Exception ex) {
 					// TODO
 					log.error("Run Analyzer failed.", ex);
@@ -215,15 +250,15 @@ public class TechPanel extends JPanel {
 		});
 	}
 	
-	private void runAnalyzer(TechAnalyzers analyzer, String product, Date from, Date to) throws Exception {
+	private void runAnalyzer(TechAnalyzers analyzer, String product, Date from, Date to, int side) throws Exception {
 		List<AnalysisResult> lst = getAnalysisResult(analyzer, product, from, to);
-		jFreechart.setData(analyzer.name(), lst);
+		jFreechart.setData(analyzer.name(), lst, side);
 		paintResult();
 	}
 	
-	private void runCustomAnalyzer(TechAnalyzers analyzer, String product, Date from, Date to, String ... inputs) throws Exception {
+	private void runCustomAnalyzer(TechAnalyzers analyzer, String product, Date from, Date to, int side, String ... inputs) throws Exception {
 		List<AnalysisResult> lst = getCustomAnalysisResult(analyzer, product, from, to, inputs);
-		jFreechart.setData(analyzer.name(), lst);
+		jFreechart.setData(analyzer.name(), lst, side);
 		paintResult();
 	}
 	
