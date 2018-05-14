@@ -33,7 +33,7 @@ public class AnalysisClient {
 	
 	private void initFrame() {
 		frame.setSize(1200, 768);
-		frame.setMinimumSize(new Dimension(1024, 768));
+//		frame.setMinimumSize(new Dimension(1024, 768));
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);

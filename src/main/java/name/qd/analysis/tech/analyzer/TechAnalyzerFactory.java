@@ -22,6 +22,7 @@ import name.qd.analysis.tech.analyzer.impl.A.Aroon_UP;
 import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Lower;
 import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Middle;
 import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Upper;
+import name.qd.analysis.tech.analyzer.impl.B.BreadthThrust;
 import name.qd.analysis.tech.analyzer.impl.price.AveragePrice;
 import name.qd.analysis.tech.analyzer.impl.price.ClosePrice;
 import name.qd.analysis.tech.analyzer.impl.price.LowerPrice;
@@ -111,6 +112,9 @@ public class TechAnalyzerFactory {
 			break;
 		case BollingerBand_Upper:
 			map.put(analyzer, new BollingerBand_Upper());
+			break;
+		case BreadthThrust:
+			map.put(analyzer, new BreadthThrust());
 			break;
 		}
 	}
