@@ -12,7 +12,6 @@ import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.tech.analyzer.TechAnalyzer;
 import name.qd.analysis.tech.vo.AnalysisResult;
-import name.qd.analysis.utils.StringCombineUtil;
 
 /**
  * 累積派發線
@@ -23,7 +22,7 @@ public class ADL implements TechAnalyzer {
 
 	@Override
 	public String getCacheName(String product) {
-		return StringCombineUtil.combine(ADL.class.getSimpleName(), product);
+		return null;
 	}
 
 	@Override

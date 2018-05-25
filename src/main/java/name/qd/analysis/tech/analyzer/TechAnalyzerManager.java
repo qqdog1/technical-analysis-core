@@ -50,28 +50,35 @@ public class TechAnalyzerManager {
 		}
 		
 		log.info("Get analyzer : {}", analyzer);
+		
 		String cacheName = techAnalyzer.getCacheName(product);
-		
-		if(!isDateInRange(techAnalyzer, product, from, to)) {
-			log.info("Result data not in range.");
-			// analyze new data and cache
-			updateCache(dataSource, techAnalyzer, product, from, to);
-		}
-		
-		ArrayList<AnalysisResult> lst = new ArrayList<AnalysisResult>();
-		CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(to);
-		calendar.add(Calendar.DATE, 1);
-		Date endDate = calendar.getTime();
-		calendar.setTime(from);
-		for(; calendar.getTime().before(endDate); calendar.add(Calendar.DATE, 1)) {
-			AnalysisResult result = (AnalysisResult) cacheManager.get(sdf.format(calendar.getTime()));
-			if(result != null) {
-				lst.add(result);
+		List<AnalysisResult> lst = new ArrayList<AnalysisResult>();
+		if(cacheName != null) {
+			// use cache
+			if(!isDateInRange(techAnalyzer, product, from, to)) {
+				log.info("Result data not in range.");
+				// analyze new data and cache
+				updateCache(dataSource, techAnalyzer, product, from, to);
 			}
+			
+			CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(to);
+			calendar.add(Calendar.DATE, 1);
+			Date endDate = calendar.getTime();
+			calendar.setTime(from);
+			for(; calendar.getTime().before(endDate); calendar.add(Calendar.DATE, 1)) {
+				AnalysisResult result = (AnalysisResult) cacheManager.get(sdf.format(calendar.getTime()));
+				if(result != null) {
+					lst.add(result);
+				}
+			}
+		} else {
+			// calculate every time
+			lst = techAnalyzer.analyze(dataSource, product, from, to);
 		}
+		
 		return lst;
 	}
 	
