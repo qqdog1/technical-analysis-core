@@ -24,10 +24,10 @@ public class AveragePrice implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
+	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		try {
-			List<ProductClosingInfo> lstProductInfo = dataManager.getProductClosingInfo(product, from, to);
+			List<ProductClosingInfo> lstProductInfo = dataSource.getProductClosingInfo(product, from, to);
 			for(ProductClosingInfo prodInfo : lstProductInfo) {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(prodInfo.getDate());
@@ -42,9 +42,9 @@ public class AveragePrice implements TechAnalyzer {
 	}
 	
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) throws Exception {
+	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String ... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = analyze(dataManager, product, from , to);
+		List<AnalysisResult> lst = analyze(dataSource, product, from , to);
 		return AnalystUtils.simpleMovingAverageByResult(lst, ma);
 	}
 	

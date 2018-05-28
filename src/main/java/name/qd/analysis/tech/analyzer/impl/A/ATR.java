@@ -32,10 +32,10 @@ public class ATR implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
+	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = new ArrayList<>();
 		try {
-			List<ProductClosingInfo> lstProducts = dataManager.getProductClosingInfo(product, from, to);
+			List<ProductClosingInfo> lstProducts = dataSource.getProductClosingInfo(product, from, to);
 			ProductClosingInfo lastInfo = null;
 			for(ProductClosingInfo info : lstProducts) {
 				AnalysisResult result = new AnalysisResult();
@@ -61,9 +61,9 @@ public class ATR implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
+	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.ATR, product, from, to);
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ATR, product, from, to);
 		return AnalystUtils.simpleMovingAverageByResult(lst, ma);
 	}
 

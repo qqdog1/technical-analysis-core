@@ -27,12 +27,12 @@ public class BollingerBand_Lower implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
+	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
 		throw new Exception("Must enter days.");
 	}
 
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
+	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		int ma = Integer.parseInt(inputs[0]);
 		int sd = 1;
@@ -40,7 +40,7 @@ public class BollingerBand_Lower implements TechAnalyzer {
 			sd = Integer.parseInt(inputs[1]);
 		} catch(NumberFormatException e) {
 		}
-		List<AnalysisResult> lstMiddle = TechAnalyzerManager.getInstance().getCustomAnalysisResult(dataManager, TechAnalyzers.BollingerBand_Middle, product, from, to, inputs);
+		List<AnalysisResult> lstMiddle = TechAnalyzerManager.getInstance().getCustomAnalysisResult(dataSource, TechAnalyzers.BollingerBand_Middle, product, from, to, inputs);
 		Map<Date, AnalysisResult> mapMiddle = new HashMap<>();
 		for(AnalysisResult middle : lstMiddle) {
 			mapMiddle.put(middle.getDate(), middle);
@@ -48,7 +48,7 @@ public class BollingerBand_Lower implements TechAnalyzer {
 		
 		List<AnalysisResult> lstProduct = new ArrayList<>();
 		try {
-			List<ProductClosingInfo> lstProductInfo = dataManager.getProductClosingInfo(product, from, to);
+			List<ProductClosingInfo> lstProductInfo = dataSource.getProductClosingInfo(product, from, to);
 			for(ProductClosingInfo prodInfo : lstProductInfo) {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(prodInfo.getDate());

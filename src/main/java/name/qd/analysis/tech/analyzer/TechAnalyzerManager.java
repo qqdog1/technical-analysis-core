@@ -77,13 +77,13 @@ public class TechAnalyzerManager {
 		return lst;
 	}
 	
-	public List<AnalysisResult> getCustomAnalysisResult(DataSource dataManager, TechAnalyzers analyzer, String product, Date from, Date to, String ... inputs) throws Exception {
+	public List<AnalysisResult> getCustomAnalysisResult(DataSource dataSource, TechAnalyzers analyzer, String product, Date from, Date to, String ... inputs) throws Exception {
 		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
 			return null;
 		}
-		return techAnalyzer.customResult(dataManager, product, from, to, inputs);
+		return techAnalyzer.customResult(dataSource, product, from, to, inputs);
 	}
 	
 	public List<String> getCustomDescription(TechAnalyzers analyzer) {
@@ -205,12 +205,12 @@ public class TechAnalyzerManager {
 		}
 	}
 	
-	private void updateCache(DataSource dataManager, TechAnalyzer analyzer, String product, Date from, Date to) throws Exception {
+	private void updateCache(DataSource dataSource, TechAnalyzer analyzer, String product, Date from, Date to) throws Exception {
 		String cacheName = analyzer.getCacheName(product);
 		Date first = getFirstDate(cacheName, from);
 		Date last = getLastDate(cacheName, to);
 		log.info("Analyze {}, {}-{}", cacheName, first, last);
-		List<AnalysisResult> lst = analyzer.analyze(dataManager, product, first, last);
+		List<AnalysisResult> lst = analyzer.analyze(dataSource, product, first, last);
 		putAnalysisResult(cacheName, lst);
 		syncFile(cacheName);
 	}

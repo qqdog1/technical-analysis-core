@@ -28,10 +28,10 @@ public class AdvancingVolume implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
+	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		try {
-			Map<Date, List<ProductClosingInfo>> map = dataManager.getAllProductClosingInfo(from, to);
+			Map<Date, List<ProductClosingInfo>> map = dataSource.getAllProductClosingInfo(from, to);
 			for(Date date : map.keySet()) {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(date);
@@ -64,9 +64,9 @@ public class AdvancingVolume implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
+	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.AdvancingVolume, product, from, to);
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.AdvancingVolume, product, from, to);
 		return AnalystUtils.simpleMovingAverageByResult(lst, ma);
 	}
 

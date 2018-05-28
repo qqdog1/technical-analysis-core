@@ -30,10 +30,10 @@ public class ChaikinMoneyFlow implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
+	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = new ArrayList<>();
 		try {
-			List<ProductClosingInfo> lstProduct = dataManager.getProductClosingInfo(product, from, to);
+			List<ProductClosingInfo> lstProduct = dataSource.getProductClosingInfo(product, from, to);
 			for(ProductClosingInfo info : lstProduct) {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(info.getDate());
@@ -57,8 +57,8 @@ public class ChaikinMoneyFlow implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.ChaikinMoneyFlow, product, from, to);
+	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ChaikinMoneyFlow, product, from, to);
 		int n = Integer.parseInt(inputs[0]);
 		List<AnalysisResult> lstResult = AnalystUtils.NDaysAccu(lst, n);
 		for(AnalysisResult analysisResult : lstResult) {

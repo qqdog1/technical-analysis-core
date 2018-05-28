@@ -30,10 +30,10 @@ public class ADL implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
+	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = new ArrayList<>();
 		try {
-			List<ProductClosingInfo> lstProduct = dataManager.getProductClosingInfo(product, from, to);
+			List<ProductClosingInfo> lstProduct = dataSource.getProductClosingInfo(product, from, to);
 			for(ProductClosingInfo info : lstProduct) {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(info.getDate());
@@ -56,8 +56,8 @@ public class ADL implements TechAnalyzer {
 	}
 	
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) throws Exception {
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.ADL, product, from, to);
+	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String ... inputs) throws Exception {
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ADL, product, from, to);
 		String accu = inputs[0];
 		if(!"Y".equalsIgnoreCase(accu)) {
 			return lst;

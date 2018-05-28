@@ -29,10 +29,10 @@ public class SI implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
+	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		try {
-			List<ProductClosingInfo> lstProducts = dataManager.getProductClosingInfo(product, from, to);
+			List<ProductClosingInfo> lstProducts = dataSource.getProductClosingInfo(product, from, to);
 			for(int i = 1 ; i < lstProducts.size() ; i++) {
 				ProductClosingInfo lastInfo = lstProducts.get(i-1);
 				ProductClosingInfo info = lstProducts.get(i);
@@ -72,8 +72,8 @@ public class SI implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.SI, product, from, to);
+	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.SI, product, from, to);
 		String accu = inputs[0];
 		if(!"Y".equalsIgnoreCase(accu)) {
 			return lst;

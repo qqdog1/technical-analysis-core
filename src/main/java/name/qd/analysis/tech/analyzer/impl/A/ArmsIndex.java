@@ -28,11 +28,11 @@ public class ArmsIndex implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
+	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = new ArrayList<>();
 		try {
-			List<AnalysisResult> lstAdvanceVolume = manager.getAnalysisResult(dataManager, TechAnalyzers.AdvancingVolume, product, from, to);
-			List<AnalysisResult> lstDeclineVolume = manager.getAnalysisResult(dataManager, TechAnalyzers.DecliningVolume, product, from, to);
+			List<AnalysisResult> lstAdvanceVolume = manager.getAnalysisResult(dataSource, TechAnalyzers.AdvancingVolume, product, from, to);
+			List<AnalysisResult> lstDeclineVolume = manager.getAnalysisResult(dataSource, TechAnalyzers.DecliningVolume, product, from, to);
 			
 			if(lstAdvanceVolume.size() != lstDeclineVolume.size()) {
 				throw new Exception("AdvanceVolume data count != DeclineVolume data count");
@@ -64,9 +64,9 @@ public class ArmsIndex implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) throws Exception {
+	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String ... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.ArmsIndex, product, from, to);
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ArmsIndex, product, from, to);
 		return AnalystUtils.simpleMovingAverageByResult(lst, ma);
 	}
 	

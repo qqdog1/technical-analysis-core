@@ -23,16 +23,16 @@ public class Aroon_DOWN implements TechAnalyzer {
 	}
 
 	@Override
-	public List<AnalysisResult> analyze(DataSource dataManager, String product, Date from, Date to) throws Exception {
+	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
 		throw new Exception("Must enter days.");
 	}
 
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
+	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
 		int n = Integer.parseInt(inputs[0]);
 		List<AnalysisResult> lst = new ArrayList<>();
 		try {
-			List<ProductClosingInfo> lstProducts = dataManager.getProductClosingInfo(product, from, to);
+			List<ProductClosingInfo> lstProducts = dataSource.getProductClosingInfo(product, from, to);
 			for(int i = n ; i < lstProducts.size() ; i++) {
 				AnalysisResult result = new AnalysisResult();
 				result.setDate(lstProducts.get(i).getDate());
