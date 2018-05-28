@@ -1,4 +1,4 @@
-package name.qd.analysis.tech.analyzer.impl.A;
+package name.qd.analysis.tech.analyzer.impl.C;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,15 +18,15 @@ import name.qd.analysis.utils.AnalystUtils;
 import name.qd.analysis.utils.StringCombineUtil;
 
 /**
- * 累積派發線
- * (收-低) - (高-收) / (高-低) * 成交量  累加
+ * Chaikin Money Flow
+ *
  */
-public class ADL implements TechAnalyzer {
-	private static Logger log = LoggerFactory.getLogger(ADL.class);
+public class ChaikinMoneyFlow implements TechAnalyzer {
+	private static Logger log = LoggerFactory.getLogger(ChaikinMoneyFlow.class);
 
 	@Override
 	public String getCacheName(String product) {
-		return StringCombineUtil.combine(ADL.class.getSimpleName(), product);
+		return StringCombineUtil.combine(ChaikinMoneyFlow.class.getSimpleName(), product);
 	}
 
 	@Override
@@ -46,29 +46,34 @@ public class ADL implements TechAnalyzer {
 				}
 				d = d * info.getFilledShare();
 				result.setValue(d);
+				result.setValue(info.getFilledShare());
 				lst.add(result);
 			}
 		} catch (Exception e) {
-			log.error("Analyze ADL failed.", e);
+			log.error("Analyze CMF failed.", e);
 			throw e;
 		}
 		return lst;
 	}
-	
+
 	@Override
-	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) throws Exception {
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.ADL, product, from, to);
-		String accu = inputs[0];
-		if(!"Y".equalsIgnoreCase(accu)) {
-			return lst;
+	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String... inputs) throws Exception {
+		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.ChaikinMoneyFlow, product, from, to);
+		int n = Integer.parseInt(inputs[0]);
+		List<AnalysisResult> lstResult = AnalystUtils.NDaysAccu(lst, n);
+		for(AnalysisResult analysisResult : lstResult) {
+			List<Double> lstValue = new ArrayList<>();
+			double value = analysisResult.getValue().get(0)/analysisResult.getValue().get(1);
+			lstValue.add(value);
+			analysisResult.setValue(lstValue);
 		}
-		return AnalystUtils.accu(lst);
+		return lstResult;
 	}
-	
+
 	@Override
 	public List<String> getCustomDescreption() {
 		List<String> lst = new ArrayList<>();
-		lst.add("Accumulate(Y/N)=ADL:");
+		lst.add("N Days:");
 		return lst;
 	}
 

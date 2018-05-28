@@ -7,7 +7,7 @@ import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.tech.vo.AnalysisResult;
 
 public class AnalystUtils {
-	public static List<AnalysisResult> NDaysAvg(List<ProductClosingInfo> lst, int days) {
+	public static List<AnalysisResult> simpleMovingAverage(List<ProductClosingInfo> lst, int days) {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		for(int i = lst.size() - 1 ; i >= days - 1 ;  i--) {
 			AnalysisResult result = new AnalysisResult();
@@ -24,7 +24,7 @@ public class AnalystUtils {
 		return lstResult;
 	}
 	
-	public static List<AnalysisResult> NDaysAvgByAnalysisResult(List<AnalysisResult> lst, int days) {
+	public static List<AnalysisResult> simpleMovingAverageByResult(List<AnalysisResult> lst, int days) {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		for(int i = lst.size() - 1 ; i >= days - 1 ;  i--) {
 			AnalysisResult result = new AnalysisResult();
@@ -44,6 +44,60 @@ public class AnalystUtils {
 		return lstResult;
 	}
 	
+	public static List<AnalysisResult> exponentialMovingAverage(List<ProductClosingInfo> lst, int days) {
+		List<AnalysisResult> lstResult = new ArrayList<>();
+		double rate = 2d / (double)(days+1);
+		double lastValueRate = 1d-rate;
+		AnalysisResult lastResult = null;
+		for(int i = 0 ; i < lst.size() ;i++) {
+			AnalysisResult result = new AnalysisResult();
+			ProductClosingInfo info = lst.get(i);
+			result.setDate(info.getDate());
+			double lastValue = 0;
+			if(lastResult != null) {
+				lastValue = lastResult.getValue().get(0) * lastValueRate;
+				double value = lastValue + (info.getAvgPrice() * rate);
+				result.setValue(value);
+			} else {
+				result.setValue(info.getAvgPrice());
+			}
+			
+			lastResult = result;
+			
+			if(i >= days) {
+				lstResult.add(result);
+			}
+		}
+		return lstResult;
+	}
+	
+	public static List<AnalysisResult> exponentialMovingAverageByResult(List<AnalysisResult> lst, int days) {
+		List<AnalysisResult> lstResult = new ArrayList<>();
+		double rate = 2d / (double)(days+1);
+		double lastValueRate = 1d-rate;
+		AnalysisResult lastResult = null;
+		for(int i = 0 ; i < lst.size() ;i++) {
+			AnalysisResult result = new AnalysisResult();
+			AnalysisResult data = lst.get(i);
+			result.setDate(data.getDate());
+			double lastValue = 0;
+			if(lastResult != null) {
+				lastValue = lastResult.getValue().get(0) * lastValueRate;
+				double value = lastValue + (data.getValue().get(0) * rate);
+				result.setValue(value);
+			} else {
+				result.setValue(data.getValue().get(0));
+			}
+			
+			lastResult = result;
+			
+			if(i >= days) {
+				lstResult.add(result);
+			}
+		}
+		return lstResult;
+	}
+	
 	public static List<AnalysisResult> accu(List<AnalysisResult> lst) {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		AnalysisResult lastResult = new AnalysisResult();
@@ -58,6 +112,26 @@ public class AnalystUtils {
 		return lstResult;
 	}
 	
+	public static List<AnalysisResult> NDaysAccu(List<AnalysisResult> lst, int days) {
+		List<AnalysisResult> lstResult = new ArrayList<>();
+		for(int i = lst.size() - 1 ; i >= days - 1 ;  i--) {
+			AnalysisResult result = new AnalysisResult();
+			result.setDate(lst.get(i).getDate());
+			List<Double> lstValues = lst.get(i).getValue();
+			List<Double> lstValueResult = new ArrayList<>();
+			for(int index = 0 ; index < lstValues.size() ; index++ ) {
+				double sum = 0;
+				for(int j = 0 ; j < days ; j++) {
+					sum += lst.get(i - j).getValue().get(index);
+				}
+				lstValueResult.add(sum);
+			}
+			result.setValue(lstValueResult);
+			lstResult.add(result);
+		}
+		return lstResult;
+	}
+		
 	public static List<AnalysisResult> NDayStandardDeviation(List<AnalysisResult> lst, int days) {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		for(int i = lst.size() - 1 ; i >= days - 1 ;  i--) {

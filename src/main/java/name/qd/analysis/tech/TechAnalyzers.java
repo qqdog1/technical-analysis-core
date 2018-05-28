@@ -11,6 +11,8 @@ public enum TechAnalyzers {
 	AVERAGE_PRICE, CLOSE_PRICE, OPEN_PRICE, UPPER_PRICE, LOWER_PRICE, 
 	
 	BollingerBand_Upper, BollingerBand_Middle, BollingerBand_Lower,
-	BreadthThrust
+	BreadthThrust,
+	
+	ChaikinMoneyFlow, ChaikinOscillator, 
 	;
 }

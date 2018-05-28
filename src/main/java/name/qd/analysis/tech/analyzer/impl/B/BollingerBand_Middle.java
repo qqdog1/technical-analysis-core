@@ -45,13 +45,13 @@ public class BollingerBand_Middle implements TechAnalyzer {
 		}
 		
 		int ma = Integer.parseInt(inputs[0]);
-		return AnalystUtils.NDaysAvgByAnalysisResult(lstResult, ma);
+		return AnalystUtils.simpleMovingAverageByResult(lstResult, ma);
 	}
 
 	@Override
 	public List<String> getCustomDescreption() {
 		List<String> lst = new ArrayList<>();
-		lst.add("MA:");
+		lst.add("Simple-MA:");
 		return lst;
 	}
 

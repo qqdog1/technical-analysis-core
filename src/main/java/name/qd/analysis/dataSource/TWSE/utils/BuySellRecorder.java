@@ -46,7 +46,7 @@ public class BuySellRecorder {
 	private BuySellRecorder() {
 		date = TimeUtil.getToday();
 //		try {
-//			date = TimeUtil.getDateFormat().parse("20180509");
+//			date = TimeUtil.getDateFormat().parse("20180521");
 //		} catch (ParseException e) {
 //			e.printStackTrace();
 //		}

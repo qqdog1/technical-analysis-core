@@ -23,6 +23,8 @@ import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Lower;
 import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Middle;
 import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Upper;
 import name.qd.analysis.tech.analyzer.impl.B.BreadthThrust;
+import name.qd.analysis.tech.analyzer.impl.C.ChaikinMoneyFlow;
+import name.qd.analysis.tech.analyzer.impl.C.ChaikinOscillator;
 import name.qd.analysis.tech.analyzer.impl.price.AveragePrice;
 import name.qd.analysis.tech.analyzer.impl.price.ClosePrice;
 import name.qd.analysis.tech.analyzer.impl.price.LowerPrice;
@@ -115,6 +117,12 @@ public class TechAnalyzerFactory {
 			break;
 		case BreadthThrust:
 			map.put(analyzer, new BreadthThrust());
+			break;
+		case ChaikinMoneyFlow:
+			map.put(analyzer, new ChaikinMoneyFlow());
+			break;
+		case ChaikinOscillator:
+			map.put(analyzer, new ChaikinOscillator());
 			break;
 		}
 	}

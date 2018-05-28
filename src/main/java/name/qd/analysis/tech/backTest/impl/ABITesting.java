@@ -25,7 +25,7 @@ public class ABITesting implements BackTesting {
 		
 		List<ActionResult> lst = new ArrayList<>();
 		List<AnalysisResult> lstResult = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ABI, product, from, to);
-		List<AnalysisResult> lstMAResult = AnalystUtils.NDaysAvgByAnalysisResult(lstResult, ma);
+		List<AnalysisResult> lstMAResult = AnalystUtils.simpleMovingAverageByResult(lstResult, ma);
 		for(AnalysisResult result : lstMAResult) {
 			ActionResult action = new ActionResult();
 			action.setDate(result.getDate());

@@ -79,7 +79,7 @@ public class BollingerBand_Upper implements TechAnalyzer {
 	@Override
 	public List<String> getCustomDescreption() {
 		List<String> lst = new ArrayList<>();
-		lst.add("MA:");
+		lst.add("Simple-MA:");
 		lst.add("SD Multi:");
 		return lst;
 	}

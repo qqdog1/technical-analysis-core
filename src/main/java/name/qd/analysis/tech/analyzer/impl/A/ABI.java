@@ -52,13 +52,13 @@ public class ABI implements TechAnalyzer {
 	public List<AnalysisResult> customResult(DataSource dataManager, String product, Date from, Date to, String ... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
 		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataManager, TechAnalyzers.ABI, product, from, to);
-		return AnalystUtils.NDaysAvgByAnalysisResult(lst, ma);
+		return AnalystUtils.simpleMovingAverageByResult(lst, ma);
 	}
 	
 	@Override
 	public List<String> getCustomDescreption() {
 		List<String> lst = new ArrayList<>();
-		lst.add("MA:");
+		lst.add("Simple-MA:");
 		return lst;
 	}
 
