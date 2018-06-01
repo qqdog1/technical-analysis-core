@@ -50,7 +50,7 @@ public class ChaikinMoneyFlow implements TechAnalyzer {
 				lst.add(result);
 			}
 		} catch (Exception e) {
-			log.error("Analyze CMF failed.", e);
+			log.error("Analyze ChaikinMoneyFlow failed.", e);
 			throw e;
 		}
 		return lst;

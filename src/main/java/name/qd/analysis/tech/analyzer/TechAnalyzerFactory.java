@@ -23,12 +23,15 @@ import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Lower;
 import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Middle;
 import name.qd.analysis.tech.analyzer.impl.B.BollingerBand_Upper;
 import name.qd.analysis.tech.analyzer.impl.B.BreadthThrust;
+import name.qd.analysis.tech.analyzer.impl.C.CCI;
+import name.qd.analysis.tech.analyzer.impl.C.CMO;
 import name.qd.analysis.tech.analyzer.impl.C.ChaikinMoneyFlow;
 import name.qd.analysis.tech.analyzer.impl.C.ChaikinOscillator;
 import name.qd.analysis.tech.analyzer.impl.price.AveragePrice;
 import name.qd.analysis.tech.analyzer.impl.price.ClosePrice;
 import name.qd.analysis.tech.analyzer.impl.price.LowerPrice;
 import name.qd.analysis.tech.analyzer.impl.price.OpenPrice;
+import name.qd.analysis.tech.analyzer.impl.price.TypicalPrice;
 import name.qd.analysis.tech.analyzer.impl.price.UpperPrice;
 
 public class TechAnalyzerFactory {
@@ -106,6 +109,9 @@ public class TechAnalyzerFactory {
 		case LOWER_PRICE:
 			map.put(analyzer, new LowerPrice());
 			break;
+		case TYPICAL_PRICE:
+			map.put(analyzer, new TypicalPrice());
+			break;
 		case BollingerBand_Lower:
 			map.put(analyzer, new BollingerBand_Lower());
 			break;
@@ -123,6 +129,14 @@ public class TechAnalyzerFactory {
 			break;
 		case ChaikinOscillator:
 			map.put(analyzer, new ChaikinOscillator());
+			break;
+		case CMO:
+			map.put(analyzer, new CMO());
+			break;
+		case CCI:
+			map.put(analyzer, new CCI());
+			break;
+		default:
 			break;
 		}
 	}

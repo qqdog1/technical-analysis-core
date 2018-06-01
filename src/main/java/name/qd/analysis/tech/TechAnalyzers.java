@@ -8,11 +8,11 @@ public enum TechAnalyzers {
 	ArmsIndex, Aroon_UP, Aroon_DOWN,
 	ATR, 
 	AdvancingVolume, DecliningVolume, UnchangedVolume,
-	AVERAGE_PRICE, CLOSE_PRICE, OPEN_PRICE, UPPER_PRICE, LOWER_PRICE, 
+	AVERAGE_PRICE, CLOSE_PRICE, OPEN_PRICE, UPPER_PRICE, LOWER_PRICE, TYPICAL_PRICE,
 	
 	BollingerBand_Upper, BollingerBand_Middle, BollingerBand_Lower,
 	BreadthThrust,
 	
-	ChaikinMoneyFlow, ChaikinOscillator, 
+	ChaikinMoneyFlow, ChaikinOscillator, CMO, CCI, CSI, 
 	;
 }
