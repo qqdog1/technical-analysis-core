@@ -98,6 +98,31 @@ public class AnalystUtils {
 		return lstResult;
 	}
 	
+	public static List<AnalysisResult> WilderSmoothing(List<AnalysisResult> lst, int days) {
+		List<AnalysisResult> lstResult = new ArrayList<>();
+		
+		double sum = 0;
+		for(int i = 0 ; i < days ; i++) {
+			sum += lst.get(i).getValue().get(0);
+		}
+		double firstMA = sum/days;
+		AnalysisResult firstResult = new AnalysisResult();
+		firstResult.setDate(lst.get(days-1).getDate());
+		firstResult.setValue(firstMA);
+		lstResult.add(firstResult);
+		
+		AnalysisResult lastResult = firstResult;
+		for(int i = days ; i < lst.size() ; i++) {
+			AnalysisResult result = new AnalysisResult();
+			result.setDate(lst.get(i).getDate());
+			double value = lastResult.getValue().get(0)+(lst.get(i).getValue().get(0)-lastResult.getValue().get(0))/days;
+			result.setValue(value);
+			lstResult.add(result);
+			lastResult = result;
+		}
+		return lstResult;
+	}
+	
 	public static List<AnalysisResult> accu(List<AnalysisResult> lst) {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		AnalysisResult lastResult = new AnalysisResult();
