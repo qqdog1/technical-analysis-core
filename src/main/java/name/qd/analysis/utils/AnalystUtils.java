@@ -54,7 +54,7 @@ public class AnalystUtils {
 			ProductClosingInfo info = lst.get(i);
 			result.setDate(info.getDate());
 			double lastValue = 0;
-			if(lastResult != null) {
+			if(i != 0) {
 				lastValue = lastResult.getValue().get(0) * lastValueRate;
 				double value = lastValue + (info.getAvgPrice() * rate);
 				result.setValue(value);
@@ -81,7 +81,7 @@ public class AnalystUtils {
 			AnalysisResult data = lst.get(i);
 			result.setDate(data.getDate());
 			double lastValue = 0;
-			if(lastResult != null) {
+			if(i != 0) {
 				lastValue = lastResult.getValue().get(0) * lastValueRate;
 				double value = lastValue + (data.getValue().get(0) * rate);
 				result.setValue(value);
