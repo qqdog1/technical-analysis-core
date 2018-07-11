@@ -81,9 +81,9 @@ public class TechPanel extends JPanel {
 		addToSelectPanel(dpTo, 7, 0);
 		addToSelectPanel(btnAddLeft, 8, 0);
 		addToSelectPanel(btnAddRight, 9, 0);
-		addToSelectPanel(btnRemove, 10, 0);
-		addToSelectPanel(btnRemoveAll, 11, 0);
-		addToSelectPanel(btnBackTest, 12, 0);
+		addToSelectPanel(btnRemove, 12, 0);
+		addToSelectPanel(btnRemoveAll, 13, 0);
+		addToSelectPanel(btnBackTest, 14, 0);
 		
 		add(selectPanel, BorderLayout.NORTH);
 	}
@@ -100,8 +100,8 @@ public class TechPanel extends JPanel {
 	}
 	
 	private void initActionListener() {
-		setComboData();
 		setComboListener();
+		setComboData();
 		setButtonListener();
 	}
 	
@@ -142,7 +142,6 @@ public class TechPanel extends JPanel {
 						addToSelectPanel(textField, i*2+1, 1);
 					}
 				}
-				revalidate();
 			}
 		});
 	}
@@ -225,6 +224,7 @@ public class TechPanel extends JPanel {
 			}
 		});
 		
+		
 		btnRemove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -267,10 +267,11 @@ public class TechPanel extends JPanel {
 			remove(chartPanel);
 		}
 		chartPanel = jFreechart.getChartPanel();
-		add(chartPanel, BorderLayout.CENTER);
-		
-		chartPanel.revalidate();
-		chartPanel.repaint();
+		if(chartPanel != null) {
+			add(chartPanel, BorderLayout.CENTER);
+			chartPanel.revalidate();
+			chartPanel.repaint();
+		}
 		revalidate();
 		repaint();
 	}
