@@ -27,6 +27,7 @@ import name.qd.analysis.tech.analyzer.impl.C.CCI;
 import name.qd.analysis.tech.analyzer.impl.C.CMO;
 import name.qd.analysis.tech.analyzer.impl.C.ChaikinMoneyFlow;
 import name.qd.analysis.tech.analyzer.impl.C.ChaikinOscillator;
+import name.qd.analysis.tech.analyzer.impl.D.DPO;
 import name.qd.analysis.tech.analyzer.impl.ma.ExponentialMovingAverage;
 import name.qd.analysis.tech.analyzer.impl.ma.SimpleMovingAverage;
 import name.qd.analysis.tech.analyzer.impl.ma.WilderSmoothing;
@@ -138,6 +139,9 @@ public class TechAnalyzerFactory {
 			break;
 		case CCI:
 			map.put(analyzer, new CCI());
+			break;
+		case DPO:
+			map.put(analyzer, new DPO());
 			break;
 		case SimpleMovingAverage:
 			map.put(analyzer, new SimpleMovingAverage());

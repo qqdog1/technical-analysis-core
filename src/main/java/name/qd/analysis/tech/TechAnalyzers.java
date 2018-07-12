@@ -12,7 +12,7 @@ public enum TechAnalyzers {
 	BreadthThrust,
 	
 	ChaikinMoneyFlow, ChaikinOscillator, CMO, CCI, CSI, 
-	
+	DPO,
 	
 	
 	
