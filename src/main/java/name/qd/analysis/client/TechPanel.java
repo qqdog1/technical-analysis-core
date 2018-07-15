@@ -142,6 +142,8 @@ public class TechPanel extends JPanel {
 						addToSelectPanel(textField, i*2+1, 1);
 					}
 				}
+				revalidate();
+				repaint();
 			}
 		});
 	}

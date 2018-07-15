@@ -1,6 +1,7 @@
 package name.qd.analysis.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
@@ -21,6 +22,7 @@ public class AnalystUtils {
 			result.setValue(lstValues);
 			lstResult.add(result);
 		}
+		Collections.reverse(lstResult);
 		return lstResult;
 	}
 	
@@ -41,6 +43,7 @@ public class AnalystUtils {
 			result.setValue(lstValueResult);
 			lstResult.add(result);
 		}
+		Collections.reverse(lstResult);
 		return lstResult;
 	}
 	
@@ -154,6 +157,7 @@ public class AnalystUtils {
 			result.setValue(lstValueResult);
 			lstResult.add(result);
 		}
+		Collections.reverse(lstResult);
 		return lstResult;
 	}
 		
@@ -169,7 +173,7 @@ public class AnalystUtils {
 			result.setValue(standardDeviation(lstValue));
 			lstResult.add(result);
 		}
-		
+		Collections.reverse(lstResult);
 		return lstResult;
 	}
 	
