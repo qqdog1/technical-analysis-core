@@ -12,13 +12,13 @@ public enum TechAnalyzers {
 	BreadthThrust,
 	
 	ChaikinMoneyFlow, ChaikinOscillator, CMO, CCI, CSI, 
-	DPO,
+	DPO, 
 	
 	
 	
 	
 	AdvancingVolume, DecliningVolume, UnchangedVolume,
 	AVERAGE_PRICE, CLOSE_PRICE, OPEN_PRICE, UPPER_PRICE, LOWER_PRICE, TYPICAL_PRICE,
-	SimpleMovingAverage, ExponentialMovingAverage, WilderSmoothing, 
+	SimpleMovingAverage, ExponentialMovingAverage, DEMA, WilderSmoothing, 
 	;
 }

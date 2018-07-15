@@ -101,6 +101,21 @@ public class AnalystUtils {
 		return lstResult;
 	}
 	
+	public static List<AnalysisResult> DEMAByResult(List<AnalysisResult> lst, int days) {
+		List<AnalysisResult> lstResult = new ArrayList<>();
+		List<AnalysisResult> lstEMA = exponentialMovingAverageByResult(lst, days);
+		List<AnalysisResult> lstEMAEMA = exponentialMovingAverageByResult(lstEMA, days);
+		for(int i = 0 ; i < lstEMAEMA.size() ; i++) {
+			AnalysisResult result = new AnalysisResult();
+			AnalysisResult ema = lstEMA.get(i+days-1);
+			AnalysisResult emaema = lstEMAEMA.get(i);
+			result.setDate(emaema.getDate());
+			result.setValue(ema.getValue().get(0)*2 - emaema.getValue().get(0));
+			lstResult.add(result);
+		}
+		return lstResult;
+	}
+	
 	public static List<AnalysisResult> WilderSmoothing(List<AnalysisResult> lst, int days) {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		

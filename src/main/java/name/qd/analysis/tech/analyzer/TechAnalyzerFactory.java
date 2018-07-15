@@ -28,6 +28,7 @@ import name.qd.analysis.tech.analyzer.impl.C.CMO;
 import name.qd.analysis.tech.analyzer.impl.C.ChaikinMoneyFlow;
 import name.qd.analysis.tech.analyzer.impl.C.ChaikinOscillator;
 import name.qd.analysis.tech.analyzer.impl.D.DPO;
+import name.qd.analysis.tech.analyzer.impl.ma.DEMA;
 import name.qd.analysis.tech.analyzer.impl.ma.ExponentialMovingAverage;
 import name.qd.analysis.tech.analyzer.impl.ma.SimpleMovingAverage;
 import name.qd.analysis.tech.analyzer.impl.ma.WilderSmoothing;
@@ -148,6 +149,9 @@ public class TechAnalyzerFactory {
 			break;
 		case ExponentialMovingAverage:
 			map.put(analyzer, new ExponentialMovingAverage());
+			break;
+		case DEMA:
+			map.put(analyzer, new DEMA());
 			break;
 		case WilderSmoothing:
 			map.put(analyzer, new WilderSmoothing());
