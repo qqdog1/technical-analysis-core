@@ -1,8 +1,14 @@
 package name.qd.analysis.dataSource.TWSE.utils;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -99,6 +105,19 @@ public class BuySellRecorder {
 		url = new URL(images.get(1).getAttribute("src"));
 		bufferedImage = ImageIO.read(url);
 		ImageIO.write(bufferedImage, "jpg", new File(captchaPath));
+	}
+	
+	private void downloadCaptchaaa() throws IOException {
+		List<WebElement> images = webDriver.findElements(By.tagName("img"));
+		URL url = new URL(images.get(1).getAttribute("src"));
+		
+		InputStream in = new BufferedInputStream(url.openStream());
+		OutputStream out = new BufferedOutputStream(new FileOutputStream(captchaPath));
+		for ( int i; (i = in.read()) != -1; ) {
+		    out.write(i);
+		}
+		in.close();
+		out.close();
 	}
 	
 	private void startDownload() {
