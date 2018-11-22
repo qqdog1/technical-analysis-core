@@ -52,7 +52,7 @@ public class BuySellRecorder {
 	private BuySellRecorder() {
 		date = TimeUtil.getToday();
 //		try {
-//			date = TimeUtil.getDateFormat().parse("20180604");
+//			date = TimeUtil.getDateFormat().parse("20181119");
 //		} catch (ParseException e) {
 //			e.printStackTrace();
 //		}
@@ -125,7 +125,7 @@ public class BuySellRecorder {
 		for(String product : lst) {
 			try {
 				if(isFileExist(product)) {
-					log.info("File already exist. {}", product);
+					log.info("File downloaded. {}", product);
 					lstRemain.remove(product);
 					continue;
 				}
@@ -135,8 +135,8 @@ public class BuySellRecorder {
 				break;
 			}
 			
-			log.info("Download {} success.", product);
-			lstRemain.remove(product);
+//			log.info("Download {} success.", product);
+//			lstRemain.remove(product);
 			
 			try {
 				Thread.sleep(2000);
