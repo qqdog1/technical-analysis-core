@@ -1,18 +1,11 @@
 package name.qd.analysis.dataSource.TWSE.utils;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,7 +45,7 @@ public class BuySellRecorder {
 	private BuySellRecorder() {
 		date = TimeUtil.getToday();
 //		try {
-//			date = TimeUtil.getDateFormat().parse("20181119");
+//			date = TimeUtil.getDateFormat().parse("20190104");
 //		} catch (ParseException e) {
 //			e.printStackTrace();
 //		}
@@ -107,19 +100,6 @@ public class BuySellRecorder {
 		ImageIO.write(bufferedImage, "jpg", new File(captchaPath));
 	}
 	
-	private void downloadCaptchaaa() throws IOException {
-		List<WebElement> images = webDriver.findElements(By.tagName("img"));
-		URL url = new URL(images.get(1).getAttribute("src"));
-		
-		InputStream in = new BufferedInputStream(url.openStream());
-		OutputStream out = new BufferedOutputStream(new FileOutputStream(captchaPath));
-		for ( int i; (i = in.read()) != -1; ) {
-		    out.write(i);
-		}
-		in.close();
-		out.close();
-	}
-	
 	private void startDownload() {
 		webDriver.get("http://bsr.twse.com.tw/bshtm/bsMenu.aspx");
 		for(String product : lst) {
@@ -134,9 +114,6 @@ public class BuySellRecorder {
 				log.error("Download {} failed.", product);
 				break;
 			}
-			
-//			log.info("Download {} success.", product);
-//			lstRemain.remove(product);
 			
 			try {
 				Thread.sleep(2000);
