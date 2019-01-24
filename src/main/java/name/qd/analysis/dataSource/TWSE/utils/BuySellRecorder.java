@@ -8,9 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -21,10 +19,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import name.qd.analysis.Constants.Exchange;
-import name.qd.analysis.dataSource.DataSource;
-import name.qd.analysis.dataSource.DataSourceFactory;
-import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.utils.TWSECaptchaSolver;
 import name.qd.analysis.utils.TimeUtil;
 
@@ -32,32 +26,25 @@ public class BuySellRecorder {
 	private Logger log = LoggerFactory.getLogger(BuySellRecorder.class);
 	private WebDriver webDriver;
 	private BufferedImage bufferedImage;
-	private DataSource dataSource;
 	private TWSECaptchaSolver captchaSolver;
-	private String captchaPath = "bsr/twse.jpg";
-	private List<String> lst = new ArrayList<>();
+	private String captchaPath;
+	private List<String> lst;
 	private List<String> lstRemain = new ArrayList<>();
-	private Date date;
 	private SimpleDateFormat sdf = TimeUtil.getDateFormat();
 	private String dir;
 	private int total;
+	private final int workerId;
 	
-	private BuySellRecorder() {
-		date = TimeUtil.getToday();
-//		try {
-//			date = TimeUtil.getDateFormat().parse("20190104");
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
-		
+	public BuySellRecorder(int workerId, List<String> lst) {
+		this.lst = lst;
+		this.workerId = workerId;
 		init();
 		downloadData();
 		end();
-		log.info("Done. {}", total);
+		log.info("{} worker done. {}", workerId, total);
 	}
 	
 	private void downloadData() {
-		prepareAllProducts();
 		startDownload();
 	}
 	
@@ -126,7 +113,6 @@ public class BuySellRecorder {
 			moveFile(product);
 		}
 		
-		lst = new ArrayList<>();
 		lst.addAll(lstRemain);
 		
 		try {
@@ -141,48 +127,19 @@ public class BuySellRecorder {
 		}
 	}
 	
-	private void prepareAllProducts() {
-		Map<Date, List<ProductClosingInfo>> map = null;
-		try {
-			map = dataSource.getAllProductClosingInfo(date, date);
-		} catch (Exception e) {
-			log.error("Get product list failed.", e);
-		}
-		
-		for(List<ProductClosingInfo> lstProducts : map.values()) {
-			for(ProductClosingInfo productInfo : lstProducts) {
-				lst.add(productInfo.getProduct());
-			}
-		}
-		
-		total = lst.size();
-		lstRemain.addAll(lst);
-	}
-	
 	private boolean isFileExist(String product) {
 		return Files.exists(new File(dir + product + ".csv").toPath());
 	}
 	
 	private void init() {
 		webDriver = new ChromeDriver();
-		dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 		captchaSolver = new TWSECaptchaSolver();
-		dir = "D:/SimpleConnect_Maven/techanalyst/file/TWSE/bsr/" + sdf.format(date) + "/";
+		captchaPath = "bsr/" + workerId + "/twse.jpg";
 		
-		if(!Files.exists(new File(dir).toPath())) {
-			try {
-				Files.createDirectory(new File(dir).toPath());
-			} catch (IOException e) {
-				log.error("Create dir failed.", e);
-			}
-		}
+		
 	}
 	
 	private void end() {
 		captchaSolver.end();
-	}
-	
-	public static void main(String[] s) {
-		new BuySellRecorder();
 	}
 }
