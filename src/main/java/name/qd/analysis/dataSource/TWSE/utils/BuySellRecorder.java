@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,32 +20,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.utils.TWSECaptchaSolver;
-import name.qd.analysis.utils.TimeUtil;
 
-public class BuySellRecorder {
-	private Logger log = LoggerFactory.getLogger(BuySellRecorder.class);
+public class BuySellRecorder implements Runnable {
+	private static Logger log = LoggerFactory.getLogger(BuySellRecorder.class);
 	private WebDriver webDriver;
 	private BufferedImage bufferedImage;
 	private TWSECaptchaSolver captchaSolver;
 	private String captchaPath;
 	private List<String> lst;
 	private List<String> lstRemain = new ArrayList<>();
-	private SimpleDateFormat sdf = TimeUtil.getDateFormat();
 	private String dir;
 	private int total;
 	private final int workerId;
+	private final String chromeDownloadFolder;
 	
-	public BuySellRecorder(int workerId, List<String> lst) {
+	public BuySellRecorder(int workerId, List<String> lst, String chromeDownloadFolder, String dir) {
 		this.lst = lst;
+		for(String product : lst) {
+			lstRemain.add(product);
+		}
 		this.workerId = workerId;
-		init();
-		downloadData();
-		end();
-		log.info("{} worker done. {}", workerId, total);
+		this.chromeDownloadFolder = chromeDownloadFolder;
+		this.dir = dir;
+		captchaSolver = new TWSECaptchaSolver();
 	}
 	
-	private void downloadData() {
+	@Override
+	public void run() {
+		init();
 		startDownload();
+		end();
+		log.info("{} worker done. {}", workerId, total);
 	}
 	
 	private void downloadData(String product) throws Exception {
@@ -56,7 +61,7 @@ public class BuySellRecorder {
 	
 	private void moveFile(String product) {
 		String productFile = product + ".csv";
-		Path filePath = new File("C:/Users/Shawn.Chou/Downloads/" + productFile).toPath();
+		Path filePath = new File(chromeDownloadFolder + productFile).toPath();
 		try {
 			if(Files.exists(filePath)) {
 				Files.move(filePath, new File(dir + productFile).toPath());
@@ -92,13 +97,13 @@ public class BuySellRecorder {
 		for(String product : lst) {
 			try {
 				if(isFileExist(product)) {
-					log.info("File downloaded. {}", product);
+					log.info("[{}] File downloaded. {}", workerId, product);
 					lstRemain.remove(product);
 					continue;
 				}
 				downloadData(product);
 			} catch (Exception e) {
-				log.error("Download {} failed.", product);
+				log.error("[{}] Download {} failed. Remain:{}", workerId, product, lstRemain.size());
 				break;
 			}
 			
@@ -113,7 +118,10 @@ public class BuySellRecorder {
 			moveFile(product);
 		}
 		
-		lst.addAll(lstRemain);
+		lst.clear();
+		for(String product : lstRemain) {
+			lst.add(product);
+		}
 		
 		try {
 			Thread.sleep(1000);
@@ -121,10 +129,7 @@ public class BuySellRecorder {
 			e.printStackTrace();
 		}
 		
-		if(lst.size() > 0) {
-			log.info("List not empty. Download remain data. {}", lst.size());
-			startDownload();
-		}
+		startDownload();
 	}
 	
 	private boolean isFileExist(String product) {
@@ -133,10 +138,16 @@ public class BuySellRecorder {
 	
 	private void init() {
 		webDriver = new ChromeDriver();
-		captchaSolver = new TWSECaptchaSolver();
-		captchaPath = "bsr/" + workerId + "/twse.jpg";
+		Path path = Paths.get("./bsr/", String.valueOf(workerId));
+		if(!Files.exists(path)) {
+			try {
+				Files.createDirectory(path);
+			} catch (IOException e) {
+				log.error("Create worker captcha folder failed. {}", path.toString());
+			}
+		}
 		
-		
+		captchaPath = "./bsr/" + workerId + "/twse.jpg";
 	}
 	
 	private void end() {
