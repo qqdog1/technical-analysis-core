@@ -34,7 +34,6 @@ public class BSRRecorderManager {
 	private Date date;
 	private DataSource dataSource;
 	private String dir;
-	private List<String> lst = new ArrayList<>();
 	private int total;
 	private List<List<String>> lstWorkerProducts;
 	private Properties properties;
@@ -82,6 +81,7 @@ public class BSRRecorderManager {
 	
 	private void initProducts() {
 		Map<Date, List<ProductClosingInfo>> map = null;
+		List<String> lst = new ArrayList<>();
 		try {
 			map = dataSource.getAllProductClosingInfo(date, date);
 		} catch (Exception e) {
@@ -97,15 +97,22 @@ public class BSRRecorderManager {
 		total = lst.size();
 		log.info("Total products : {}", total);
 		
+		List<String> lstRemain = new ArrayList<>();
+		for(String product : lst) {
+			if(!Files.exists(new File(dir + product + ".csv").toPath())) {
+				lstRemain.add(product);
+			}
+		}
+		
 		lstWorkerProducts = new ArrayList<>();
 		
 		for(int i = 0 ; i < WORKER_COUNT ; i++) {
 			lstWorkerProducts.add(new ArrayList<>());
 		}
 		
-		for(int i = 0 ; i < total ; i++) {
+		for(int i = 0 ; i < lstRemain.size() ; i++) {
 			int index = i % WORKER_COUNT;
-			lstWorkerProducts.get(index).add(lst.get(i));
+			lstWorkerProducts.get(index).add(lstRemain.get(i));
 		}
 	}
 	

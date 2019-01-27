@@ -36,6 +36,7 @@ public class BuySellRecorder implements Runnable {
 	
 	public BuySellRecorder(int workerId, List<String> lst, String chromeDownloadFolder, String dir) {
 		this.lst = lst;
+		total = lst.size();
 		for(String product : lst) {
 			lstRemain.add(product);
 		}
@@ -129,7 +130,9 @@ public class BuySellRecorder implements Runnable {
 			e.printStackTrace();
 		}
 		
-		startDownload();
+		if(lst.size() > 0) {
+			startDownload();
+		}
 	}
 	
 	private boolean isFileExist(String product) {
