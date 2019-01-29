@@ -50,11 +50,12 @@ public class BSRRecorderManager {
 	
 	private void initDate() {
 		date = TimeUtil.getToday();
-		try {
-			date = TimeUtil.getDateFormat().parse("20190125");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			date = TimeUtil.getDateFormat().parse("20190125");
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+		log.info("{}", date);
 	}
 	
 	private void initConfig() {
