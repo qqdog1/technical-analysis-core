@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,10 +26,11 @@ import name.qd.analysis.utils.TimeUtil;
 
 public class BSRRecorderManager {
 	private Logger log;
-	private static int WORKER_COUNT = 2;
+	private static int WORKER_COUNT = 1;
 	private static String CONF_PATH = "./config/bsr.conf";
 	private static String BSR_FOLDER = "./file/TWSE/bsr/";
 	private static String CHROME_DOWNLOAD_FOLDER = "chrome_download_folder";
+	private String downloadFolder;
 	private final ExecutorService executor = Executors.newFixedThreadPool(WORKER_COUNT);
 	private SimpleDateFormat sdf = TimeUtil.getDateFormat();
 	private Date date;
@@ -45,16 +47,17 @@ public class BSRRecorderManager {
 		dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 		initFolder();
 		initProducts();
+		cleanDownloadFolder();
 		initWorkers();
 	}
 	
 	private void initDate() {
 		date = TimeUtil.getToday();
-//		try {
-//			date = TimeUtil.getDateFormat().parse("20190125");
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			date = TimeUtil.getDateFormat().parse("20190517");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		log.info("{}", date);
 	}
 	
@@ -78,6 +81,8 @@ public class BSRRecorderManager {
 				log.error("Create dir failed.", e);
 			}
 		}
+		
+		downloadFolder = properties.getProperty(CHROME_DOWNLOAD_FOLDER);
 	}
 	
 	private void initProducts() {
@@ -124,9 +129,24 @@ public class BSRRecorderManager {
 		log = LoggerFactory.getLogger(BSRRecorderManager.class);
 	}
 	
+	private void cleanDownloadFolder() {
+		try {
+			Files.list(Paths.get(downloadFolder)).forEach(
+					p -> {
+						try {
+							Files.delete(p);
+						} catch (IOException e) {
+							log.error("Delete {} failed.", p.toUri().toString(), e);
+						}
+					});
+		} catch (IOException e) {
+			log.error("Clean all file in download folder failed.", e);
+		}
+	}
+	
 	private void initWorkers() {
 		for(int i = 0 ; i < WORKER_COUNT ; i++) {
-			executor.execute(new BuySellRecorder(i, lstWorkerProducts.get(i), properties.getProperty(CHROME_DOWNLOAD_FOLDER), dir));
+			executor.execute(new BuySellRecorder(i, lstWorkerProducts.get(i), downloadFolder, dir));
 		}
 	}
 	

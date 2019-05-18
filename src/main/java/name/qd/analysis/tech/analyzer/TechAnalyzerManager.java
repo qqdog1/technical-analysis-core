@@ -1,6 +1,5 @@
 package name.qd.analysis.tech.analyzer;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,8 +17,8 @@ import name.qd.analysis.tech.TechAnalyzers;
 import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.TimeUtil;
 import name.qd.fileCache.FileCacheManager;
-import name.qd.fileCache.cache.CacheManager;
 import name.qd.fileCache.cache.FileCacheObject;
+import name.qd.fileCache.cache.NormalCacheManager;
 
 public class TechAnalyzerManager {
 	private static Logger log = LoggerFactory.getLogger(TechAnalyzerManager.class);
@@ -29,6 +28,7 @@ public class TechAnalyzerManager {
 	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
 	private TechAnalyzerFactory techAnalyzerFactory = new TechAnalyzerFactory();
 	private static TechAnalyzerManager instance = new TechAnalyzerManager();
+	private String className = AnalysisResult.class.getName();
 	
 	private TechAnalyzerManager() {
 		try {
@@ -60,7 +60,7 @@ public class TechAnalyzerManager {
 			updateCache(dataSource, techAnalyzer, product, from, to);
 		}
 		
-		CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
+		NormalCacheManager cacheManager = fileCacheManager.getNormalCacheInstance(cacheName, className);
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(to);
@@ -105,12 +105,17 @@ public class TechAnalyzerManager {
 	}
 	
 	private void putAnalysisResult(String cacheName, List<AnalysisResult> lst) {
-		CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
-		for(AnalysisResult result : lst) {
-			Date date = result.getDate();
-			updateFirstDate(cacheName, date);
-			updateLastDate(cacheName, date);
-			cacheManager.put(result.getKeyString(), result);
+		NormalCacheManager cacheManager;
+		try {
+			cacheManager = fileCacheManager.getNormalCacheInstance(cacheName, className);
+			for(AnalysisResult result : lst) {
+				Date date = result.getDate();
+				updateFirstDate(cacheName, date);
+				updateLastDate(cacheName, date);
+				cacheManager.put(result);
+			}
+		} catch (Exception e) {
+			log.error("Get {} cache failed.", cacheName, e);
 		}
 	}
 	
@@ -135,16 +140,17 @@ public class TechAnalyzerManager {
 	
 	private void loadCache(TechAnalyzer techAnalyzer, String product) {
 		String cacheName = techAnalyzer.getCacheName(product);
-		CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
-		if(cacheManager != null) {
+		NormalCacheManager cacheManager;
+		try {
+			cacheManager = fileCacheManager.getNormalCacheInstance(cacheName, className);
 			for(FileCacheObject obj : cacheManager.values()) {
 				AnalysisResult result = (AnalysisResult) obj;
 				Date date = result.getDate();
 				updateFirstDate(cacheName, date);
 				updateLastDate(cacheName, date);
 			}
-		} else {
-			fileCacheManager.createCacheInstance(cacheName, AnalysisResult.class.getName());
+		} catch (Exception e) {
+			log.error("Get {} cache failed.", cacheName, e);
 		}
 	}
 	
@@ -175,13 +181,11 @@ public class TechAnalyzerManager {
 	}
 	
 	private void syncFile(String cacheName) {
-		CacheManager cacheManager = fileCacheManager.getCacheInstance(cacheName);
-		if(cacheManager != null) {
-			try {
-				cacheManager.writeCacheToFile();
-			} catch (IOException e) {
-				log.error(e.getMessage(), e);
-			}
+		try {
+			NormalCacheManager cacheManager = fileCacheManager.getNormalCacheInstance(cacheName, className);
+			cacheManager.writeCacheToFile();
+		} catch (Exception e) {
+			log.error("Get {} cache failed.", cacheName, e);
 		}
 	}
 	

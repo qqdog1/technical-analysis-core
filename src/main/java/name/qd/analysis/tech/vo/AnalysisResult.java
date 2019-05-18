@@ -8,11 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 import name.qd.analysis.utils.TimeUtil;
-import name.qd.fileCache.cache.FileCacheObject;
+import name.qd.fileCache.cache.NormalObject;
 import name.qd.fileCache.common.TransInputStream;
 import name.qd.fileCache.common.TransOutputStream;
 
-public class AnalysisResult implements FileCacheObject {
+public class AnalysisResult extends NormalObject {
 	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
 	private Date date;
 	private List<Double> values = new ArrayList<>();
