@@ -5,12 +5,13 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import name.qd.analysis.utils.TimeUtil;
 
 public class TPEXDataPollerTest {
-
+	@Ignore
 	@Test
 	public void dlDailyInfoTest() {
 //		TPEXDataPoller poller = new TPEXDataPoller();

@@ -17,7 +17,7 @@ import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.utils.TimeUtil;
 
 public class TWSEDataParserTest {
-	
+	@Ignore
 	@Test
 	public void TWSEDataParserTestT() {
 //		TWSEDataParser parser = new TWSEDataParser();

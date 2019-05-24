@@ -5,11 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import name.qd.analysis.utils.TimeUtil;
 
 public class TimeUtilTest {
+	@Ignore
 	@Test
 	public void getDateBetweenTest() {
 		Calendar calendar = Calendar.getInstance();
@@ -26,7 +28,7 @@ public class TimeUtilTest {
 			calendar.add(Calendar.DATE, 1);
 		}
 	}
-	
+	@Ignore
 	@Test
 	public void AD2ROCTest() {
 		String s = "20110101";
