@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import name.qd.analysis.Constants.Exchange;
@@ -14,6 +15,7 @@ import name.qd.analysis.utils.TimeUtil;
 
 public class MostEffectiveTest {
 
+	@Ignore
 	@Test
 	public void MostEffTest() {
 		DataSource dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
@@ -30,7 +32,7 @@ public class MostEffectiveTest {
 			e.printStackTrace();
 		}
 	}
-	
+	@Ignore
 	@Test
 	public void EffectiveList() {
 		DataSource dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);

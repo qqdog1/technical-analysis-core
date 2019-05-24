@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import name.qd.analysis.Constants.Exchange;
@@ -16,7 +17,7 @@ import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.analysis.utils.TimeUtil;
 
 public class ChipUtilsTest {
-	
+	@Ignore
 	@Test
 	public void dailyOperateTest() {
 		try {

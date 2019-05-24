@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import name.qd.analysis.Constants.Exchange;
@@ -16,7 +17,7 @@ import name.qd.analysis.utils.StringCombineUtil;
 import name.qd.analysis.utils.TimeUtil;
 
 public class TWSEDataSourceTest {
-
+	@Ignore
 	@Test
 	public void testDataParser() {
 		DataSource twseDataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);

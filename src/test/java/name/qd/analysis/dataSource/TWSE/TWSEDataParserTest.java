@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import name.qd.analysis.dataSource.TWSE.TWSEDataParser;
@@ -48,7 +49,7 @@ public class TWSEDataParserTest {
 //			e.printStackTrace();
 //		}
 	}
-	
+	@Ignore
 	@Test
 	public void testParseDailyProducts() {
 		TWSEDataParser parser = new TWSEDataParser();
@@ -63,7 +64,7 @@ public class TWSEDataParserTest {
 			e.printStackTrace();
 		}
 	}
-	
+	@Ignore
 	@Test
 	public void buySellParserTest() {
 		TWSEDataParser parser = new TWSEDataParser();
@@ -77,7 +78,7 @@ public class TWSEDataParserTest {
 			e.printStackTrace();
 		}
 	}
-	
+	@Ignore
 	@Test
 	public void bsTest() {
 		TWSEDataParser parser = new TWSEDataParser();
