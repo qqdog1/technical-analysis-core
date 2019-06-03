@@ -58,33 +58,33 @@ public class ChipAnalyzerManagerTest {
 		}
 	}
 	
-	private void printSpecificY(String y) {
-		try {
-			CoordinateCacheManager cacheManager = fileCacheManager.getCoordinateCacheInstance("bsr_20190527", DailyOperate.class.getName());
-	
-			List<CoordinateObject> lst = cacheManager.getByY(y);
-			for(CoordinateObject obj : lst) {
-				DailyOperate daily = (DailyOperate) obj;
-				StringBuilder sb = new StringBuilder();
-				sb.append(daily.getBrokerName()).append(":").append(daily.getProduct()).append(":").append(daily.getOpenShare());
-				System.out.println(sb.toString());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void printSpecificObj(String x, String y) {
-		try {
-			CoordinateCacheManager cacheManager = fileCacheManager.getCoordinateCacheInstance("bsr_20190527", DailyOperate.class.getName());
-			
-			CoordinateObject obj = cacheManager.get(x, y);
-			DailyOperate daily = (DailyOperate) obj;
-			StringBuilder sb = new StringBuilder();
-			sb.append(daily.getBrokerName()).append(":").append(daily.getProduct()).append(":").append(daily.getOpenShare());
-			System.out.println(sb.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	private void printSpecificY(String y) {
+//		try {
+//			CoordinateCacheManager cacheManager = fileCacheManager.getCoordinateCacheInstance("bsr_20190527", DailyOperate.class.getName());
+//	
+//			List<CoordinateObject> lst = cacheManager.getByY(y);
+//			for(CoordinateObject obj : lst) {
+//				DailyOperate daily = (DailyOperate) obj;
+//				StringBuilder sb = new StringBuilder();
+//				sb.append(daily.getBrokerName()).append(":").append(daily.getProduct()).append(":").append(daily.getOpenShare());
+//				System.out.println(sb.toString());
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	private void printSpecificObj(String x, String y) {
+//		try {
+//			CoordinateCacheManager cacheManager = fileCacheManager.getCoordinateCacheInstance("bsr_20190527", DailyOperate.class.getName());
+//			
+//			CoordinateObject obj = cacheManager.get(x, y);
+//			DailyOperate daily = (DailyOperate) obj;
+//			StringBuilder sb = new StringBuilder();
+//			sb.append(daily.getBrokerName()).append(":").append(daily.getProduct()).append(":").append(daily.getOpenShare());
+//			System.out.println(sb.toString());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 }
