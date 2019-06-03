@@ -42,21 +42,21 @@ public class ChipAnalyzerManagerTest {
 		manager.transToDailyCache(dataSource, date, date);
 	}
 	
-	private void printSpecificX(String x) {
-		try {
-			CoordinateCacheManager cacheManager = fileCacheManager.getCoordinateCacheInstance("bsr_20190527", DailyOperate.class.getName());
-	
-			List<CoordinateObject> lst = cacheManager.getByX(x);
-			for(CoordinateObject obj : lst) {
-				DailyOperate daily = (DailyOperate) obj;
-				StringBuilder sb = new StringBuilder();
-				sb.append(daily.getBrokerName()).append(":").append(daily.getProduct()).append(":").append(daily.getOpenShare()).append(":").append(daily.getAvgPrice());
-				System.out.println(sb.toString());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	private void printSpecificX(String x) {
+//		try {
+//			CoordinateCacheManager cacheManager = fileCacheManager.getCoordinateCacheInstance("bsr_20190527", DailyOperate.class.getName());
+//	
+//			List<CoordinateObject> lst = cacheManager.getByX(x);
+//			for(CoordinateObject obj : lst) {
+//				DailyOperate daily = (DailyOperate) obj;
+//				StringBuilder sb = new StringBuilder();
+//				sb.append(daily.getBrokerName()).append(":").append(daily.getProduct()).append(":").append(daily.getOpenShare()).append(":").append(daily.getAvgPrice());
+//				System.out.println(sb.toString());
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 //	private void printSpecificY(String y) {
 //		try {
