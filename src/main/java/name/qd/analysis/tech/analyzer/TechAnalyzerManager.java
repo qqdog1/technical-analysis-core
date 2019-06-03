@@ -140,9 +140,8 @@ public class TechAnalyzerManager {
 	
 	private void loadCache(TechAnalyzer techAnalyzer, String product) {
 		String cacheName = techAnalyzer.getCacheName(product);
-		NormalCacheManager cacheManager;
 		try {
-			cacheManager = fileCacheManager.getNormalCacheInstance(cacheName, className);
+			NormalCacheManager cacheManager = fileCacheManager.getNormalCacheInstance(cacheName, className);
 			for(FileCacheObject obj : cacheManager.values()) {
 				AnalysisResult result = (AnalysisResult) obj;
 				Date date = result.getDate();

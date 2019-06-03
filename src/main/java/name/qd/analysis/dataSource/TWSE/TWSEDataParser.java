@@ -133,8 +133,7 @@ public class TWSEDataParser {
 	
 	private List<BuySellInfo> getBuySellInfo(Path path, String date, String product) throws IOException, ParseException {
 		List<BuySellInfo> lst = new ArrayList<>();
-		
-		List<String> lstLine = Files.readAllLines(path, Charset.forName("Big5"));
+		List<String> lstLine = Files.readAllLines(path, Charset.forName("Windows-950"));
 		
 		boolean start = false;
 		for(String line : lstLine) {
