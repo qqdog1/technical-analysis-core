@@ -28,6 +28,7 @@ import name.qd.analysis.tech.analyzer.impl.C.CMO;
 import name.qd.analysis.tech.analyzer.impl.C.ChaikinMoneyFlow;
 import name.qd.analysis.tech.analyzer.impl.C.ChaikinOscillator;
 import name.qd.analysis.tech.analyzer.impl.D.DPO;
+import name.qd.analysis.tech.analyzer.impl.P.PriceSpeed;
 import name.qd.analysis.tech.analyzer.impl.ma.DEMA;
 import name.qd.analysis.tech.analyzer.impl.ma.ExponentialMovingAverage;
 import name.qd.analysis.tech.analyzer.impl.ma.SimpleMovingAverage;
@@ -143,6 +144,9 @@ public class TechAnalyzerFactory {
 			break;
 		case DPO:
 			map.put(analyzer, new DPO());
+			break;
+		case PriceSpeed:
+			map.put(analyzer, new PriceSpeed());
 			break;
 		case SimpleMovingAverage:
 			map.put(analyzer, new SimpleMovingAverage());

@@ -1,6 +1,7 @@
 package name.qd.analysis.chip.analyzer;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -15,17 +16,70 @@ import name.qd.analysis.chip.utils.ChipUtils;
 import name.qd.analysis.chip.vo.DailyOperate;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
+import name.qd.analysis.utils.TimeUtil;
+import name.qd.fileCache.FileCacheManager;
+import name.qd.fileCache.cache.CoordinateCacheManager;
 
 public class ChipAnalyzerManager {
 	private static Logger log = LoggerFactory.getLogger(ChipAnalyzerManager.class);
 	private static ChipAnalyzerManager instance = new ChipAnalyzerManager();
 	private static double PNL_RATE_THRESHOLD = 0.001;
+	private FileCacheManager fileCacheManager;
 	
 	public static ChipAnalyzerManager getInstance() {
 		return instance;
 	}
 
 	private ChipAnalyzerManager() {
+		try {
+			fileCacheManager = new FileCacheManager("./cache/");
+		} catch (Exception e) {
+			log.error("Init file cache manager failed.", e);
+		}
+	}
+	
+	public void transToDailyCache(DataSource dataSource, Date from, Date to) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(from);
+		while(!(calendar.getTime().compareTo(to) > 0)) {
+			Date dateNow = calendar.getTime();
+			transDailyCache(dataSource, dateNow);
+			calendar.add(Calendar.DATE, 1);
+		}
+	}
+	
+	private void transDailyCache(DataSource dataSource, Date date) {
+		CoordinateCacheManager cacheManager = null;
+		try {
+			String cacheName = "bsr_" + TimeUtil.getDateFormat().format(date);
+			cacheManager = fileCacheManager.getCoordinateCacheInstance(cacheName, DailyOperate.class.getName());
+			if(cacheManager.values().size() > 0) {
+				return;
+			}
+		} catch (Exception e) {
+			log.error("Get coordinate cache fail, {}", date.toString(), e);
+			return;
+		}
+		
+		try {
+			Map<Date, Map<String, List<BuySellInfo>>> map = dataSource.getBuySellInfo(date, date);
+			if(map.get(date).size() == 0) {
+				log.info("{} was not a working day.", TimeUtil.getDateFormat().format(date));
+				return;
+			}
+			Map<String, List<BuySellInfo>> mapProductBSLst = map.get(date);
+			for(String key : mapProductBSLst.keySet()) {
+				Map<String, DailyOperate> mapResults = new HashMap<>();
+				ChipUtils.bsInfoToOperate(mapProductBSLst.get(key), mapResults);
+				for(String brokerName : mapResults.keySet()) {
+					cacheManager.put(mapResults.get(brokerName));
+				}
+			}
+			
+			cacheManager.writeCacheToFile();
+		} catch (Exception e) {
+			log.error("Get bsr files fail. {}", date.toString(), e);
+		}
 	}
 	
 	public List<DailyOperate> getEffectiveList(DataSource dataSource, Date from, Date to) throws Exception {
