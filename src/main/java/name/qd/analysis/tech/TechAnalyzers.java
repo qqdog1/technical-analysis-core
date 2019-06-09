@@ -15,7 +15,7 @@ public enum TechAnalyzers {
 	DPO, 
 	
 	
-	
+	PriceSpeed,
 	
 	AdvancingVolume, DecliningVolume, UnchangedVolume,
 	AVERAGE_PRICE, CLOSE_PRICE, OPEN_PRICE, UPPER_PRICE, LOWER_PRICE, TYPICAL_PRICE,
