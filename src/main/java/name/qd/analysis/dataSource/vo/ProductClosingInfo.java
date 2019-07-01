@@ -6,6 +6,7 @@ public class ProductClosingInfo {
 	public static int ADVANCE = 1;
 	public static int DECLINE = 2;
 	public static int UNCHANGE = 4;
+	public static int CANT_COMPARE = 8;
 	
 	private String product;
 	private Date date;

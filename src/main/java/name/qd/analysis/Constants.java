@@ -1,6 +1,8 @@
 package name.qd.analysis;
 
 public class Constants {
+	public static final String CHINESE_ENCODE = "Windows-950";
+	
 	public enum AnalyzerType {
 		PRODUCT, MARKET;
 	}

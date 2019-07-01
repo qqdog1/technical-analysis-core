@@ -21,6 +21,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import name.qd.analysis.Constants;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.analysis.dataSource.vo.DailyClosingInfo;
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
@@ -36,7 +37,7 @@ public class TWSEDataParser {
 	public ProductClosingInfo readProdClosingInfo(String date, String prodId) throws FileNotFoundException, IOException, ParseException {
 		ProductClosingInfo prodInfo = null;
 		prodId = StringCombineUtil.combine("\"", prodId, "\"");
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), "Big5"))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), Constants.CHINESE_ENCODE))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				if(line.contains(prodId)) {
 					List<String> lst = parseLineToArray(line);
@@ -51,7 +52,7 @@ public class TWSEDataParser {
 		DailyClosingInfo dailyClosingInfo = null;
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), "Big5"))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), Constants.CHINESE_ENCODE))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				List<String> lst = parseLineToArray(line);
 				if(lst == null) return null;
@@ -72,10 +73,10 @@ public class TWSEDataParser {
 		return dailyClosingInfo;
 	}
 	
-	public List<ProductClosingInfo> readAllNormalStock(String date) throws FileNotFoundException, IOException, ParseException {
+	public List<ProductClosingInfo> readAllStock(String date) throws FileNotFoundException, IOException, ParseException {
 		List<ProductClosingInfo> lst = new ArrayList<>();
 		
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), "Big5"))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(date)), Constants.CHINESE_ENCODE))) {
 			boolean start = false;
 			while(true) {
 				String line = br.readLine();
@@ -86,21 +87,15 @@ public class TWSEDataParser {
 				List<String> lstValue = parseLineToArray(line);
 				if(!isNormalStock(lstValue)) continue;
 				
+				if(line.contains("\"1101\"")) {
+					start = true;
+				}
+				
 				if(start) {
 					ProductClosingInfo info = parseProductCloseInfo(lstValue, date);
 					if(info != null) {
 						lst.add(info);
 					}
-				}
-				
-				if(line.contains("\"1101\"")) {
-					start = true;
-					ProductClosingInfo info = parseProductCloseInfo(lstValue, date);
-					if(info != null) {
-						lst.add(info);
-					}
-				} else {
-					continue;
 				}
 			}
 		}
@@ -133,7 +128,7 @@ public class TWSEDataParser {
 	
 	private List<BuySellInfo> getBuySellInfo(Path path, String date, String product) throws IOException, ParseException {
 		List<BuySellInfo> lst = new ArrayList<>();
-		List<String> lstLine = Files.readAllLines(path, Charset.forName("Windows-950"));
+		List<String> lstLine = Files.readAllLines(path, Charset.forName(Constants.CHINESE_ENCODE));
 		
 		boolean start = false;
 		for(String line : lstLine) {
@@ -152,7 +147,7 @@ public class TWSEDataParser {
 		List<BuySellInfo> lst = new ArrayList<>();
 		Date d = TimeUtil.getDateFormat().parse(date);
 		
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getBuySellInfoFilePath(date, product)), "Big5"))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getBuySellInfoFilePath(date, product)), Constants.CHINESE_ENCODE))) {
 			boolean start = false;
 			for(String line; (line = br.readLine()) != null; ) {
 				if(line.startsWith("1")) {
@@ -200,6 +195,9 @@ public class TWSEDataParser {
 			prodInfo.setDate(sdf.parse(date));
 			prodInfo.setProduct(lst.get(0));
 			prodInfo.setFilledShare(Long.parseLong(lst.get(2)));
+			if(prodInfo.getFilledShare() == 0) {
+				return null;
+			}
 			prodInfo.setFilledAmount(Double.parseDouble(lst.get(4)));
 			if("--".equals(lst.get(5))) {
 				return null;
@@ -213,10 +211,10 @@ public class TWSEDataParser {
 				prodInfo.setADStatus(ProductClosingInfo.ADVANCE);
 			} else if("-".equals(lst.get(9))) {
 				prodInfo.setADStatus(ProductClosingInfo.DECLINE);
+			} else if("X".equals(lst.get(9))) {
+				prodInfo.setADStatus(ProductClosingInfo.CANT_COMPARE);
 			} else if(" ".equals(lst.get(9))){
 				prodInfo.setADStatus(ProductClosingInfo.UNCHANGE);
-			} else {
-				return null;
 			}
 		} catch (ParseException | NumberFormatException e) {
 			log.error("Parse data failed. Date:[{}] [{}]", date, lst, e);
@@ -226,8 +224,8 @@ public class TWSEDataParser {
 	
 	private boolean isNormalStock(List<String> lst) {
 		if(lst == null || lst.size() < 16) return false;
-		if(lst.get(0).length() > 4) return false;
-		if(lst.get(1).contains("DR")) return false;
+//		if(lst.get(0).length() > 4) return false;
+//		if(lst.get(1).contains("DR")) return false;
 		return true;
 	}
 	

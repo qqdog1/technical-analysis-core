@@ -49,17 +49,17 @@ public class TWSEDataParserTest {
 //			e.printStackTrace();
 //		}
 	}
-	@Ignore
 	@Test
 	public void testParseDailyProducts() {
 		TWSEDataParser parser = new TWSEDataParser();
 		try {
-			List<ProductClosingInfo> lst = parser.readAllNormalStock("20180305");
+			List<ProductClosingInfo> lst = parser.readAllStock("20190701");
 			for(ProductClosingInfo info : lst) {
-				System.out.println(info.getFilledShare() + ":" + info.getFilledAmount() + ":" + 
+				System.out.println(info.getProduct() + ":" + info.getFilledShare() + ":" + info.getFilledAmount() + ":" + 
 						info.getOpenPrice() + ":" + info.getUpperPrice() + ":" + 
 						info.getLowerPrice() + ":" + info.getClosePrice() + ":" + info.getADStatus());
 			}
+			System.out.println(lst.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

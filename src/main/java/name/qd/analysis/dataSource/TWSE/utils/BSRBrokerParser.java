@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import name.qd.analysis.Constants;
+
 public class BSRBrokerParser {
 	private final String dataDir = "./file/TWSE/bsr/";
 	private final Path configPath = Paths.get("./config/TWSEBrokers.txt");
@@ -55,7 +57,7 @@ public class BSRBrokerParser {
 	private void getBrokers(Path path) throws IOException {
 		if(Files.isDirectory(path)) return;
 		
-		List<String> lst = Files.readAllLines(path, Charset.forName("Windows-950"));
+		List<String> lst = Files.readAllLines(path, Charset.forName(Constants.CHINESE_ENCODE));
 		for(int i = 1 ; i < lst.size() ; i++) {
 			if(i == 1) {
 				if(!checkProduct(lst.get(1), path)) {

@@ -84,7 +84,7 @@ public class TWSEDataSource implements DataSource {
 		for(String date : lstDate) {
 			File file = new File(TWSEConstants.getDailyClosingFilePath(date));
 			if(file.exists()) {
-				List<ProductClosingInfo> lstProd = parser.readAllNormalStock(date);
+				List<ProductClosingInfo> lstProd = parser.readAllStock(date);
 				map.put(sdf.parse(date), lstProd);
 			}
 		}
