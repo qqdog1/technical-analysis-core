@@ -224,8 +224,8 @@ public class TWSEDataParser {
 	
 	private boolean isNormalStock(List<String> lst) {
 		if(lst == null || lst.size() < 16) return false;
-//		if(lst.get(0).length() > 4) return false;
-//		if(lst.get(1).contains("DR")) return false;
+		if(lst.get(0).length() > 4) return false;
+		if(lst.get(1).contains("DR")) return false;
 		return true;
 	}
 	
