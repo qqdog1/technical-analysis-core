@@ -47,6 +47,7 @@ public class AnalysisClient {
 		btnTech.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				log.debug("Click tech panel.");
 				frame.remove(chipPanel);
 				frame.add(techPanel, BorderLayout.CENTER);
 				frame.revalidate();
@@ -57,6 +58,7 @@ public class AnalysisClient {
 		btnChip.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				log.debug("Click chip panel.");
 				frame.remove(techPanel);
 				frame.add(chipPanel, BorderLayout.CENTER);
 				frame.revalidate();

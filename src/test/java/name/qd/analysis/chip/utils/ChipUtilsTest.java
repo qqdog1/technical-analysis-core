@@ -33,7 +33,7 @@ public class ChipUtilsTest {
 				Date date = TimeUtil.getDateFormat().parse(dateString);
 				if(map.containsKey(date)) {
 					List<BuySellInfo> lst = map.get(date);
-					ChipUtils.bsInfoToOperate(dataSource, lst, mapOperate);
+					ChipUtils.bsInfoToOperate(dataSource, "", date, lst, mapOperate);
 				}
 			}
 			

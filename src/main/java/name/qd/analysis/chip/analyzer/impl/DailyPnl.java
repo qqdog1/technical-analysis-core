@@ -23,9 +23,8 @@ import name.qd.fileCache.cache.CoordinateObject;
 /**
  * 每日是否有賺錢 只看當日PnL
  */
-public class WinLossByDate implements ChipAnalyzer {
-	private static Logger log = LoggerFactory.getLogger(WinLossByDate.class);
-	private SimpleDateFormat sdf = TimeUtil.getDateFormat();
+public class DailyPnl implements ChipAnalyzer {
+	private static Logger log = LoggerFactory.getLogger(DailyPnl.class);
 
 	@Override
 	public int getInputField() {
@@ -40,30 +39,32 @@ public class WinLossByDate implements ChipAnalyzer {
 		if(!"".equals(product)) {
 			lst.add("Product");
 		}
-		lst.add("Win|Loss");
+		lst.add("PnL");
 		return lst;
 	}
 
 	@Override
 	public List<List<String>> analyze(FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, boolean isOpenPnl) {
+		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		
+		log.debug("Analyze win and loss by date. From {} to {}. Branch:{}, Product:{}, With Open Pnl:{}", sdf.format(from), sdf.format(to), branch, product, isOpenPnl);
+		
 		List<List<String>> lst = new ArrayList<>();
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(from);
 		Date currentDate = calendar.getTime();
-		SimpleDateFormat sdf = TimeUtil.getDateFormat();
-		
-		CoordinateCacheManager lastCacheManager = null;
-		try {
-			lastCacheManager = fileCacheManager.getCoordinateCacheInstance("bsr_" + sdf.format(currentDate), DailyOperate.class.getName());
-		} catch (Exception e) {
-			log.error("Fail to get daily cache.", e);
-		}
 		
 		boolean isSpecificBranch = !"".equals(branch);
 		boolean isSpecificProduct = !"".equals(product);
 		
 		while(!to.before(currentDate)) {
+			CoordinateCacheManager lastCacheManager = null;
+			try {
+				lastCacheManager = fileCacheManager.getCoordinateCacheInstance("bsr_" + sdf.format(currentDate), DailyOperate.class.getName());
+			} catch (Exception e) {
+				log.error("Fail to get daily cache.", e);
+			}
 			// branch, product, pnl
 			Map<String, Map<String, Double>> mapBranchProfit = new HashMap<>();
 			try {
@@ -82,15 +83,25 @@ public class WinLossByDate implements ChipAnalyzer {
 						mapProductProfit.put(dailyOperate.getProduct(), pnl);
 					}
 					
-					// add to list
-					List<String> lstData = new ArrayList<>();
 					
 					if(isSpecificBranch) {
+						List<String> lstData = new ArrayList<>();
 						lstData.add(sdf.format(currentDate));
 						lstData.add(branch);
 						if(isSpecificProduct) {
 							lstData.add(product);
-							lstData.add(String.valueOf(mapBranchProfit.get(branch).get(product)));
+							Double pnl = null;
+							Map<String, Double> mapData = mapBranchProfit.get(branch);
+							if(mapData != null) {
+								if(mapData.containsKey(product)) {
+									pnl = mapData.get(product);
+								}
+							}
+							
+							if(pnl != null) {
+								lstData.add(String.valueOf(pnl));
+								lst.add(lstData);
+							}
 						} else {
 							Map<String, Double> mapPnl = mapBranchProfit.get(branch);
 							double pnl = 0;
@@ -98,14 +109,20 @@ public class WinLossByDate implements ChipAnalyzer {
 								pnl += p;
 							}
 							lstData.add(String.valueOf(pnl));
+							lst.add(lstData);
 						}
 					} else {
 						for(String keyBranch : mapBranchProfit.keySet()) {
+							List<String> lstData = new ArrayList<>();
 							lstData.add(sdf.format(currentDate));
 							lstData.add(keyBranch);
 							if(isSpecificProduct) {
 								lstData.add(product);
-								lstData.add(String.valueOf(mapBranchProfit.get(keyBranch).get(product)));
+								Double pnl = mapBranchProfit.get(keyBranch).get(product);
+								if(pnl != null) {
+									lstData.add(String.valueOf(pnl));
+									lst.add(lstData);
+								}
 							} else {
 								Map<String, Double> mapPnl = mapBranchProfit.get(keyBranch);
 								double pnl = 0;
@@ -113,6 +130,7 @@ public class WinLossByDate implements ChipAnalyzer {
 									pnl += p;
 								}
 								lstData.add(String.valueOf(pnl));
+								lst.add(lstData);
 							}
 						}
 					}
@@ -121,7 +139,7 @@ public class WinLossByDate implements ChipAnalyzer {
 				calendar.add(Calendar.DATE, 1);
 				currentDate = calendar.getTime();
 			} catch (Exception e) {
-				log.error("Fail to get daily cache.");
+				log.error("Fail to get daily cache.", e);
 			}
 		}
 		return lst;

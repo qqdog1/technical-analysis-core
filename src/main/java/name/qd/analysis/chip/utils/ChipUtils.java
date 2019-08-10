@@ -1,7 +1,11 @@
 package name.qd.analysis.chip.utils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.chip.vo.DailyOperate;
 import name.qd.analysis.dataSource.DataSource;
@@ -9,8 +13,10 @@ import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 
 public class ChipUtils {
+	private static Logger log = LoggerFactory.getLogger(ChipUtils.class);
+	
 	// lstInfo must be same product, same day (single file)
-	public static void bsInfoToOperate(DataSource dataSource, List<BuySellInfo> lstInfo, Map<String, DailyOperate> map) throws Exception {
+	public static void bsInfoToOperate(DataSource dataSource, String product, Date date, List<BuySellInfo> lstInfo, Map<String, DailyOperate> map) throws Exception {
 		for(BuySellInfo info : lstInfo) {
 			String brokerName = info.getBrokerName();
 			if(!map.containsKey(brokerName)) {
@@ -49,7 +55,7 @@ public class ChipUtils {
 			}
 		}
 		
-		calcOpenPnl(dataSource, map);
+		calcOpenPnl(dataSource, product, date, map);
 	}
 	
 	private static void buyOpen(BuySellInfo info, DailyOperate operate) {
@@ -94,10 +100,10 @@ public class ChipUtils {
 		return operate;
 	}
 	
-	private static void calcOpenPnl(DataSource dataSource, Map<String, DailyOperate> map) throws Exception {
+	private static void calcOpenPnl(DataSource dataSource, String product, Date date, Map<String, DailyOperate> map) throws Exception {
+		List<ProductClosingInfo> lst = dataSource.getProductClosingInfo(product, date, date);
+		double closePrice = lst.get(0).getClosePrice();
 		for(DailyOperate op : map.values()) {
-			List<ProductClosingInfo> lst = dataSource.getProductClosingInfo(op.getProduct(), op.getDate(), op.getDate());
-			double closePrice = lst.get(0).getClosePrice();
 			double openPnl = (closePrice - op.getAvgPrice()) * op.getOpenShare();
 			op.setOpenPnl(openPnl);
 		}

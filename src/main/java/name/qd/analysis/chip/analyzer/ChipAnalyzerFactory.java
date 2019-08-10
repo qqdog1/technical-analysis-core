@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import name.qd.analysis.chip.ChipAnalyzers;
-import name.qd.analysis.chip.analyzer.impl.WinLossByDate;
+import name.qd.analysis.chip.analyzer.impl.DailyPnl;
 
 public class ChipAnalyzerFactory {
 	private Map<ChipAnalyzers, ChipAnalyzer> map = new HashMap<>();
@@ -21,8 +21,8 @@ public class ChipAnalyzerFactory {
 	
 	private void createAnalyzer(ChipAnalyzers analyzer) {
 		switch(analyzer) {
-		case WIN_LOSS_BY_DAY:
-			map.put(analyzer, new WinLossByDate());
+		case DAILY_PNL:
+			map.put(analyzer, new DailyPnl());
 			break;
 		}
 	}

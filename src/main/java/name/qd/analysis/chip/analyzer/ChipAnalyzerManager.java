@@ -43,6 +43,7 @@ public class ChipAnalyzerManager {
 	}
 	
 	public List<List<String>> getAnalysisResult(DataSource dataSource, ChipAnalyzers analyzer, String branch, String product, Date from, Date to, boolean isOpenPnl) {
+		log.debug("Trying to run {}", analyzer);
 		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer);
 		if(chipAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
@@ -77,7 +78,9 @@ public class ChipAnalyzerManager {
 		while(!to.before(date)) {
 			if(isFolderExist(date)) {
 				if(!isCacheExist(date)) {
+					log.debug("Cache not exist, transforming ... {}", date);
 					transDailyCache(dataSource, date);
+					log.debug("Cache transformed. {}", date);
 				}
 			} 
 			
@@ -124,9 +127,9 @@ public class ChipAnalyzerManager {
 				return;
 			}
 			Map<String, List<BuySellInfo>> mapProductBSLst = map.get(date);
-			for(String key : mapProductBSLst.keySet()) {
+			for(String product : mapProductBSLst.keySet()) {
 				Map<String, DailyOperate> mapResults = new HashMap<>();
-				ChipUtils.bsInfoToOperate(dataSource, mapProductBSLst.get(key), mapResults);
+				ChipUtils.bsInfoToOperate(dataSource, product, date, mapProductBSLst.get(product), mapResults);
 				for(String brokerName : mapResults.keySet()) {
 					cacheManager.put(mapResults.get(brokerName));
 				}
