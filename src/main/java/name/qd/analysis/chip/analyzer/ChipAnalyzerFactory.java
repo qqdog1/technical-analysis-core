@@ -5,6 +5,7 @@ import java.util.Map;
 
 import name.qd.analysis.chip.ChipAnalyzers;
 import name.qd.analysis.chip.analyzer.impl.DailyPnl;
+import name.qd.analysis.chip.analyzer.impl.TotalPnl;
 
 public class ChipAnalyzerFactory {
 	private Map<ChipAnalyzers, ChipAnalyzer> map = new HashMap<>();
@@ -23,6 +24,9 @@ public class ChipAnalyzerFactory {
 		switch(analyzer) {
 		case DAILY_PNL:
 			map.put(analyzer, new DailyPnl());
+			break;
+		case TOTAL_PNL:
+			map.put(analyzer, new TotalPnl());
 			break;
 		}
 	}
