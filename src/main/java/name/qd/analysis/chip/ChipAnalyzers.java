@@ -1,8 +1,8 @@
 package name.qd.analysis.chip;
 
 public enum ChipAnalyzers {
-	MOST_EFFECTIVE,
-	FUZZY_QUERY,
-	CASH_FLOW,
+	WIN_LOSS_BY_DAY,
+	DAILY_PNL,
+	TOTAL_PNL,
 	;
 }

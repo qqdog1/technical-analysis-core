@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import name.qd.analysis.chip.vo.DailyOperate;
+import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
+import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 
 public class ChipUtils {
 	// lstInfo must be same product, same day (single file)
-	public static void bsInfoToOperate(List<BuySellInfo> lstInfo, Map<String, DailyOperate> map) {
+	public static void bsInfoToOperate(DataSource dataSource, List<BuySellInfo> lstInfo, Map<String, DailyOperate> map) throws Exception {
 		for(BuySellInfo info : lstInfo) {
 			String brokerName = info.getBrokerName();
 			if(!map.containsKey(brokerName)) {
@@ -46,6 +48,8 @@ public class ChipUtils {
 				}
 			}
 		}
+		
+		calcOpenPnl(dataSource, map);
 	}
 	
 	private static void buyOpen(BuySellInfo info, DailyOperate operate) {
@@ -68,7 +72,7 @@ public class ChipUtils {
 		operate.setTradeCost(operate.getTradeCost() + operate.getAvgPrice() * closeVolume);
 		operate.setOpenShare(operate.getOpenShare() + closeVolume);
 		double pnl = (operate.getAvgPrice() - info.getPrice()) * closeVolume;
-		operate.setPnl(operate.getPnl() + pnl);
+		operate.setClosePnl(operate.getClosePnl() + pnl);
 		operate.setPnlRate();
 		info.setBuyShare(info.getBuyShare() - closeVolume);
 	}
@@ -77,7 +81,7 @@ public class ChipUtils {
 		operate.setTradeCost(operate.getTradeCost() + operate.getAvgPrice() * closeVolume);
 		operate.setOpenShare(operate.getOpenShare() - closeVolume);
 		double pnl = (info.getPrice() - operate.getAvgPrice()) * closeVolume;
-		operate.setPnl(operate.getPnl() + pnl);
+		operate.setClosePnl(operate.getClosePnl() + pnl);
 		operate.setPnlRate();
 		info.setSellShare(info.getSellShare() - closeVolume);
 	}
@@ -88,5 +92,14 @@ public class ChipUtils {
 		operate.setDate(info.getDate());
 		operate.setProduct(info.getProduct());
 		return operate;
+	}
+	
+	private static void calcOpenPnl(DataSource dataSource, Map<String, DailyOperate> map) throws Exception {
+		for(DailyOperate op : map.values()) {
+			List<ProductClosingInfo> lst = dataSource.getProductClosingInfo(op.getProduct(), op.getDate(), op.getDate());
+			double closePrice = lst.get(0).getClosePrice();
+			double openPnl = (closePrice - op.getAvgPrice()) * op.getOpenShare();
+			op.setOpenPnl(openPnl);
+		}
 	}
 }

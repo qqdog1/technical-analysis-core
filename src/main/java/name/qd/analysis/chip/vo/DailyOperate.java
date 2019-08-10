@@ -12,7 +12,8 @@ public class DailyOperate extends CoordinateObject {
 	private Date date;
 	private String brokerName;
 	private String product;
-	private double pnl;
+	private double closePnl;
+	private double openPnl;
 	private double tradeCost;
 	private long openShare;
 	private double avgPrice;
@@ -35,11 +36,17 @@ public class DailyOperate extends CoordinateObject {
 	public void setProduct(String product) {
 		this.product = product;
 	}
-	public double getPnl() {
-		return pnl;
+	public double getClosePnl() {
+		return closePnl;
 	}
-	public void setPnl(double pnl) {
-		this.pnl = pnl;
+	public void setClosePnl(double closePnl) {
+		this.closePnl = closePnl;
+	}
+	public double getOpenPnl() {
+		return openPnl;
+	}
+	public void setOpenPnl(double openPnl) {
+		this.openPnl = openPnl;
 	}
 	public double getTradeCost() {
 		return tradeCost;
@@ -63,7 +70,7 @@ public class DailyOperate extends CoordinateObject {
 		return pnlRate;
 	}
 	public void setPnlRate() {
-		pnlRate = pnl/tradeCost;
+		pnlRate = closePnl/tradeCost;
 	}
 	@Override
 	public String getXKey() {
@@ -79,7 +86,8 @@ public class DailyOperate extends CoordinateObject {
 		tOut.writeLong(date.getTime());
 		tOut.writeString(product);
 		tOut.writeString(brokerName);
-		tOut.writeDouble(pnl);
+		tOut.writeDouble(closePnl);
+		tOut.writeDouble(openPnl);
 		tOut.writeDouble(tradeCost);
 		tOut.writeLong(openShare);
 		tOut.writeDouble(avgPrice);
@@ -95,7 +103,8 @@ public class DailyOperate extends CoordinateObject {
 		date = calendar.getTime();
 		product = tIn.getString();
 		brokerName = tIn.getString();
-		pnl = tIn.getDouble();
+		closePnl = tIn.getDouble();
+		openPnl = tIn.getDouble();
 		tradeCost = tIn.getDouble();
 		openShare = tIn.getLong();
 		avgPrice = tIn.getDouble();

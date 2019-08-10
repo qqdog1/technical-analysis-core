@@ -2,6 +2,7 @@ package name.qd.analysis;
 
 public class Constants {
 	public static final String CHINESE_ENCODE = "Windows-950";
+	public static final String BSR_FOLDER = "./file/TWSE/bsr/";
 	
 	public enum AnalyzerType {
 		PRODUCT, MARKET;

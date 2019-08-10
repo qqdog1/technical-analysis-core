@@ -33,13 +33,13 @@ public class ChipUtilsTest {
 				Date date = TimeUtil.getDateFormat().parse(dateString);
 				if(map.containsKey(date)) {
 					List<BuySellInfo> lst = map.get(date);
-					ChipUtils.bsInfoToOperate(lst, mapOperate);
+					ChipUtils.bsInfoToOperate(dataSource, lst, mapOperate);
 				}
 			}
 			
 			for(String broker : mapOperate.keySet()) {
 				DailyOperate operate = mapOperate.get(broker);
-				System.out.println(broker + ":" + operate.getDate() + ":" + operate.getBrokerName() + ":" + operate.getProduct() + ":" + operate.getOpenShare() + ":" + operate.getAvgPrice() + ":" + operate.getPnl());
+				System.out.println(broker + ":" + operate.getDate() + ":" + operate.getBrokerName() + ":" + operate.getProduct() + ":" + operate.getOpenShare() + ":" + operate.getAvgPrice() + ":" + operate.getClosePnl());
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();

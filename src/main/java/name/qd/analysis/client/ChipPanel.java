@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,12 +26,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.Constants.Exchange;
+import name.qd.analysis.chip.ChipAnalyzers;
+import name.qd.analysis.chip.InputField;
 import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
-import name.qd.analysis.chip.vo.DailyOperate;
 import name.qd.analysis.client.datePicker.DayModel;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.DataSourceFactory;
-import name.qd.analysis.chip.ChipAnalyzers;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 
@@ -38,7 +39,7 @@ public class ChipPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Logger log = LoggerFactory.getLogger(TechPanel.class);
 	private ChipAnalyzerManager analyzerManager;
-	private DataSource twseDataManager;
+	private DataSource dataSource;
 	
 	private JPanel selectPanel = new JPanel();
 	private JLabel labelCA = new JLabel("Chip Analyzer:");
@@ -58,6 +59,8 @@ public class ChipPanel extends JPanel {
 	private JTextField tfPnl = new JTextField(6);
 	private JLabel labelPnlRate = new JLabel("Pnl Rate > ");
 	private JTextField tfPnlRate = new JTextField(6);
+	private JCheckBox checkBoxOpenPnl = new JCheckBox();
+	private JLabel labelOpenPnl = new JLabel("With Open PnL");
 	private GridBagConstraints gridBagConstraints = new GridBagConstraints();
 	
 	private JTable table = new JTable();
@@ -91,6 +94,8 @@ public class ChipPanel extends JPanel {
 		addToSelectPanel(tfPnl, 3, 1);
 		addToSelectPanel(labelPnlRate, 4, 1);
 		addToSelectPanel(tfPnlRate, 5, 1);
+		addToSelectPanel(checkBoxOpenPnl, 6, 1);
+		addToSelectPanel(labelOpenPnl, 7, 1);
 		
 		add(selectPanel, BorderLayout.NORTH);
 		add(scrollPane, BorderLayout.CENTER);
@@ -104,12 +109,12 @@ public class ChipPanel extends JPanel {
 	
 	private void initManager() {
 		analyzerManager = ChipAnalyzerManager.getInstance();
-		twseDataManager = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
+		dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 	}
 	
 	private void initActionListener() {
-		setComboData();
 		setComboListener();
+		setComboData();
 		setButtonListener();
 	}
 	
@@ -134,9 +139,47 @@ public class ChipPanel extends JPanel {
 		comboChip.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				String analyzerString = comboChip.getSelectedItem().toString();
+				ChipAnalyzers analyzer = ChipAnalyzers.valueOf(analyzerString);
+				int inputField = analyzerManager.getInputField(analyzer);
+				setInputField(inputField);
 			}
 		});
+	}
+	
+	private void setAllInputDisable() {
+		comboBroker.setEnabled(false);
+		tfProduct.setEnabled(false);
+		dpFrom.setEnabled(false);
+		dpTo.setEnabled(false);
+		tfCost.setEditable(false);
+		tfPnl.setEnabled(false);
+		tfPnlRate.setEnabled(false);
+	}
+	
+	private void setInputField(int inputField) {
+		setAllInputDisable();
+		if(InputField.isBroker(inputField)) {
+			comboBroker.setEnabled(true);
+		}
+		if(InputField.isProduct(inputField)) {
+			tfProduct.setEnabled(true);
+		}
+		if(InputField.isFrom(inputField)) {
+			dpFrom.setEnabled(true);
+		}
+		if(InputField.isTo(inputField)) {
+			dpTo.setEnabled(true);
+		}
+		if(InputField.isTradeCost(inputField)) {
+			tfCost.setEnabled(true);
+		}
+		if(InputField.isPNL(inputField)) {
+			tfPnl.setEnabled(true);
+		}
+		if(InputField.isPNLRate(inputField)) {
+			tfPnlRate.setEnabled(true);
+		}
 	}
 	
 	private void setButtonListener() {
@@ -145,71 +188,30 @@ public class ChipPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String analyzer = comboChip.getSelectedItem().toString();
 				ChipAnalyzers chipAnalyzers = ChipAnalyzers.valueOf(analyzer);
-				
-				switch(chipAnalyzers) {
-				case MOST_EFFECTIVE:
-					mostEffective();
-					break;
-				case CASH_FLOW:
-					break;
-				case FUZZY_QUERY:
-					fuzzyQuery();
-					break;
-				}
+				String branch = comboBroker.getSelectedItem().toString();
+				String product = tfProduct.getText();
+				Date from = (Date) dpFrom.getModel().getValue();
+				Date to = (Date) dpTo.getModel().getValue();
+				boolean isOpenPnl = checkBoxOpenPnl.isSelected();
+			
+				List<List<String>> lst = analyzerManager.getAnalysisResult(dataSource, chipAnalyzers, branch, product, from, to, isOpenPnl);
+				showData(lst);
 			}
 		});
 	}
 	
-	private void mostEffective() {
-		Date from = (Date) dpFrom.getModel().getValue();
-		Date to = (Date) dpTo.getModel().getValue();
-		try {
-			List<DailyOperate> lst = analyzerManager.getEffectiveList(twseDataManager, from, to);
-			showOnTable(lst);
-		} catch (Exception e) {
-			log.error("Get effective list failed.", e);
-		}
-	}
-	
-	private void fuzzyQuery() {
-		Date from = (Date) dpFrom.getModel().getValue();
-		Date to = (Date) dpTo.getModel().getValue();
-		
-		String broker = comboBroker.getSelectedItem().toString();
-		if("".equals(broker)) broker = null;
-		String product = tfProduct.getText().trim();
-		if("".equals(product)) product = null;
-		String cost = tfCost.getText().trim();
-		Double tradeCost = "".equals(cost) ? null : Double.parseDouble(cost);
-		String pnlString = tfPnl.getText().trim();
-		Double pnl = "".equals(pnlString) ? null : Double.parseDouble(pnlString);
-		String pnlRateString = tfPnlRate.getText().trim();
-		Double pnlRate = "".equals(pnlRateString) ? null : Double.parseDouble(pnlRateString);
-		
-		try {
-			List<DailyOperate> lst = analyzerManager.fuzzyQuery(twseDataManager, from, to, broker, product, tradeCost, pnl, pnlRate);
-			showOnTable(lst);
-		} catch (Exception e) {
-			log.error("Fuzzy Query Failed.", e);
-		}
-	}
-	
-	private void showOnTable(List<DailyOperate> lst) {
-		String[] header = {"Broker", "Product", "Trade Cost", "Pnl", "%"};
-		String[][] data = new String[lst.size()][5];
-		
-		for(int i = 0 ; i < lst.size() ; i++) {
-			String[] s = new String[5];
-			DailyOperate operate = lst.get(i);
-			s[0] = operate.getBrokerName();
-			s[1] = operate.getProduct();
-			s[2] = String.valueOf(operate.getTradeCost());
-			s[3] = String.valueOf(operate.getPnl());
-			s[4] = String.valueOf(operate.getPnlRate());
-			data[i] = s;
+	private void showData(List<List<String>> lst) {
+		int size = lst.get(0).size();
+		String[] header = new String[size];
+		lst.get(0).toArray(header);
+		String[][] dataArray = new String[lst.size()-1][];
+		for(int i = 1 ; i < lst.size() ; i++) {
+			String[] data = new String[size];
+			lst.get(i).toArray(data);
+			dataArray[i-1] = data;
 		}
 		remove(scrollPane);
-		table = new JTable(data, header);
+		table = new JTable(dataArray, header);
 		scrollPane = new JScrollPane(table);
 		add(scrollPane, BorderLayout.CENTER);
 		revalidate();

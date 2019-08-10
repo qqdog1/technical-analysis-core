@@ -1,6 +1,5 @@
 package name.qd.analysis.dataSource.TWSE.utils;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -57,6 +56,7 @@ public class BSRBrokerParser {
 	private void getBrokers(Path path) throws IOException {
 		if(Files.isDirectory(path)) return;
 		
+		set.add("");
 		List<String> lst = Files.readAllLines(path, Charset.forName(Constants.CHINESE_ENCODE));
 		for(int i = 1 ; i < lst.size() ; i++) {
 			if(i == 1) {
@@ -92,7 +92,7 @@ public class BSRBrokerParser {
 	public static void main(String[] args) {
 		BSRBrokerParser parser = new BSRBrokerParser();
 		try {
-			parser.parse("20190527");
+			parser.parse("20190719");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

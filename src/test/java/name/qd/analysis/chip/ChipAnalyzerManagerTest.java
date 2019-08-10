@@ -32,14 +32,14 @@ public class ChipAnalyzerManagerTest {
 	}
 	
 	private void transCache() {
-		Date date = null;
 		try {
-			date = TimeUtil.getDateFormat().parse("20190527");
+			Date from = TimeUtil.getDateFormat().parse("20190527");
+			Date to = TimeUtil.getDateFormat().parse("20190528");
+			manager.getAnalysisResult(dataSource, ChipAnalyzers.WIN_LOSS_BY_DAY, "", "", from, to, true);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		manager.transToDailyCache(dataSource, date, date);
+//		manager.transToDailyCache(dataSource, date, date);
 	}
 	
 //	private void printSpecificX(String x) {

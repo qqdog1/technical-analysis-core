@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import name.qd.analysis.Constants;
 import name.qd.analysis.Constants.Exchange;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.DataSourceFactory;
@@ -28,7 +29,6 @@ public class BSRRecorderManager {
 	private Logger log;
 	private static int WORKER_COUNT = 1;
 	private static String CONF_PATH = "./config/bsr.conf";
-	private static String BSR_FOLDER = "./file/TWSE/bsr/";
 	private static String CHROME_DOWNLOAD_FOLDER = "chrome_download_folder";
 	private String downloadFolder;
 	private final ExecutorService executor = Executors.newFixedThreadPool(WORKER_COUNT);
@@ -54,7 +54,7 @@ public class BSRRecorderManager {
 	private void initDate() {
 		date = TimeUtil.getToday();
 		try {
-			date = TimeUtil.getDateFormat().parse("20190701");
+			date = TimeUtil.getDateFormat().parse("20190808");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -73,7 +73,7 @@ public class BSRRecorderManager {
 	}
 	
 	private void initFolder() {
-		dir = BSR_FOLDER + sdf.format(date) + "/";
+		dir = Constants.BSR_FOLDER + sdf.format(date) + "/";
 		if(!Files.exists(new File(dir).toPath())) {
 			try {
 				Files.createDirectory(new File(dir).toPath());
