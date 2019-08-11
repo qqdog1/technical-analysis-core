@@ -58,6 +58,41 @@ public class ChipUtils {
 		calcOpenPnl(dataSource, product, date, map);
 	}
 	
+	public static DailyOperate updateDailyOperate(DailyOperate first, DailyOperate second) {
+		DailyOperate dailyOperate = new DailyOperate();
+		dailyOperate.setBrokerName(first.getBrokerName());
+		dailyOperate.setProduct(first.getProduct());
+		dailyOperate.setOpenShare(first.getOpenShare() + second.getOpenShare());
+		dailyOperate.setClosePnl(first.getClosePnl() + second.getClosePnl());
+		dailyOperate.setTradeCost(first.getTradeCost() + second.getTradeCost());
+		double closePrice = (second.getOpenPnl() / second.getOpenShare()) + second.getAvgPrice();
+		
+		if((first.getOpenShare() > 0 && second.getOpenShare() > 0) || (first.getOpenShare() < 0 && second.getOpenShare() < 0)) {
+			double firstCost = first.getOpenShare() * first.getAvgPrice();
+			double secondCost = second.getOpenShare() * second.getAvgPrice();
+			double totalCost = firstCost + secondCost;
+			dailyOperate.setAvgPrice(totalCost / dailyOperate.getOpenShare());
+		} else {
+			long firstOpenShare = Math.abs(first.getOpenShare());
+			long secondOpenShare = Math.abs(second.getOpenShare());
+			if(firstOpenShare > secondOpenShare) {
+				dailyOperate.setAvgPrice(first.getAvgPrice());
+			} else {
+				dailyOperate.setAvgPrice(second.getAvgPrice());
+			}
+			long closeShare = Math.min(firstOpenShare, secondOpenShare);
+			double tradeCost = closeShare * first.getAvgPrice();
+			dailyOperate.setTradeCost(dailyOperate.getTradeCost() + tradeCost);
+			double closePnl = (second.getAvgPrice() - first.getAvgPrice()) * closeShare;
+			dailyOperate.setClosePnl(dailyOperate.getClosePnl() + closePnl);
+		}
+		double newOpenPnl = (closePrice - dailyOperate.getAvgPrice()) * dailyOperate.getOpenShare();
+		dailyOperate.setOpenPnl(newOpenPnl);
+		dailyOperate.setPnlRate();
+		
+		return dailyOperate;
+	}
+	
 	private static void buyOpen(BuySellInfo info, DailyOperate operate) {
 		double cost = operate.getOpenShare() * operate.getAvgPrice();
 		operate.setOpenShare(operate.getOpenShare() + info.getBuyShare());
