@@ -14,6 +14,7 @@ public class DailyOperate extends CoordinateObject {
 	private String product;
 	private double closePnl;
 	private double openPnl;
+	private double closePrice;
 	private double tradeCost;
 	private long openShare;
 	private double avgPrice;
@@ -47,6 +48,12 @@ public class DailyOperate extends CoordinateObject {
 	}
 	public void setOpenPnl(double openPnl) {
 		this.openPnl = openPnl;
+	}
+	public double getClosePrice() {
+		return closePrice;
+	}
+	public void setClosePrice(double closePrice) {
+		this.closePrice = closePrice;
 	}
 	public double getTradeCost() {
 		return tradeCost;
@@ -88,6 +95,7 @@ public class DailyOperate extends CoordinateObject {
 		tOut.writeString(brokerName);
 		tOut.writeDouble(closePnl);
 		tOut.writeDouble(openPnl);
+		tOut.writeDouble(closePrice);
 		tOut.writeDouble(tradeCost);
 		tOut.writeLong(openShare);
 		tOut.writeDouble(avgPrice);
@@ -105,6 +113,7 @@ public class DailyOperate extends CoordinateObject {
 		brokerName = tIn.getString();
 		closePnl = tIn.getDouble();
 		openPnl = tIn.getDouble();
+		closePrice = tIn.getDouble();
 		tradeCost = tIn.getDouble();
 		openShare = tIn.getLong();
 		avgPrice = tIn.getDouble();

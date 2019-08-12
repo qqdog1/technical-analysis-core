@@ -141,6 +141,7 @@ public class ChipUtils {
 		for(DailyOperate op : map.values()) {
 			double openPnl = (closePrice - op.getAvgPrice()) * op.getOpenShare();
 			op.setOpenPnl(openPnl);
+			op.setClosePrice(closePrice);
 		}
 	}
 }
