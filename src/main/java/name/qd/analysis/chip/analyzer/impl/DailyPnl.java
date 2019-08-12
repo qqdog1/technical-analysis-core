@@ -28,7 +28,7 @@ public class DailyPnl implements ChipAnalyzer {
 
 	@Override
 	public int getInputField() {
-		return InputField.FROM + InputField.TO + InputField.BROKER + InputField.PRODUCT;
+		return InputField.FROM + InputField.TO + InputField.BROKER + InputField.PRODUCT + InputField.WITH_OPEN_PNL;
 	}
 
 	@Override

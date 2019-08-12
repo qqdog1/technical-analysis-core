@@ -149,12 +149,13 @@ public class ChipPanel extends JPanel {
 	
 	private void setAllInputDisable() {
 		comboBroker.setEnabled(false);
-		tfProduct.setEnabled(false);
+		tfProduct.setEditable(false);
 		dpFrom.setEnabled(false);
 		dpTo.setEnabled(false);
 		tfCost.setEditable(false);
-		tfPnl.setEnabled(false);
-		tfPnlRate.setEnabled(false);
+		tfPnl.setEditable(false);
+		tfPnlRate.setEditable(false);
+		checkBoxOpenPnl.setEnabled(false);
 	}
 	
 	private void setInputField(int inputField) {
@@ -163,7 +164,7 @@ public class ChipPanel extends JPanel {
 			comboBroker.setEnabled(true);
 		}
 		if(InputField.isProduct(inputField)) {
-			tfProduct.setEnabled(true);
+			tfProduct.setEditable(true);
 		}
 		if(InputField.isFrom(inputField)) {
 			dpFrom.setEnabled(true);
@@ -172,13 +173,16 @@ public class ChipPanel extends JPanel {
 			dpTo.setEnabled(true);
 		}
 		if(InputField.isTradeCost(inputField)) {
-			tfCost.setEnabled(true);
+			tfCost.setEditable(true);
 		}
 		if(InputField.isPNL(inputField)) {
-			tfPnl.setEnabled(true);
+			tfPnl.setEditable(true);
 		}
 		if(InputField.isPNLRate(inputField)) {
-			tfPnlRate.setEnabled(true);
+			tfPnlRate.setEditable(true);
+		}
+		if(InputField.isWithOpenPnl(inputField)) {
+			checkBoxOpenPnl.setEnabled(true);
 		}
 	}
 	

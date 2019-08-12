@@ -8,6 +8,7 @@ public class InputField {
 	public static int TRADE_COST = 16;
 	public static int PNL = 32;
 	public static int PNL_RATE = 64;
+	public static int WITH_OPEN_PNL = 128;
 	
 	public static boolean isBroker(int inputField) {
 		return (inputField & BROKER) == BROKER;
@@ -29,5 +30,8 @@ public class InputField {
 	}
 	public static boolean isPNLRate(int inputField) {
 		return (inputField & PNL_RATE) == PNL_RATE;
+	}
+	public static boolean isWithOpenPnl(int inputField) {
+		return (inputField & WITH_OPEN_PNL) == WITH_OPEN_PNL;
 	}
 }
