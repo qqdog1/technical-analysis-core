@@ -65,13 +65,14 @@ public class ChipUtils {
 		dailyOperate.setOpenShare(first.getOpenShare() + second.getOpenShare());
 		dailyOperate.setClosePnl(first.getClosePnl() + second.getClosePnl());
 		dailyOperate.setTradeCost(first.getTradeCost() + second.getTradeCost());
-		double closePrice = (second.getOpenPnl() / second.getOpenShare()) + second.getAvgPrice();
 		
 		if((first.getOpenShare() > 0 && second.getOpenShare() > 0) || (first.getOpenShare() < 0 && second.getOpenShare() < 0)) {
 			double firstCost = first.getOpenShare() * first.getAvgPrice();
 			double secondCost = second.getOpenShare() * second.getAvgPrice();
 			double totalCost = firstCost + secondCost;
-			dailyOperate.setAvgPrice(totalCost / dailyOperate.getOpenShare());
+			if(dailyOperate.getOpenShare() != 0) {
+				dailyOperate.setAvgPrice(totalCost / dailyOperate.getOpenShare());
+			}
 		} else {
 			long firstOpenShare = Math.abs(first.getOpenShare());
 			long secondOpenShare = Math.abs(second.getOpenShare());
@@ -86,7 +87,7 @@ public class ChipUtils {
 			double closePnl = (second.getAvgPrice() - first.getAvgPrice()) * closeShare;
 			dailyOperate.setClosePnl(dailyOperate.getClosePnl() + closePnl);
 		}
-		double newOpenPnl = (closePrice - dailyOperate.getAvgPrice()) * dailyOperate.getOpenShare();
+		double newOpenPnl = (second.getClosePrice() - dailyOperate.getAvgPrice()) * dailyOperate.getOpenShare();
 		dailyOperate.setOpenPnl(newOpenPnl);
 		dailyOperate.setPnlRate();
 		

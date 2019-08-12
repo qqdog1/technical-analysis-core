@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -152,8 +154,20 @@ public class TotalPnl implements ChipAnalyzer {
 				}
 			}
 		}
-		
+		sortList(lst);
 		return lst;
 	}
 
+	private void sortList(List<List<String>> lst) {
+		Collections.sort(lst, new Comparator<List<String>>() {
+			@Override
+			public int compare(List<String> l1, List<String> l2) {
+				String s1 = l1.get(l1.size()-1);
+				String s2 = l2.get(l2.size()-1);
+				Double d1 = Double.parseDouble(s1);
+				Double d2 = Double.parseDouble(s2);
+				return d2.compareTo(d1);
+			}
+		});
+	}
 }
