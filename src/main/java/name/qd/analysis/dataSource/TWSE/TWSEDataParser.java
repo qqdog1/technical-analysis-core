@@ -175,16 +175,20 @@ public class TWSEDataParser {
 		info1.setSellShare(Long.parseLong(s[4].trim()));
 		lst.add(info1);
 		
-		if(!"".equals(s[6].trim())) {
-			BuySellInfo info2 = new BuySellInfo();
-			info2.setDate(date);
-			info2.setProduct(product);
-			info2.setSeqNo(Integer.parseInt(s[6].trim()));
-			info2.setBrokerName(s[7].trim());
-			info2.setPrice(Double.parseDouble(s[8].trim()));
-			info2.setBuyShare(Long.parseLong(s[9].trim()));
-			info2.setSellShare(Long.parseLong(s[10].trim()));
-			lst.add(info2);
+		try {
+			if(!"".equals(s[6].trim())) {
+				BuySellInfo info2 = new BuySellInfo();
+				info2.setDate(date);
+				info2.setProduct(product);
+				info2.setSeqNo(Integer.parseInt(s[6].trim()));
+				info2.setBrokerName(s[7].trim());
+				info2.setPrice(Double.parseDouble(s[8].trim()));
+				info2.setBuyShare(Long.parseLong(s[9].trim()));
+				info2.setSellShare(Long.parseLong(s[10].trim()));
+				lst.add(info2);
+			}
+		} catch(ArrayIndexOutOfBoundsException e) {
+			log.error("{} {} {}", date, product, line, e);
 		}
 	}
 	
