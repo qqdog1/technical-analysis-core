@@ -18,11 +18,15 @@ import name.qd.analysis.chip.InputField;
 import name.qd.analysis.chip.analyzer.ChipAnalyzer;
 import name.qd.analysis.chip.utils.ChipUtils;
 import name.qd.analysis.chip.vo.DailyOperate;
+import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.utils.TimeUtil;
 import name.qd.fileCache.FileCacheManager;
 import name.qd.fileCache.cache.CoordinateCacheManager;
 import name.qd.fileCache.cache.CoordinateObject;
 
+/**
+ * 總PnL 計算到最後一天的總和
+ **/
 public class TotalPnl implements ChipAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(TotalPnl.class);
 
@@ -43,7 +47,7 @@ public class TotalPnl implements ChipAnalyzer {
 	}
 
 	@Override
-	public List<List<String>> analyze(FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, boolean isOpenPnl) {
+	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, boolean isOpenPnl) {
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		
 		log.debug("Analyze Total Pnl. From {} to {}. Branch:{}, Product:{}, With Open Pnl:{}", sdf.format(from), sdf.format(to), branch, product, isOpenPnl);
@@ -61,8 +65,10 @@ public class TotalPnl implements ChipAnalyzer {
 		
 		while(!to.before(currentDate)) {
 			CoordinateCacheManager lastCacheManager = null;
+			String cacheName = "bsr_" + sdf.format(currentDate);
+			log.debug("Processing cache:{}", cacheName);
 			try {
-				lastCacheManager = fileCacheManager.getCoordinateCacheInstance("bsr_" + sdf.format(currentDate), DailyOperate.class.getName());
+				lastCacheManager = fileCacheManager.getCoordinateCacheInstance(cacheName, DailyOperate.class.getName());
 			} catch (Exception e) {
 				log.error("Fail to get daily cache.", e);
 			}
@@ -86,6 +92,7 @@ public class TotalPnl implements ChipAnalyzer {
 			}
 			calendar.add(Calendar.DATE, 1);
 			currentDate = calendar.getTime();
+			fileCacheManager.removeCoordinateCache(cacheName);
 		}
 		
 		if(isSpecificBranch) {

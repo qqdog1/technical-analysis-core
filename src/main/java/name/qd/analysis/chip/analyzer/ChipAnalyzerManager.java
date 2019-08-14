@@ -54,7 +54,7 @@ public class ChipAnalyzerManager {
 		
 		List<List<String>> lst = new ArrayList<>();
 		lst.add(chipAnalyzer.getHeaderString(branch, product));
-		List<List<String>> lstData = chipAnalyzer.analyze(fileCacheManager, from, to, branch, product, isOpenPnl);
+		List<List<String>> lstData = chipAnalyzer.analyze(dataSource, fileCacheManager, from, to, branch, product, isOpenPnl);
 		if(lstData != null) {
 			lst.addAll(lstData);
 		}
@@ -97,14 +97,16 @@ public class ChipAnalyzerManager {
 	
 	private boolean isCacheExist(Date date) {
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
-		CoordinateCacheManager cacheManager;
-		try {
-			cacheManager = fileCacheManager.getCoordinateCacheInstance("bsr_" + sdf.format(date), DailyOperate.class.getName());
-		} catch (Exception e) {
-			log.error("Fail to check cache.", e);
-			return false;
-		}
-		return cacheManager.values().size() > 0;
+		String cacheName = "bsr_" + sdf.format(date);
+		return fileCacheManager.isCacheExist(cacheName);
+//		CoordinateCacheManager cacheManager;
+//		try {
+//			cacheManager = fileCacheManager.getCoordinateCacheInstance("bsr_" + sdf.format(date), DailyOperate.class.getName());
+//		} catch (Exception e) {
+//			log.error("Fail to check cache.", e);
+//			return false;
+//		}
+//		return cacheManager.values().size() > 0;
 	}
 	
 	private void transDailyCache(DataSource dataSource, Date date) {
