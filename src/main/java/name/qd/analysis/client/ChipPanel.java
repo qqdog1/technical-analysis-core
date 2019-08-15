@@ -196,9 +196,10 @@ public class ChipPanel extends JPanel {
 				String product = tfProduct.getText();
 				Date from = (Date) dpFrom.getModel().getValue();
 				Date to = (Date) dpTo.getModel().getValue();
+				double tradeCost = Double.parseDouble(tfCost.getText());
 				boolean isOpenPnl = checkBoxOpenPnl.isSelected();
 			
-				List<List<String>> lst = analyzerManager.getAnalysisResult(dataSource, chipAnalyzers, branch, product, from, to, isOpenPnl);
+				List<List<String>> lst = analyzerManager.getAnalysisResult(dataSource, chipAnalyzers, branch, product, from, to, tradeCost, isOpenPnl);
 				showData(lst);
 			}
 		});

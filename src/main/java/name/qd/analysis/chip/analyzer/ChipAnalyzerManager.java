@@ -42,7 +42,7 @@ public class ChipAnalyzerManager {
 		}
 	}
 	
-	public List<List<String>> getAnalysisResult(DataSource dataSource, ChipAnalyzers analyzer, String branch, String product, Date from, Date to, boolean isOpenPnl) {
+	public List<List<String>> getAnalysisResult(DataSource dataSource, ChipAnalyzers analyzer, String branch, String product, Date from, Date to, double tradeCost, boolean isOpenPnl) {
 		log.debug("Trying to run {}", analyzer);
 		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer);
 		if(chipAnalyzer == null) {
@@ -54,7 +54,7 @@ public class ChipAnalyzerManager {
 		
 		List<List<String>> lst = new ArrayList<>();
 		lst.add(chipAnalyzer.getHeaderString(branch, product));
-		List<List<String>> lstData = chipAnalyzer.analyze(dataSource, fileCacheManager, from, to, branch, product, isOpenPnl);
+		List<List<String>> lstData = chipAnalyzer.analyze(dataSource, fileCacheManager, from, to, branch, product, tradeCost, isOpenPnl);
 		if(lstData != null) {
 			lst.addAll(lstData);
 		}
