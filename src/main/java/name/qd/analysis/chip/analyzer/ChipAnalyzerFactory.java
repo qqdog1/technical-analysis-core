@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import name.qd.analysis.chip.ChipAnalyzers;
+import name.qd.analysis.chip.analyzer.impl.DailyOpenRecord;
 import name.qd.analysis.chip.analyzer.impl.DailyPnl;
 import name.qd.analysis.chip.analyzer.impl.DailyTradeRecord;
 import name.qd.analysis.chip.analyzer.impl.TotalPnl;
@@ -31,6 +32,9 @@ public class ChipAnalyzerFactory {
 			break;
 		case DAILY_TRADE_RECORD:
 			map.put(analyzer, new DailyTradeRecord());
+			break;
+		case DAILY_OPEN_RECORD:
+			map.put(analyzer, new DailyOpenRecord());
 			break;
 		}
 	}
