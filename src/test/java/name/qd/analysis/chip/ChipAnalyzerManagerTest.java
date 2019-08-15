@@ -35,7 +35,7 @@ public class ChipAnalyzerManagerTest {
 		try {
 			Date from = TimeUtil.getDateFormat().parse("20190527");
 			Date to = TimeUtil.getDateFormat().parse("20190528");
-			manager.getAnalysisResult(dataSource, ChipAnalyzers.DAILY_PNL, "", "", from, to, true);
+			manager.getAnalysisResult(dataSource, ChipAnalyzers.DAILY_PNL, "", "", from, to, 0, true);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
