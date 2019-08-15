@@ -197,7 +197,7 @@ public class ChipPanel extends JPanel {
 				Date from = (Date) dpFrom.getModel().getValue();
 				Date to = (Date) dpTo.getModel().getValue();
 				double tradeCost = 0;
-				if("".equals(tfCost.getText())) {
+				if(!"".equals(tfCost.getText())) {
 					tradeCost = Double.parseDouble(tfCost.getText());
 				}
 				boolean isOpenPnl = checkBoxOpenPnl.isSelected();
