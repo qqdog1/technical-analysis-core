@@ -15,7 +15,7 @@ import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.fileCache.FileCacheManager;
 
 /**
- * 單日買超
+ * 單日買進超過固定金額
  */
 public class DailyOpen implements ChipAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(DailyOpen.class);
@@ -70,7 +70,7 @@ public class DailyOpen implements ChipAnalyzer {
 					sellCost += info.getSellShare() * info.getPrice();
 				}
 				
-				if(buyCost - sellCost > tradeCost) {
+				if(buyCost > tradeCost) {
 					lst.add(getList(branch, keyProduct, "B", buyShare, buyCost));
 					lst.add(getList(branch, keyProduct, "S", sellShare, sellCost));
 				}
