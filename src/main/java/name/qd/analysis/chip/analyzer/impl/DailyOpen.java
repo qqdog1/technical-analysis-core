@@ -17,8 +17,8 @@ import name.qd.fileCache.FileCacheManager;
 /**
  * 單日買超
  */
-public class DailyOpenRecord implements ChipAnalyzer {
-	private static Logger log = LoggerFactory.getLogger(DailyOpenRecord.class);
+public class DailyOpen implements ChipAnalyzer {
+	private static Logger log = LoggerFactory.getLogger(DailyOpen.class);
 	
 	@Override
 	public int getInputField() {
