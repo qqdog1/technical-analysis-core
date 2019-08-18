@@ -6,6 +6,7 @@ import java.util.Map;
 import name.qd.analysis.chip.ChipAnalyzers;
 import name.qd.analysis.chip.analyzer.impl.BackTestPattern1;
 import name.qd.analysis.chip.analyzer.impl.DailyOpen;
+import name.qd.analysis.chip.analyzer.impl.DailyOpenMClose;
 import name.qd.analysis.chip.analyzer.impl.DailyPnl;
 import name.qd.analysis.chip.analyzer.impl.DailyTradeRecord;
 import name.qd.analysis.chip.analyzer.impl.TotalPnl;
@@ -34,8 +35,11 @@ public class ChipAnalyzerFactory {
 		case DAILY_TRADE_RECORD:
 			map.put(analyzer, new DailyTradeRecord());
 			break;
-		case DAILY_OPEN_RECORD:
+		case DAILY_OPEN:
 			map.put(analyzer, new DailyOpen());
+			break;
+		case DAILY_OPEN_M_CLOSE:
+			map.put(analyzer, new DailyOpenMClose());
 			break;
 		case BACK_TEST_PATTERN_1:
 			map.put(analyzer, new BackTestPattern1());
