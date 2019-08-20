@@ -5,6 +5,7 @@ import java.util.Map;
 
 import name.qd.analysis.chip.ChipAnalyzers;
 import name.qd.analysis.chip.analyzer.impl.BackTestPattern1;
+import name.qd.analysis.chip.analyzer.impl.BigVolumeTrade;
 import name.qd.analysis.chip.analyzer.impl.DailyOpen;
 import name.qd.analysis.chip.analyzer.impl.DailyOpenMClose;
 import name.qd.analysis.chip.analyzer.impl.DailyPnl;
@@ -43,6 +44,9 @@ public class ChipAnalyzerFactory {
 			break;
 		case BACK_TEST_PATTERN_1:
 			map.put(analyzer, new BackTestPattern1());
+			break;
+		case BIG_VOLUME_TRADE:
+			map.put(analyzer, new BigVolumeTrade());
 			break;
 		}
 	}
