@@ -45,6 +45,18 @@ public class BranchFinalInfo extends NormalObject {
 		}
 		mapProductInfo.get(product).setPosition(position);
 	}
+	public double getPositionDiff(String product) {
+		if(mapProductInfo.containsKey(product)) {
+			return mapProductInfo.get(product).getPositionDiff();
+		}
+		return 0;
+	}
+	public void setPositionDiff(String product, double positionDiff) {
+		if(!mapProductInfo.containsKey(product)) {
+			mapProductInfo.put(product, new ProductInfo());
+		}
+		mapProductInfo.get(product).setPositionDiff(positionDiff);
+	}
 	public double getPnl(String product) {
 		if(mapProductInfo.containsKey(product)) {
 			return mapProductInfo.get(product).getPnl();
@@ -88,6 +100,7 @@ public class BranchFinalInfo extends NormalObject {
 			tOut.writeDouble(info.getAvgPrice());
 			tOut.writeDouble(info.getPosition());
 			tOut.writeDouble(info.getPnl());
+			tOut.writeDouble(info.getPositionDiff());
 		}
 		return tOut.toByteArray();
 	}
@@ -110,9 +123,11 @@ public class BranchFinalInfo extends NormalObject {
 			double avgPrice = tIn.getDouble();
 			double position = tIn.getDouble();
 			double pnl = tIn.getDouble();
+			double positionDiff = tIn.getDouble();
 			info.setAvgPrice(avgPrice);
 			info.setPosition(position);
 			info.setPnl(pnl);
+			info.setPositionDiff(positionDiff);
 			mapProductInfo.put(product, info);
 		}
 	}
@@ -121,6 +136,7 @@ public class BranchFinalInfo extends NormalObject {
 		private double avgPrice;
 		private double position;
 		private double pnl;
+		private double positionDiff;
 		
 		public double getAvgPrice() {
 			return avgPrice;
@@ -133,6 +149,12 @@ public class BranchFinalInfo extends NormalObject {
 		}
 		public void setPosition(double position) {
 			this.position = position;
+		}
+		public double getPositionDiff() {
+			return positionDiff;
+		}
+		public void setPositionDiff(double positionDiff) {
+			this.positionDiff = positionDiff;
 		}
 		public double getPnl() {
 			return pnl;

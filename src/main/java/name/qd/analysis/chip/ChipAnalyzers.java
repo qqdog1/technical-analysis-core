@@ -8,5 +8,6 @@ public enum ChipAnalyzers {
 	DAILY_OPEN,
 	DAILY_OPEN_M_CLOSE,
 	BACK_TEST_PATTERN_1,
+	BRANCH_INFO,
 	;
 }
