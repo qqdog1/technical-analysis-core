@@ -3,6 +3,7 @@ package name.qd.analysis.chip.vo;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import name.qd.fileCache.cache.NormalObject;
@@ -10,17 +11,11 @@ import name.qd.fileCache.common.TransInputStream;
 import name.qd.fileCache.common.TransOutputStream;
 
 public class BranchFinalInfo extends NormalObject {
-	private String branch;
+	public static final String KEY = "";
 	private Date from;
 	private Date to;
-	private Map<String, ProductInfo> mapProductInfo;
+	private Map<String, Map<String, ProductInfo>> map = new HashMap<>();
 
-	public String getBranch() {
-		return branch;
-	}
-	public void setBranch(String branch) {
-		this.branch = branch;
-	}
 	public Date getFrom() {
 		return from;
 	}
@@ -33,74 +28,92 @@ public class BranchFinalInfo extends NormalObject {
 	public void setTo(Date to) {
 		this.to = to;
 	}
-	public double getPosition(String product) {
-		if(mapProductInfo.containsKey(product)) {
-			return mapProductInfo.get(product).getPosition();
+	public double getPosition(String branch, String product) {
+		ProductInfo info = getProductInfo(branch, product);
+		if(info != null) {
+			return info.getPosition();
 		}
 		return 0;
 	}
-	public void setPosition(String product, double position) {
-		if(!mapProductInfo.containsKey(product)) {
-			mapProductInfo.put(product, new ProductInfo());
-		}
-		mapProductInfo.get(product).setPosition(position);
+	public void setPosition(String branch, String product, double position) {
+		ProductInfo info = getAndCreateProductInfo(branch, product);
+		info.setPosition(position);
 	}
-	public double getPositionDiff(String product) {
-		if(mapProductInfo.containsKey(product)) {
-			return mapProductInfo.get(product).getPositionDiff();
+	public double getPositionDiff(String branch, String product) {
+		ProductInfo info = getProductInfo(branch, product);
+		if(info != null) {
+			return info.getPositionDiff();
 		}
 		return 0;
 	}
-	public void setPositionDiff(String product, double positionDiff) {
-		if(!mapProductInfo.containsKey(product)) {
-			mapProductInfo.put(product, new ProductInfo());
-		}
-		mapProductInfo.get(product).setPositionDiff(positionDiff);
+	public void setPositionDiff(String branch, String product, double positionDiff) {
+		ProductInfo info = getAndCreateProductInfo(branch, product);
+		info.setPositionDiff(positionDiff);
 	}
-	public double getPnl(String product) {
-		if(mapProductInfo.containsKey(product)) {
-			return mapProductInfo.get(product).getPnl();
+	public double getPnl(String branch, String product) {
+		ProductInfo info = getProductInfo(branch, product);
+		if(info != null) {
+			return info.getPnl();
 		}
 		return 0;
 	}
-	public void setPnl(String product, double pnl) {
-		if(!mapProductInfo.containsKey(product)) {
-			mapProductInfo.put(product, new ProductInfo());
-		}
-		mapProductInfo.get(product).setPnl(pnl);
+	public void setPnl(String branch, String product, double pnl) {
+		ProductInfo info = getAndCreateProductInfo(branch, product);
+		info.setPnl(pnl);
 	}
-	public double getAvgPrice(String product) {
-		if(mapProductInfo.containsKey(product)) {
-			return mapProductInfo.get(product).getAvgPrice();
+	public double getAvgPrice(String branch, String product) {
+		ProductInfo info = getProductInfo(branch, product);
+		if(info != null) {
+			return info.getAvgPrice();
 		}
 		return 0;
 	}
-	public void setAvgPrice(String product, double avgPrice) {
-		if(!mapProductInfo.containsKey(product)) {
-			mapProductInfo.put(product, new ProductInfo());
+	public void setAvgPrice(String branch, String product, double avgPrice) {
+		ProductInfo info = getAndCreateProductInfo(branch, product);
+		info.setAvgPrice(avgPrice);
+	}
+	private ProductInfo getProductInfo(String branch, String product) {
+		if(map.containsKey(branch)) {
+			Map<String, ProductInfo> mapInfo = map.get(branch);
+			if(mapInfo.containsKey(product)) {
+				return mapInfo.get(product);
+			}
 		}
-		mapProductInfo.get(product).setAvgPrice(avgPrice);
+		return null;
+	}
+	private ProductInfo getAndCreateProductInfo(String branch, String product) {
+		if(!map.containsKey(branch)) {
+			map.put(branch, new HashMap<>());
+		}
+		Map<String, ProductInfo> mapInfo = map.get(branch);
+		if(!mapInfo.containsKey(product)) {
+			mapInfo.put(product, new ProductInfo());
+		}
+		return mapInfo.get(product);
 	}
 	
 	@Override
 	public String getKeyString() {
-		return branch;
+		return KEY;
 	}
 	
 	@Override
 	public byte[] parseToFileFormat() throws IOException {
 		TransOutputStream tOut = new TransOutputStream();
-		tOut.writeString(branch);
 		tOut.writeLong(from.getTime());
 		tOut.writeLong(to.getTime());
-		tOut.writeInt(mapProductInfo.size());
-		for(String product : mapProductInfo.keySet()) {
-			tOut.writeString(product);
-			ProductInfo info = mapProductInfo.get(product);
-			tOut.writeDouble(info.getAvgPrice());
-			tOut.writeDouble(info.getPosition());
-			tOut.writeDouble(info.getPnl());
-			tOut.writeDouble(info.getPositionDiff());
+		tOut.writeInt(map.size());
+		for(String branch : map.keySet()) {
+			tOut.writeString(branch);
+			Map<String, ProductInfo> mapInfo = map.get(branch);
+			tOut.writeInt(mapInfo.size());
+			for(String product : mapInfo.keySet()) {
+				ProductInfo info = mapInfo.get(product);
+				tOut.writeDouble(info.getAvgPrice());
+				tOut.writeDouble(info.getPosition());
+				tOut.writeDouble(info.getPnl());
+				tOut.writeDouble(info.getPositionDiff());
+			}
 		}
 		return tOut.toByteArray();
 	}
@@ -108,7 +121,6 @@ public class BranchFinalInfo extends NormalObject {
 	@Override
 	public void toValueObject(byte[] data) throws IOException {
 		TransInputStream tIn = new TransInputStream(data);
-		branch = tIn.getString();
 		long timestamp = tIn.getLong();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(timestamp);
@@ -118,17 +130,23 @@ public class BranchFinalInfo extends NormalObject {
 		to = calendar.getTime();
 		int size = tIn.getInt();
 		for(int i = 0 ; i < size; i++) {
-			String product = tIn.getString();
-			ProductInfo info = new ProductInfo();
-			double avgPrice = tIn.getDouble();
-			double position = tIn.getDouble();
-			double pnl = tIn.getDouble();
-			double positionDiff = tIn.getDouble();
-			info.setAvgPrice(avgPrice);
-			info.setPosition(position);
-			info.setPnl(pnl);
-			info.setPositionDiff(positionDiff);
-			mapProductInfo.put(product, info);
+			String branch = tIn.getString();
+			map.put(branch, new HashMap<>());
+			Map<String, ProductInfo> mapInfo = map.get(branch);
+			int infoSize = tIn.getInt();
+			for(int j = 0 ; j < infoSize ; j++) {
+				String product = tIn.getString();
+				ProductInfo info = new ProductInfo();
+				double avgPrice = tIn.getDouble();
+				double position = tIn.getDouble();
+				double pnl = tIn.getDouble();
+				double positionDiff = tIn.getDouble();
+				info.setAvgPrice(avgPrice);
+				info.setPosition(position);
+				info.setPnl(pnl);
+				info.setPositionDiff(positionDiff);
+				mapInfo.put(product, info);
+			}
 		}
 	}
 	
