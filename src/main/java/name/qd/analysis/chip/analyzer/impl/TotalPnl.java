@@ -26,6 +26,7 @@ import name.qd.fileCache.cache.CoordinateObject;
 
 /**
  * 總PnL 計算到最後一天的總和
+ * 用Cache算的  不準
  **/
 public class TotalPnl implements ChipAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(TotalPnl.class);
