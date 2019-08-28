@@ -54,7 +54,7 @@ public class BSRRecorderManager {
 	private void initDate() {
 		date = TimeUtil.getToday();
 		try {
-			date = TimeUtil.getDateFormat().parse("20190823");
+			date = TimeUtil.getDateFormat().parse("20190826");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

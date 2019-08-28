@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import name.qd.fileCache.cache.NormalObject;
 import name.qd.fileCache.common.TransInputStream;
@@ -71,6 +72,12 @@ public class BranchFinalInfo extends NormalObject {
 	public void setAvgPrice(String branch, String product, double avgPrice) {
 		ProductInfo info = getAndCreateProductInfo(branch, product);
 		info.setAvgPrice(avgPrice);
+	}
+	public Set<String> getAllProduct(String branch) {
+		if(map.containsKey(branch)) {
+			return map.get(branch).keySet();
+		}
+		return null;
 	}
 	private ProductInfo getProductInfo(String branch, String product) {
 		if(map.containsKey(branch)) {

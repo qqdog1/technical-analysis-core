@@ -6,6 +6,7 @@ import java.util.Map;
 import name.qd.analysis.chip.ChipAnalyzers;
 import name.qd.analysis.chip.analyzer.impl.BackTestPattern1;
 import name.qd.analysis.chip.analyzer.impl.BigVolumeTrade;
+import name.qd.analysis.chip.analyzer.impl.BranchInfoByBS;
 import name.qd.analysis.chip.analyzer.impl.DailyOpen;
 import name.qd.analysis.chip.analyzer.impl.DailyOpenMClose;
 import name.qd.analysis.chip.analyzer.impl.DailyPnl;
@@ -47,6 +48,9 @@ public class ChipAnalyzerFactory {
 			break;
 		case BIG_VOLUME_TRADE:
 			map.put(analyzer, new BigVolumeTrade());
+			break;
+		case BRANCH_INFO:
+			map.put(analyzer, new BranchInfoByBS());
 			break;
 		}
 	}
