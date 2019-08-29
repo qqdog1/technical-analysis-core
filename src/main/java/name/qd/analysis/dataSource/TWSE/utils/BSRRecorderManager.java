@@ -47,14 +47,14 @@ public class BSRRecorderManager {
 		dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
 		initFolder();
 		initProducts();
-		cleanDownloadFolder();
+//		cleanDownloadFolder();
 		initWorkers();
 	}
 	
 	private void initDate() {
 		date = TimeUtil.getToday();
 		try {
-			date = TimeUtil.getDateFormat().parse("20190826");
+			date = TimeUtil.getDateFormat().parse("20190829");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

@@ -73,24 +73,27 @@ public class BranchInfoByBS implements ChipAnalyzer {
 				Map<Date, List<BuySellInfo>> map = dataSource.getBuySellInfo(product, from, to);
 				
 				while(!to.before(currentDate)) {
+					log.debug("Processing ... {}", currentDate);
 					List<BuySellInfo> lst = map.get(currentDate);
-					
-					for(BuySellInfo info : lst) {
-						if(branch.equals(info.getBrokerName())) {
-							updateBranchFinalInfo(info, branchFinalInfo);
+					if(lst != null) {
+						for(BuySellInfo info : lst) {
+							if(branch.equals(info.getBrokerName())) {
+								updateBranchFinalInfo(info, branchFinalInfo);
+							}
 						}
 					}
 					calendar.add(Calendar.DATE, 1);
 					currentDate = calendar.getTime();
 				}
 			} catch (Exception e) {
-				log.error("Trying to get BuySellInfo failed.");
+				log.error("Trying to get BuySellInfo failed.", e);
 				return null;
 			}
 		} else {
 			try {
 				Map<Date, Map<String, List<BuySellInfo>>> map = dataSource.getBuySellInfo(from, to);
 				while(!to.before(currentDate)) {
+					log.debug("Processing ... {}", currentDate);
 					Map<String, List<BuySellInfo>> mapData = map.get(currentDate);
 					for(String keyProduct : mapData.keySet()) {
 						List<BuySellInfo> lst = mapData.get(keyProduct);
@@ -104,7 +107,7 @@ public class BranchInfoByBS implements ChipAnalyzer {
 					currentDate = calendar.getTime();
 				}
 			} catch (Exception e) {
-				log.error("Trying to get BuySellInfo failed.");
+				log.error("Trying to get BuySellInfo failed.", e);
 				return null;
 			}
 		}
