@@ -97,9 +97,16 @@
 
  	<repositories>
 		<repository>
-			<id>github</id>
+			<id>github-read-only</id>
 			<url>https://maven.pkg.github.com/qqdog1/file-cache</url>
 		</repository>
 	</repositories>
 
+	<servers>
+		<server>
+			<id>github-read-only</id>
+			<username>qqdog1</username>
+			<password>23df91fbdf2eb65cab9df83b4b1474ce0cc9c87a</password>
+		</server>
+	</servers>
 </project>
