@@ -95,14 +95,11 @@
 		</plugins>
 	</build>
 
-	<repositories>
+ 	<repositories>
 		<repository>
-			<id>github-repo</id>
-			<url>https://maven.pkg.github.com/qqdog1</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/qqdog1/file-cache</url>
 		</repository>
 	</repositories>
+
 </project>
