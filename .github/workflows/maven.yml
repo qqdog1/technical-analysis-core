@@ -12,7 +12,4 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
-      env:
-        user: qqdog1
-        token: ${{ secrets.GITHUB_TOKEN }}
+      run: mvn -B package --file pom.xml ${{ secrets.GITHUB_TOKEN }}
