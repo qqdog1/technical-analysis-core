@@ -1,5 +1,4 @@
-name: Java CI
-
+name: Technical Analysis build
 on: [push]
 
 jobs:
