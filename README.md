@@ -1,4 +1,4 @@
-![](https://github.com/qqdog1/file-cache/workflows/Technical%20Analysis%20build/badge.svg)
+![](https://github.com/qqdog1/technical-analysis/workflows/Technical%20Analysis%20build/badge.svg)
 
 # TechnicalAnalysis 
 
