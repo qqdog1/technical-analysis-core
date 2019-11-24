@@ -99,6 +99,8 @@
 		<repository>
 			<id>github-read-only</id>
 			<url>https://maven.pkg.github.com/qqdog1/file-cache</url>
+			<username>qqdog1</username>
+			<password>${{ secrets.GITHUB_TOKEN }}</password>
 		</repository>
 	</repositories>
 </project>
