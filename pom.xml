@@ -98,7 +98,7 @@
  	<repositories>
 		<repository>
 			<id>github-read-only</id>
-			<url>${{ secrets.GITHUB_TOKEN }}@https://maven.pkg.github.com/qqdog1/file-cache</url>
+			<url>https://maven.pkg.github.com/qqdog1/file-cache</url>
 		</repository>
 	</repositories>
 </project>
