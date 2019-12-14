@@ -26,17 +26,12 @@ import name.qd.fileCache.cache.CoordinateCacheManager;
 
 public class ChipAnalyzerManager {
 	private static Logger log = LoggerFactory.getLogger(ChipAnalyzerManager.class);
-	private static ChipAnalyzerManager instance = new ChipAnalyzerManager();
 	private FileCacheManager fileCacheManager;
 	private ChipAnalyzerFactory chipAnalyzerFactory = new ChipAnalyzerFactory();
-	
-	public static ChipAnalyzerManager getInstance() {
-		return instance;
-	}
 
-	private ChipAnalyzerManager() {
+	public ChipAnalyzerManager(String cachePath) {
 		try {
-			fileCacheManager = new FileCacheManager("./cache/");
+			fileCacheManager = new FileCacheManager(cachePath);
 		} catch (Exception e) {
 			log.error("Init file cache manager failed.", e);
 		}

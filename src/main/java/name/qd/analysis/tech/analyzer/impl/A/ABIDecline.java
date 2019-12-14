@@ -11,10 +11,15 @@ import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.DailyClosingInfo;
 import name.qd.analysis.tech.analyzer.TechAnalyzer;
+import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.vo.AnalysisResult;
 
-public class ABIDecline implements TechAnalyzer {
+public class ABIDecline extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ABIDecline.class);
+	
+	public ABIDecline(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
 	
 	@Override
 	public String getCacheName(String product) {

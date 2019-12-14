@@ -16,9 +16,13 @@ import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.StringCombineUtil;
 
-public class CMO implements TechAnalyzer {
+public class CMO extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(CMO.class);
 
+	public CMO(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return StringCombineUtil.combine(CMO.class.getSimpleName(), product);
@@ -61,7 +65,7 @@ public class CMO implements TechAnalyzer {
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
 		int days = Integer.parseInt(inputs[0]);
 		List<AnalysisResult> lstResult = new ArrayList<>();
-		List<AnalysisResult> lstDaily = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.CMO, product, from, to);
+		List<AnalysisResult> lstDaily = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.CMO, product, from, to);
 		for(int i = lstDaily.size() - 1 ; i >= days - 1 ;  i--) {
 			AnalysisResult result = new AnalysisResult();
 			AnalysisResult dailyResult = lstDaily.get(i);

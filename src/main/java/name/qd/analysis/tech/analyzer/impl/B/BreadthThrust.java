@@ -16,9 +16,13 @@ import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 
-public class BreadthThrust implements TechAnalyzer {
+public class BreadthThrust extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(BreadthThrust.class);
 
+	public BreadthThrust(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return BreadthThrust.class.getSimpleName();
@@ -45,7 +49,7 @@ public class BreadthThrust implements TechAnalyzer {
 
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.BreadthThrust, product, from, to);
+		List<AnalysisResult> lst = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.BreadthThrust, product, from, to);
 		int ma = Integer.parseInt(inputs[0]);
 		return AnalystUtils.simpleMovingAverageByResult(lst, ma);
 	}

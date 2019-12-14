@@ -11,11 +11,16 @@ import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.DailyClosingInfo;
 import name.qd.analysis.tech.analyzer.TechAnalyzer;
+import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.vo.AnalysisResult;
 
-public class ABIAdvance implements TechAnalyzer {
+public class ABIAdvance extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ABIAdvance.class);
 
+	public ABIAdvance(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return ABIAdvance.class.getSimpleName();

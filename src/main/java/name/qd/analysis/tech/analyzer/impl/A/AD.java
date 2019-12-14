@@ -20,8 +20,12 @@ import name.qd.analysis.utils.AnalystUtils;
  * 騰落
  * 上漲家數 - 下跌家數  累加
  */
-public class AD implements TechAnalyzer {
+public class AD extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(AD.class);
+	
+	public AD(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
 	
 	@Override
 	public String getCacheName(String product) {
@@ -49,7 +53,7 @@ public class AD implements TechAnalyzer {
 	
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.AD, product, from, to);
+		List<AnalysisResult> lst = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.AD, product, from, to);
 		String accu = inputs[0];
 		if(!"Y".equalsIgnoreCase(accu)) {
 			return lst;

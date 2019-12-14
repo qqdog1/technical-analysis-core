@@ -21,9 +21,13 @@ import name.qd.analysis.utils.StringCombineUtil;
  * 累積派發線
  * (收-低) - (高-收) / (高-低) * 成交量  累加
  */
-public class ADL implements TechAnalyzer {
+public class ADL extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ADL.class);
 
+	public ADL(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return StringCombineUtil.combine(ADL.class.getSimpleName(), product);
@@ -57,7 +61,7 @@ public class ADL implements TechAnalyzer {
 	
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String ... inputs) throws Exception {
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ADL, product, from, to);
+		List<AnalysisResult> lst = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.ADL, product, from, to);
 		String accu = inputs[0];
 		if(!"Y".equalsIgnoreCase(accu)) {
 			return lst;

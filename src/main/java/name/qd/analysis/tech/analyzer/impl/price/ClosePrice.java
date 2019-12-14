@@ -11,12 +11,17 @@ import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.tech.analyzer.TechAnalyzer;
+import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 import name.qd.analysis.utils.StringCombineUtil;
 
-public class ClosePrice implements TechAnalyzer {
+public class ClosePrice extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ClosePrice.class);
+	
+	public ClosePrice(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
 	
 	@Override
 	public String getCacheName(String product) {

@@ -13,7 +13,11 @@ import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 import name.qd.analysis.utils.StringCombineUtil;
 
-public class DEMA implements TechAnalyzer {
+public class DEMA extends TechAnalyzer {
+	
+	public DEMA(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
 
 	@Override
 	public String getCacheName(String product) {
@@ -32,19 +36,19 @@ public class DEMA implements TechAnalyzer {
 		List<AnalysisResult> lstResult = null;
 		switch(priceType) {
 		case "H":
-			lstResult = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.UPPER_PRICE, product, from, to);
+			lstResult = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.UPPER_PRICE, product, from, to);
 			break;
 		case "L":
-			lstResult = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.LOWER_PRICE, product, from, to);
+			lstResult = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.LOWER_PRICE, product, from, to);
 			break;
 		case "O":
-			lstResult = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.OPEN_PRICE, product, from, to);
+			lstResult = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.OPEN_PRICE, product, from, to);
 			break;
 		case "C":
-			lstResult = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.CLOSE_PRICE, product, from, to);
+			lstResult = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.CLOSE_PRICE, product, from, to);
 			break;
 		case "A":
-			lstResult = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.AVERAGE_PRICE, product, from, to);
+			lstResult = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.AVERAGE_PRICE, product, from, to);
 			break;
 		}
 		return AnalystUtils.DEMAByResult(lstResult, days);

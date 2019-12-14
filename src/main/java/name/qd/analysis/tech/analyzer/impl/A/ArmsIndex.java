@@ -18,9 +18,12 @@ import name.qd.analysis.utils.AnalystUtils;
 /**
  * (上漲家數 / 下跌家數) / (上漲成交量 / 下跌成交量)
  */
-public class ArmsIndex implements TechAnalyzer {
+public class ArmsIndex extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ArmsIndex.class);
-	private TechAnalyzerManager manager = TechAnalyzerManager.getInstance();
+	
+	public ArmsIndex(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
 	
 	@Override
 	public String getCacheName(String product) {
@@ -31,8 +34,8 @@ public class ArmsIndex implements TechAnalyzer {
 	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lst = new ArrayList<>();
 		try {
-			List<AnalysisResult> lstAdvanceVolume = manager.getAnalysisResult(dataSource, TechAnalyzers.AdvancingVolume, product, from, to);
-			List<AnalysisResult> lstDeclineVolume = manager.getAnalysisResult(dataSource, TechAnalyzers.DecliningVolume, product, from, to);
+			List<AnalysisResult> lstAdvanceVolume = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.AdvancingVolume, product, from, to);
+			List<AnalysisResult> lstDeclineVolume = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.DecliningVolume, product, from, to);
 			
 			if(lstAdvanceVolume.size() != lstDeclineVolume.size()) {
 				throw new Exception("AdvanceVolume data count != DeclineVolume data count");
@@ -66,7 +69,7 @@ public class ArmsIndex implements TechAnalyzer {
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String ... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ArmsIndex, product, from, to);
+		List<AnalysisResult> lst = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.ArmsIndex, product, from, to);
 		return AnalystUtils.simpleMovingAverageByResult(lst, ma);
 	}
 	

@@ -27,19 +27,14 @@ public class TechAnalyzerManager {
 	private Map<String, Date> mapLast = new HashMap<String, Date>();
 	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
 	private TechAnalyzerFactory techAnalyzerFactory = new TechAnalyzerFactory();
-	private static TechAnalyzerManager instance = new TechAnalyzerManager();
 	private String className = AnalysisResult.class.getName();
 	
-	private TechAnalyzerManager() {
+	public TechAnalyzerManager(String cachePath) {
 		try {
-			fileCacheManager = new FileCacheManager("./cache/");
+			fileCacheManager = new FileCacheManager(cachePath);
 		} catch (Exception e) {
 			log.error("Init file cache manager failed.", e);
 		}
-	}
-	
-	public static TechAnalyzerManager getInstance() {
-		return instance;
 	}
 	
 	public List<AnalysisResult> getAnalysisResult(DataSource dataSource, TechAnalyzers analyzer, String product, Date from, Date to) throws Exception {

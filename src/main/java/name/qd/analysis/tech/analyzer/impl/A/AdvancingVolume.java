@@ -19,9 +19,13 @@ import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 
-public class AdvancingVolume implements TechAnalyzer {
+public class AdvancingVolume extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(AdvancingVolume.class);
 
+	public AdvancingVolume(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return AdvancingVolume.class.getSimpleName();
@@ -66,7 +70,7 @@ public class AdvancingVolume implements TechAnalyzer {
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.AdvancingVolume, product, from, to);
+		List<AnalysisResult> lst = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.AdvancingVolume, product, from, to);
 		return AnalystUtils.simpleMovingAverageByResult(lst, ma);
 	}
 

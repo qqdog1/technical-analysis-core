@@ -13,7 +13,11 @@ import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 import name.qd.analysis.utils.StringCombineUtil;
 
-public class DMI implements TechAnalyzer {
+public class DMI extends TechAnalyzer {
+	
+	public DMI(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
 
 	@Override
 	public String getCacheName(String product) {
@@ -22,7 +26,7 @@ public class DMI implements TechAnalyzer {
 
 	@Override
 	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
-		List<AnalysisResult> lstAvgPrice = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.AVERAGE_PRICE, product, from, to);
+		List<AnalysisResult> lstAvgPrice = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.AVERAGE_PRICE, product, from, to);
 		List<AnalysisResult> lstSD = AnalystUtils.NDayStandardDeviation(lstAvgPrice, 5);
 		List<AnalysisResult> lstSDMA = AnalystUtils.simpleMovingAverageByResult(lstSD, 10);
 		

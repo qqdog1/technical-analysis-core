@@ -19,9 +19,13 @@ import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 import name.qd.analysis.utils.StringCombineUtil;
 
-public class BollingerBand_Upper implements TechAnalyzer {
+public class BollingerBand_Upper extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(BollingerBand_Upper.class);
 
+	public BollingerBand_Upper(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return StringCombineUtil.combine(BollingerBand_Upper.class.getSimpleName(), product);
@@ -41,7 +45,7 @@ public class BollingerBand_Upper implements TechAnalyzer {
 			sd = Integer.parseInt(inputs[1]);
 		} catch(NumberFormatException e) {
 		}
-		List<AnalysisResult> lstMiddle = TechAnalyzerManager.getInstance().getCustomAnalysisResult(dataSource, TechAnalyzers.BollingerBand_Middle, product, from, to, inputs);
+		List<AnalysisResult> lstMiddle = techAnalyzerManager.getCustomAnalysisResult(dataSource, TechAnalyzers.BollingerBand_Middle, product, from, to, inputs);
 		Map<Date, AnalysisResult> mapMiddle = new HashMap<>();
 		for(AnalysisResult middle : lstMiddle) {
 			mapMiddle.put(middle.getDate(), middle);

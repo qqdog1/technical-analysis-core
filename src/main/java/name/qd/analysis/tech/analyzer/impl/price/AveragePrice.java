@@ -17,8 +17,12 @@ import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 import name.qd.analysis.utils.StringCombineUtil;
 
-public class AveragePrice implements TechAnalyzer {
+public class AveragePrice extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(AveragePrice.class);
+	
+	public AveragePrice(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
 	
 	@Override
 	public String getCacheName(String product) {
@@ -46,7 +50,7 @@ public class AveragePrice implements TechAnalyzer {
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String ... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.AVERAGE_PRICE, product, from , to);
+		List<AnalysisResult> lst = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.AVERAGE_PRICE, product, from , to);
 		return AnalystUtils.simpleMovingAverageByResult(lst, ma);
 	}
 	

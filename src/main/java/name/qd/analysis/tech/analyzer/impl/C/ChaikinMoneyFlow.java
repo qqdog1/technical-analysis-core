@@ -21,9 +21,13 @@ import name.qd.analysis.utils.StringCombineUtil;
  * Chaikin Money Flow
  *
  */
-public class ChaikinMoneyFlow implements TechAnalyzer {
+public class ChaikinMoneyFlow extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ChaikinMoneyFlow.class);
 
+	public ChaikinMoneyFlow(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return StringCombineUtil.combine(ChaikinMoneyFlow.class.getSimpleName(), product);
@@ -58,7 +62,7 @@ public class ChaikinMoneyFlow implements TechAnalyzer {
 
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ChaikinMoneyFlow, product, from, to);
+		List<AnalysisResult> lst = TechAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.ChaikinMoneyFlow, product, from, to);
 		int n = Integer.parseInt(inputs[0]);
 		List<AnalysisResult> lstResult = AnalystUtils.NDaysAccu(lst, n);
 		for(AnalysisResult analysisResult : lstResult) {

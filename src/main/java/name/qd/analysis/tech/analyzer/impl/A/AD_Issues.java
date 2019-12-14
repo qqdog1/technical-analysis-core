@@ -19,8 +19,12 @@ import name.qd.analysis.utils.AnalystUtils;
 /**
  * 上漲家數 - 下跌家數
  */
-public class AD_Issues implements TechAnalyzer {
+public class AD_Issues extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(AD_Issues.class);
+	
+	public AD_Issues(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
 	
 	@Override
 	public String getCacheName(String product) {
@@ -48,7 +52,7 @@ public class AD_Issues implements TechAnalyzer {
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.AD_Issues, product, from, to);
+		List<AnalysisResult> lst = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.AD_Issues, product, from, to);
 		return AnalystUtils.simpleMovingAverageByResult(lst, ma);
 	}
 

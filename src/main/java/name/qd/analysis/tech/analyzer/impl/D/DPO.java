@@ -14,7 +14,11 @@ import name.qd.analysis.utils.AnalystUtils;
 import name.qd.analysis.utils.StringCombineUtil;
 
 // The Detrended Price Oscillator
-public class DPO implements TechAnalyzer {
+public class DPO extends TechAnalyzer {
+	
+	public DPO(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
 
 	@Override
 	public String getCacheName(String product) {
@@ -29,7 +33,7 @@ public class DPO implements TechAnalyzer {
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
 		List<AnalysisResult> lstResult = new ArrayList<>();
-		List<AnalysisResult> lstClosePrice = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.CLOSE_PRICE, product, from, to);
+		List<AnalysisResult> lstClosePrice = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.CLOSE_PRICE, product, from, to);
 		int days = Integer.parseInt(inputs[0]);
 		List<AnalysisResult> lstSMA = AnalystUtils.simpleMovingAverageByResult(lstClosePrice, days);
 		int index = days - (days/2 + 1) - 1;

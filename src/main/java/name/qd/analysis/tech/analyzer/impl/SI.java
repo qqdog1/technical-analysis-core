@@ -18,11 +18,15 @@ import name.qd.analysis.utils.AnalystUtils;
 import name.qd.analysis.utils.StringCombineUtil;
 
 /**
- * $&*@(#$&(*#&($
+ * 
  */
-public class SI implements TechAnalyzer {
+public class SI extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(SI.class);
 
+	public SI(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return StringCombineUtil.combine(SI.class.getSimpleName(), product);
@@ -73,7 +77,7 @@ public class SI implements TechAnalyzer {
 
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.SI, product, from, to);
+		List<AnalysisResult> lst = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.SI, product, from, to);
 		String accu = inputs[0];
 		if(!"Y".equalsIgnoreCase(accu)) {
 			return lst;

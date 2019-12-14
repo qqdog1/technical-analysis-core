@@ -18,9 +18,13 @@ import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 import name.qd.analysis.utils.StringCombineUtil;
 
-public class ChaikinOscillator implements TechAnalyzer {
+public class ChaikinOscillator extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ChaikinOscillator.class);
 
+	public ChaikinOscillator(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return StringCombineUtil.combine(ChaikinOscillator.class.getSimpleName(), product);
@@ -30,7 +34,7 @@ public class ChaikinOscillator implements TechAnalyzer {
 	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception {
 		List<AnalysisResult> lstResult = new ArrayList<>();
 		try {
-			List<AnalysisResult> lstADL = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ADL, product, from, to);
+			List<AnalysisResult> lstADL = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.ADL, product, from, to);
 			List<AnalysisResult> lst3 = AnalystUtils.exponentialMovingAverageByResult(lstADL, 3);
 			List<AnalysisResult> lst10 = AnalystUtils.exponentialMovingAverageByResult(lstADL, 10);
 			Map<Date, AnalysisResult> map3 = new HashMap<>();

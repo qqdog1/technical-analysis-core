@@ -6,10 +6,15 @@ import java.util.List;
 import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.tech.analyzer.TechAnalyzer;
+import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.vo.AnalysisResult;
 
-public class CSI implements TechAnalyzer {
+public class CSI extends TechAnalyzer {
 
+	public CSI(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return null;

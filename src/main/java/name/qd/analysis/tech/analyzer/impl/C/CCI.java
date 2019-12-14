@@ -16,9 +16,13 @@ import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 import name.qd.analysis.utils.StringCombineUtil;
 
-public class CCI implements TechAnalyzer {
+public class CCI extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(CCI.class);
 
+	public CCI(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return StringCombineUtil.combine(CCI.class.getSimpleName(), product);
@@ -32,7 +36,7 @@ public class CCI implements TechAnalyzer {
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
 		List<AnalysisResult> lstResult = new ArrayList<>();
-		List<AnalysisResult> lstTypicalPrice = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.TYPICAL_PRICE, product, from, to);
+		List<AnalysisResult> lstTypicalPrice = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.TYPICAL_PRICE, product, from, to);
 		int days = Integer.parseInt(inputs[0]);
 		List<AnalysisResult> lstTypicalMA = AnalystUtils.simpleMovingAverageByResult(lstTypicalPrice, days);
 		

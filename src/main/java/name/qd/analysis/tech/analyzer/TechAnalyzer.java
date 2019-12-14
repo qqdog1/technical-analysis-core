@@ -7,10 +7,16 @@ import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.tech.vo.AnalysisResult;
 
-public interface TechAnalyzer {
-	public String getCacheName(String product);
-	public List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception;
-	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String ... inputs) throws Exception;
-	public List<String> getCustomDescreption();
-	public AnalyzerType getAnalyzerType();
+public abstract class TechAnalyzer {
+	protected TechAnalyzerManager techAnalyzerManager;
+	
+	public TechAnalyzer(TechAnalyzerManager techAnalyzerManager) {
+		this.techAnalyzerManager = techAnalyzerManager;
+	}
+	
+	public abstract String getCacheName(String product);
+	public abstract List<AnalysisResult> analyze(DataSource dataSource, String product, Date from, Date to) throws Exception;
+	public abstract List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String ... inputs) throws Exception;
+	public abstract List<String> getCustomDescreption();
+	public abstract AnalyzerType getAnalyzerType();
 }

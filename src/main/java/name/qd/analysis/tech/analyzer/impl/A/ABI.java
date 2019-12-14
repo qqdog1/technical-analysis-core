@@ -19,9 +19,13 @@ import name.qd.analysis.utils.AnalystUtils;
 /**
  * 絕對值(上漲家數-下跌家數)
  */
-public class ABI implements TechAnalyzer {
+public class ABI extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ABI.class);
 
+	public ABI(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public String getCacheName(String product) {
 		return ABI.class.getSimpleName();
@@ -51,7 +55,7 @@ public class ABI implements TechAnalyzer {
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String ... inputs) throws Exception {
 		int ma = Integer.parseInt(inputs[0]);
-		List<AnalysisResult> lst = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ABI, product, from, to);
+		List<AnalysisResult> lst = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.ABI, product, from, to);
 		return AnalystUtils.simpleMovingAverageByResult(lst, ma);
 	}
 	
