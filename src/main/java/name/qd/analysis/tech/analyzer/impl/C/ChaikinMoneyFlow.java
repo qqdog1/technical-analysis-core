@@ -62,7 +62,7 @@ public class ChaikinMoneyFlow extends TechAnalyzer {
 
 	@Override
 	public List<AnalysisResult> customResult(DataSource dataSource, String product, Date from, Date to, String... inputs) throws Exception {
-		List<AnalysisResult> lst = TechAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.ChaikinMoneyFlow, product, from, to);
+		List<AnalysisResult> lst = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.ChaikinMoneyFlow, product, from, to);
 		int n = Integer.parseInt(inputs[0]);
 		List<AnalysisResult> lstResult = AnalystUtils.NDaysAccu(lst, n);
 		for(AnalysisResult analysisResult : lstResult) {

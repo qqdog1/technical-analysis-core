@@ -46,119 +46,119 @@ public class TechAnalyzerFactory {
 	public TechAnalyzerFactory() {
 	}
 	
-	public TechAnalyzer getAnalyzer(TechAnalyzers analyzer) {
+	public TechAnalyzer getAnalyzer(TechAnalyzers analyzer, TechAnalyzerManager techAnalyzerManager) {
 		if(!map.containsKey(analyzer)) {
-			createAnalyzer(analyzer);
+			createAnalyzer(analyzer, techAnalyzerManager);
 		}
 		return map.get(analyzer);
 	}
 	
-	private void createAnalyzer(TechAnalyzers analyzer) {
+	private void createAnalyzer(TechAnalyzers analyzer, TechAnalyzerManager techAnalyzerManager) {
 		switch(analyzer) {
 		case ABI:
-			map.put(analyzer, new ABI());
+			map.put(analyzer, new ABI(techAnalyzerManager));
 			break;
 		case ABIAdvance:
-			map.put(analyzer, new ABIAdvance());
+			map.put(analyzer, new ABIAdvance(techAnalyzerManager));
 			break;
 		case ABIDecline:
-			map.put(analyzer, new ABIDecline());
+			map.put(analyzer, new ABIDecline(techAnalyzerManager));
 			break;
 		case ADL:
-			map.put(analyzer, new ADL());
+			map.put(analyzer, new ADL(techAnalyzerManager));
 			break;
 		case AD:
-			map.put(analyzer, new AD());
+			map.put(analyzer, new AD(techAnalyzerManager));
 			break;
 		case AD_Ratio:
-			map.put(analyzer, new AD_Ratio());
+			map.put(analyzer, new AD_Ratio(techAnalyzerManager));
 			break;
 		case AD_Issues:
-			map.put(analyzer, new AD_Issues());
+			map.put(analyzer, new AD_Issues(techAnalyzerManager));
 			break;
 		case SI:
-			map.put(analyzer, new SI());
+			map.put(analyzer, new SI(techAnalyzerManager));
 			break;
 		case ArmsIndex:
-			map.put(analyzer, new ArmsIndex());
+			map.put(analyzer, new ArmsIndex(techAnalyzerManager));
 			break;
 		case Aroon_UP:
-			map.put(analyzer, new Aroon_UP());
+			map.put(analyzer, new Aroon_UP(techAnalyzerManager));
 			break;
 		case Aroon_DOWN:
-			map.put(analyzer, new Aroon_DOWN());
+			map.put(analyzer, new Aroon_DOWN(techAnalyzerManager));
 			break;
 		case ATR:
-			map.put(analyzer, new ATR());
+			map.put(analyzer, new ATR(techAnalyzerManager));
 			break;
 		case AdvancingVolume:
-			map.put(analyzer, new AdvancingVolume());
+			map.put(analyzer, new AdvancingVolume(techAnalyzerManager));
 			break;
 		case DecliningVolume:
-			map.put(analyzer, new DecliningVolume());
+			map.put(analyzer, new DecliningVolume(techAnalyzerManager));
 			break;
 		case UnchangedVolume:
-			map.put(analyzer, new UnchangedVolume());
+			map.put(analyzer, new UnchangedVolume(techAnalyzerManager));
 			break;
 		case AVERAGE_PRICE:
-			map.put(analyzer, new AveragePrice());
+			map.put(analyzer, new AveragePrice(techAnalyzerManager));
 			break;
 		case CLOSE_PRICE:
-			map.put(analyzer, new ClosePrice());
+			map.put(analyzer, new ClosePrice(techAnalyzerManager));
 			break;
 		case OPEN_PRICE:
-			map.put(analyzer, new OpenPrice());
+			map.put(analyzer, new OpenPrice(techAnalyzerManager));
 			break;
 		case UPPER_PRICE:
-			map.put(analyzer, new UpperPrice());
+			map.put(analyzer, new UpperPrice(techAnalyzerManager));
 			break;
 		case LOWER_PRICE:
-			map.put(analyzer, new LowerPrice());
+			map.put(analyzer, new LowerPrice(techAnalyzerManager));
 			break;
 		case TYPICAL_PRICE:
-			map.put(analyzer, new TypicalPrice());
+			map.put(analyzer, new TypicalPrice(techAnalyzerManager));
 			break;
 		case BollingerBand_Lower:
-			map.put(analyzer, new BollingerBand_Lower());
+			map.put(analyzer, new BollingerBand_Lower(techAnalyzerManager));
 			break;
 		case BollingerBand_Middle:
-			map.put(analyzer, new BollingerBand_Middle());
+			map.put(analyzer, new BollingerBand_Middle(techAnalyzerManager));
 			break;
 		case BollingerBand_Upper:
-			map.put(analyzer, new BollingerBand_Upper());
+			map.put(analyzer, new BollingerBand_Upper(techAnalyzerManager));
 			break;
 		case BreadthThrust:
-			map.put(analyzer, new BreadthThrust());
+			map.put(analyzer, new BreadthThrust(techAnalyzerManager));
 			break;
 		case ChaikinMoneyFlow:
-			map.put(analyzer, new ChaikinMoneyFlow());
+			map.put(analyzer, new ChaikinMoneyFlow(techAnalyzerManager));
 			break;
 		case ChaikinOscillator:
-			map.put(analyzer, new ChaikinOscillator());
+			map.put(analyzer, new ChaikinOscillator(techAnalyzerManager));
 			break;
 		case CMO:
-			map.put(analyzer, new CMO());
+			map.put(analyzer, new CMO(techAnalyzerManager));
 			break;
 		case CCI:
-			map.put(analyzer, new CCI());
+			map.put(analyzer, new CCI(techAnalyzerManager));
 			break;
 		case DPO:
-			map.put(analyzer, new DPO());
+			map.put(analyzer, new DPO(techAnalyzerManager));
 			break;
 		case PriceSpeed:
-			map.put(analyzer, new PriceSpeed());
+			map.put(analyzer, new PriceSpeed(techAnalyzerManager));
 			break;
 		case SimpleMovingAverage:
-			map.put(analyzer, new SimpleMovingAverage());
+			map.put(analyzer, new SimpleMovingAverage(techAnalyzerManager));
 			break;
 		case ExponentialMovingAverage:
-			map.put(analyzer, new ExponentialMovingAverage());
+			map.put(analyzer, new ExponentialMovingAverage(techAnalyzerManager));
 			break;
 		case DEMA:
-			map.put(analyzer, new DEMA());
+			map.put(analyzer, new DEMA(techAnalyzerManager));
 			break;
 		case WilderSmoothing:
-			map.put(analyzer, new WilderSmoothing());
+			map.put(analyzer, new WilderSmoothing(techAnalyzerManager));
 			break;
 		default:
 			break;

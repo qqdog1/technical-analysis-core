@@ -38,7 +38,7 @@ public class TechAnalyzerManager {
 	}
 	
 	public List<AnalysisResult> getAnalysisResult(DataSource dataSource, TechAnalyzers analyzer, String product, Date from, Date to) throws Exception {
-		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
+		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer, this);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
 			return null;
@@ -73,7 +73,7 @@ public class TechAnalyzerManager {
 	}
 	
 	public List<AnalysisResult> getCustomAnalysisResult(DataSource dataSource, TechAnalyzers analyzer, String product, Date from, Date to, String ... inputs) throws Exception {
-		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
+		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer, this);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
 			return null;
@@ -82,7 +82,7 @@ public class TechAnalyzerManager {
 	}
 	
 	public List<String> getCustomDescription(TechAnalyzers analyzer) {
-		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
+		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer, this);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
 			return null;
@@ -91,7 +91,7 @@ public class TechAnalyzerManager {
 	}
 	
 	public AnalyzerType getAnalyzerType(TechAnalyzers analyzer) {
-		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer);
+		TechAnalyzer techAnalyzer = techAnalyzerFactory.getAnalyzer(analyzer, this);
 		if(techAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
 			return null;

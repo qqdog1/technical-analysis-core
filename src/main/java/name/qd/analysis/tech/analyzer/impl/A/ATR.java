@@ -23,8 +23,12 @@ import name.qd.analysis.utils.StringCombineUtil;
  * 絕對值(昨收 - 今低)
  * 上面三者取最大
  */
-public class ATR implements TechAnalyzer {
+public class ATR extends TechAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(ATR.class);
+	
+	public ATR(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
 	
 	@Override
 	public String getCacheName(String product) {

@@ -13,7 +13,12 @@ import name.qd.analysis.tech.vo.ActionResult;
 import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.AnalystUtils;
 
-public class ABITesting implements BackTesting {
+public class ABITesting extends BackTesting {
+	
+	public ABITesting(TechAnalyzerManager techAnalyzerManager) {
+		super(techAnalyzerManager);
+	}
+	
 	@Override
 	public List<ActionResult> getAction(DataSource dataSource, String product, Date from, Date to, String... custom) throws Exception {
 		// 1.要用幾日均線驗證?
@@ -24,7 +29,7 @@ public class ABITesting implements BackTesting {
 		double sellPercent = Double.parseDouble(custom[2]);
 		
 		List<ActionResult> lst = new ArrayList<>();
-		List<AnalysisResult> lstResult = TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, TechAnalyzers.ABI, product, from, to);
+		List<AnalysisResult> lstResult = techAnalyzerManager.getAnalysisResult(dataSource, TechAnalyzers.ABI, product, from, to);
 		List<AnalysisResult> lstMAResult = AnalystUtils.simpleMovingAverageByResult(lstResult, ma);
 		for(AnalysisResult result : lstMAResult) {
 			ActionResult action = new ActionResult();

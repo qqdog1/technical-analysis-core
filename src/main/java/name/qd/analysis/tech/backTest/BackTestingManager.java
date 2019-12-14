@@ -20,14 +20,11 @@ import name.qd.analysis.tech.vo.OrderProgress;
 
 public class BackTestingManager {
 	private static Logger log = LoggerFactory.getLogger(BackTestingManager.class);
-	private static BackTestingManager instance = new BackTestingManager();
 	private BackTestingFactory factory = new BackTestingFactory();
+	private TechAnalyzerManager techAnalyzerManager;
 	
-	public BackTestingManager getInstance() {
-		return instance;
-	}
-	
-	private BackTestingManager() {
+	public BackTestingManager(TechAnalyzerManager techAnalyzerManager) {
+		this.techAnalyzerManager = techAnalyzerManager;
 	}
 	
 	public List<OrderProgress> getOrderProgress(DataSource dataSource, TechAnalyzers analyzer, String product, Date from, Date to, OrderPriceType orderPriceType, OrderTriggerType orderTriggerType, String ... custom) throws Exception {
@@ -170,11 +167,11 @@ public class BackTestingManager {
 		break;
 		}
 		
-		return TechAnalyzerManager.getInstance().getAnalysisResult(dataSource, analyzer, product, from, to);
+		return techAnalyzerManager.getAnalysisResult(dataSource, analyzer, product, from, to);
 	}
 	
 	private List<ActionResult> getActionResult(DataSource dataSource, TechAnalyzers analyzer, String product, Date from, Date to, String ... custom) throws Exception {
-		BackTesting testing = factory.getVerifier(analyzer);
+		BackTesting testing = factory.getVerifier(analyzer, techAnalyzerManager);
 		if(testing == null) {
 			log.error("BackTesting not exist. {}", analyzer);
 			return null;
