@@ -15,11 +15,11 @@ public class DataSourceFactory {
 		return instance;
 	}
 	
-	public DataSource getDataSource(Exchange exchange) {
+	public DataSource getDataSource(Exchange exchange, String fileFolder) {
 		switch (exchange) {
 		case TWSE:
 			if(twse == null) {
-				twse = new TWSEDataSource();
+				twse = new TWSEDataSource(fileFolder);
 			}
 			return twse;
 		}

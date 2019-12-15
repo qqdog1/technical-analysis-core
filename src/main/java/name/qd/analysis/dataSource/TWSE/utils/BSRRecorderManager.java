@@ -29,6 +29,7 @@ public class BSRRecorderManager {
 	private Logger log;
 	private static int WORKER_COUNT = 1;
 	private static String CONF_PATH = "./config/bsr.conf";
+	private static String DOWNLOAD_PATH = "./file/TWSE";
 	private static String CHROME_DOWNLOAD_FOLDER = "chrome_download_folder";
 	private String downloadFolder;
 	private final ExecutorService executor = Executors.newFixedThreadPool(WORKER_COUNT);
@@ -44,7 +45,7 @@ public class BSRRecorderManager {
 		initSysProp();
 		initDate();
 		initConfig();
-		dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
+		dataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE, DOWNLOAD_PATH);
 		initFolder();
 		initProducts();
 //		cleanDownloadFolder();

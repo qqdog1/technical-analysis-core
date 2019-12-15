@@ -17,10 +17,12 @@ import name.qd.analysis.utils.StringCombineUtil;
 import name.qd.analysis.utils.TimeUtil;
 
 public class TWSEDataSourceTest {
+	private String TEST_FOLDER = "./file/TWSE";
+	
 	@Ignore
 	@Test
 	public void testDataParser() {
-		DataSource twseDataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE);
+		DataSource twseDataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE, TEST_FOLDER);
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		try {
 			List<ProductClosingInfo> lst = twseDataSource.getProductClosingInfo("2330", sdf.parse("20121001"), sdf.parse("20121031"));

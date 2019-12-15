@@ -26,19 +26,21 @@ public class TWSEDataSource implements DataSource {
 	private Logger log = LoggerFactory.getLogger(TWSEDataSource.class);
 	private TWSEDataPoller poller;
 	private TWSEDataParser parser;
+	private final String fileFolder;
 	
-	public TWSEDataSource() {
+	public TWSEDataSource(String fileFolder) {
+		this.fileFolder = fileFolder;
 		poller = new TWSEDataPoller2018(new TWSEDataPoller2016(null));
 		parser = new TWSEDataParser();
 		
 		initFolder();
 		
-		log.info("TWSE data source path:[{}]", TWSEConstants.FILE_DIR);
+		log.info("TWSE data source path:[{}]", fileFolder);
 	}
 	
 	private void initFolder() {
-		checkFolderExist(TWSEConstants.FILE_DIR);
-		checkFolderExist(TWSEConstants.FILE_DIR + TWSEConstants.DAILY_CLOSING_INFO_DIR);
+		checkFolderExist(fileFolder);
+		checkFolderExist(fileFolder + TWSEConstants.DAILY_CLOSING_INFO_DIR);
 	}
 	
 	@Override
@@ -137,10 +139,10 @@ public class TWSEDataSource implements DataSource {
 		Path path = new File(folderPath).toPath();
 		if(!Files.exists(path)) {
 			try {
-				Files.createDirectory(path);
+				Files.createDirectories(path);
 				log.info("Create folder. {}", folderPath);
 			} catch (IOException e) {
-				log.error("Create folder failed. {}", folderPath);
+				log.error("Create folder failed. {}", folderPath, e);
 			}
 		}
 	}
