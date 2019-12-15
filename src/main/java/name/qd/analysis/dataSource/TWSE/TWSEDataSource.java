@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import name.qd.analysis.Constants.Exchange;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.analysis.dataSource.vo.DailyClosingInfo;
@@ -29,7 +31,7 @@ public class TWSEDataSource implements DataSource {
 	private final String fileFolder;
 	
 	public TWSEDataSource(String fileFolder) {
-		this.fileFolder = fileFolder;
+		this.fileFolder = Paths.get(fileFolder, Exchange.TWSE.toString()).toString();
 		poller = new TWSEDataPoller2018(new TWSEDataPoller2016(null, fileFolder), fileFolder);
 		parser = new TWSEDataParser(fileFolder);
 		
