@@ -14,13 +14,13 @@ public class TWSEDataPoller2018 extends TWSEDataPoller {
 	private final OkHttpClient okHttpClient = new OkHttpClient.Builder().pingInterval(5, TimeUnit.SECONDS).build();
 	private HttpUrl httpUrl = HttpUrl.parse("http://www.tse.com.tw/exchangeReport");
 	
-	TWSEDataPoller2018(TWSEDataPoller nextPoller) {
-		super(nextPoller);
+	TWSEDataPoller2018(TWSEDataPoller nextPoller, String dataPath) {
+		super(nextPoller, dataPath);
 	}
 
 	@Override
 	protected void tryDownloadDailyClosingInfo(String date) throws IOException {
-		String filePathName = TWSEConstants.getDailyClosingFilePath(date);
+		String filePathName = TWSEConstants.getDailyClosingFilePath(dataPath, date);
 		Path path = new File(filePathName).toPath();
 		if(Files.exists(path)) return;
 

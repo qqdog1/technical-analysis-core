@@ -19,8 +19,8 @@ public class TWSEDataPoller2016 extends TWSEDataPoller {
 	
 	private static final String DAILY_CLOSING_INFO = "http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX.php";
 	
-	TWSEDataPoller2016(TWSEDataPoller nextPoller) {
-		super(nextPoller);
+	TWSEDataPoller2016(TWSEDataPoller nextPoller, String dataPath) {
+		super(nextPoller, dataPath);
 	}
 	
 	protected void tryDownloadDailyClosingInfo(String date) throws IOException {
@@ -37,7 +37,7 @@ public class TWSEDataPoller2016 extends TWSEDataPoller {
 		connection.getOutputStream().write(getDailyClosingPOSTBody(POSTDate).getBytes());
 		ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
 		@SuppressWarnings("resource")
-		FileOutputStream fos = new FileOutputStream(TWSEConstants.getDailyClosingFilePath(date));
+		FileOutputStream fos = new FileOutputStream(TWSEConstants.getDailyClosingFilePath(dataPath, date));
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 		logger.info("download daily closing info success.");
 	}

@@ -17,6 +17,8 @@ import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.utils.TimeUtil;
 
 public class TWSEDataParserTest {
+	private String dataPath = "D:/workspace/file";
+	
 	@Ignore
 	@Test
 	public void TWSEDataParserTestT() {
@@ -51,7 +53,7 @@ public class TWSEDataParserTest {
 	}
 	@Test
 	public void testParseDailyProducts() {
-		TWSEDataParser parser = new TWSEDataParser();
+		TWSEDataParser parser = new TWSEDataParser(dataPath);
 		try {
 			List<ProductClosingInfo> lst = parser.readAllStock("20190701");
 			for(ProductClosingInfo info : lst) {
@@ -67,7 +69,7 @@ public class TWSEDataParserTest {
 	@Ignore
 	@Test
 	public void buySellParserTest() {
-		TWSEDataParser parser = new TWSEDataParser();
+		TWSEDataParser parser = new TWSEDataParser(dataPath);
 		
 		try {
 			List<BuySellInfo> lst = parser.getBuySellInfo("2433", "20180403");
@@ -81,7 +83,7 @@ public class TWSEDataParserTest {
 	@Ignore
 	@Test
 	public void bsTest() {
-		TWSEDataParser parser = new TWSEDataParser();
+		TWSEDataParser parser = new TWSEDataParser(dataPath);
 		
 		try {
 			Map<String, List<BuySellInfo>> map = parser.getBuySellInfo("20180411");

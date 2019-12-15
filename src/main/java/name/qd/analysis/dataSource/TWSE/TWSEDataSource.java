@@ -30,8 +30,8 @@ public class TWSEDataSource implements DataSource {
 	
 	public TWSEDataSource(String fileFolder) {
 		this.fileFolder = fileFolder;
-		poller = new TWSEDataPoller2018(new TWSEDataPoller2016(null));
-		parser = new TWSEDataParser();
+		poller = new TWSEDataPoller2018(new TWSEDataPoller2016(null, fileFolder), fileFolder);
+		parser = new TWSEDataParser(fileFolder);
 		
 		initFolder();
 		
@@ -49,7 +49,7 @@ public class TWSEDataSource implements DataSource {
 		checkAndDownloadDailyClosing(lstDate);
 		ArrayList<ProductClosingInfo> lstProd = new ArrayList<ProductClosingInfo>();
 		for(String date : lstDate) {
-			File file = new File(TWSEConstants.getDailyClosingFilePath(date));
+			File file = new File(TWSEConstants.getDailyClosingFilePath(fileFolder, date));
 			if(file.exists()) {
 				ProductClosingInfo prodInfo = parser.readProdClosingInfo(date, product);
 				if(prodInfo != null) {
@@ -66,7 +66,7 @@ public class TWSEDataSource implements DataSource {
 		checkAndDownloadDailyClosing(lstDate);
 		ArrayList<DailyClosingInfo> lstInfo = new ArrayList<DailyClosingInfo>();
 		for(String date : lstDate) {
-			File file = new File(TWSEConstants.getDailyClosingFilePath(date));
+			File file = new File(TWSEConstants.getDailyClosingFilePath(fileFolder, date));
 			if(file.exists()) {
 				DailyClosingInfo dailyClosingInfo = parser.readDailyClosingInfo(date);
 				if(dailyClosingInfo != null) {
@@ -84,7 +84,7 @@ public class TWSEDataSource implements DataSource {
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		Map<Date, List<ProductClosingInfo>> map = new HashMap<>();
 		for(String date : lstDate) {
-			File file = new File(TWSEConstants.getDailyClosingFilePath(date));
+			File file = new File(TWSEConstants.getDailyClosingFilePath(fileFolder, date));
 			if(file.exists()) {
 				List<ProductClosingInfo> lstProd = parser.readAllStock(date);
 				map.put(sdf.parse(date), lstProd);
@@ -99,7 +99,7 @@ public class TWSEDataSource implements DataSource {
 		List<String> lstDate = TimeUtil.getDateBetween(from, to);
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		for(String date : lstDate) {
-			File file = new File(TWSEConstants.getBuySellInfoFilePath(date, product));
+			File file = new File(TWSEConstants.getBuySellInfoFilePath(fileFolder, date, product));
 			if(file.exists()) {
 				List<BuySellInfo> lst = parser.getBuySellInfo(product, date);
 				map.put(sdf.parse(date), lst);
@@ -121,9 +121,9 @@ public class TWSEDataSource implements DataSource {
 	
 	private void checkAndDownloadDailyClosing(List<String> lstDate) throws IOException {
 		for(int i = 0 ; i < lstDate.size() ; i++) {
-			File file = new File(TWSEConstants.getDailyClosingFilePath(lstDate.get(i)));
+			File file = new File(TWSEConstants.getDailyClosingFilePath(fileFolder, lstDate.get(i)));
 			if(!file.exists()) {
-				checkFolderExist(TWSEConstants.getDailyClosingFolder(lstDate.get(i).substring(0, 4)));
+				checkFolderExist(TWSEConstants.getDailyClosingFolder(fileFolder, lstDate.get(i).substring(0, 4)));
 				log.info("Download daily closing info. {}", lstDate.get(i));
 				poller.downloadDailyClosingInfo(lstDate.get(i));
 				try {
