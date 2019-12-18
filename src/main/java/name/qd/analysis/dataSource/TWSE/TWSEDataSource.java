@@ -17,8 +17,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import name.qd.analysis.Constants.Exchange;
 import name.qd.analysis.dataSource.DataSource;
+import name.qd.analysis.dataSource.TWSE.utils.TWSEPathUtil;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.analysis.dataSource.vo.DailyClosingInfo;
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
@@ -28,21 +28,14 @@ public class TWSEDataSource implements DataSource {
 	private Logger log = LoggerFactory.getLogger(TWSEDataSource.class);
 	private TWSEDataPoller poller;
 	private TWSEDataParser parser;
-	private final String fileFolder;
+	private final String baseFolder;
 	
-	public TWSEDataSource(String fileFolder) {
-		this.fileFolder = Paths.get(fileFolder, Exchange.TWSE.toString()).toString();
-		poller = new TWSEDataPoller2018(new TWSEDataPoller2016(null, fileFolder), fileFolder);
-		parser = new TWSEDataParser(fileFolder);
+	public TWSEDataSource(String baseFolder) {
+		this.baseFolder = baseFolder;
+		poller = new TWSEDataPoller2018(new TWSEDataPoller2016(null, baseFolder), baseFolder);
+		parser = new TWSEDataParser(baseFolder);
 		
-		initFolder();
-		
-		log.info("TWSE data source path:[{}]", fileFolder);
-	}
-	
-	private void initFolder() {
-		checkFolderExist(fileFolder);
-		checkFolderExist(fileFolder + TWSEConstants.DAILY_CLOSING_INFO_DIR);
+		log.info("TWSE data source path:[{}]", baseFolder);
 	}
 	
 	@Override
@@ -51,7 +44,7 @@ public class TWSEDataSource implements DataSource {
 		checkAndDownloadDailyClosing(lstDate);
 		ArrayList<ProductClosingInfo> lstProd = new ArrayList<ProductClosingInfo>();
 		for(String date : lstDate) {
-			File file = new File(TWSEConstants.getDailyClosingFilePath(fileFolder, date));
+			File file = new File(TWSEPathUtil.getDailyClosingFilePath(baseFolder, date).toString());
 			if(file.exists()) {
 				ProductClosingInfo prodInfo = parser.readProdClosingInfo(date, product);
 				if(prodInfo != null) {
@@ -68,7 +61,7 @@ public class TWSEDataSource implements DataSource {
 		checkAndDownloadDailyClosing(lstDate);
 		ArrayList<DailyClosingInfo> lstInfo = new ArrayList<DailyClosingInfo>();
 		for(String date : lstDate) {
-			File file = new File(TWSEConstants.getDailyClosingFilePath(fileFolder, date));
+			File file = new File(TWSEPathUtil.getDailyClosingFilePath(baseFolder, date).toString());
 			if(file.exists()) {
 				DailyClosingInfo dailyClosingInfo = parser.readDailyClosingInfo(date);
 				if(dailyClosingInfo != null) {
@@ -86,7 +79,7 @@ public class TWSEDataSource implements DataSource {
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		Map<Date, List<ProductClosingInfo>> map = new HashMap<>();
 		for(String date : lstDate) {
-			File file = new File(TWSEConstants.getDailyClosingFilePath(fileFolder, date));
+			File file = new File(TWSEPathUtil.getDailyClosingFilePath(baseFolder, date).toString());
 			if(file.exists()) {
 				List<ProductClosingInfo> lstProd = parser.readAllStock(date);
 				map.put(sdf.parse(date), lstProd);
@@ -101,7 +94,7 @@ public class TWSEDataSource implements DataSource {
 		List<String> lstDate = TimeUtil.getDateBetween(from, to);
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		for(String date : lstDate) {
-			File file = new File(TWSEConstants.getBuySellInfoFilePath(fileFolder, date, product));
+			File file = new File(TWSEPathUtil.getBuySellInfoFilePath(baseFolder, date, product).toString());
 			if(file.exists()) {
 				List<BuySellInfo> lst = parser.getBuySellInfo(product, date);
 				map.put(sdf.parse(date), lst);
@@ -123,9 +116,9 @@ public class TWSEDataSource implements DataSource {
 	
 	private void checkAndDownloadDailyClosing(List<String> lstDate) throws IOException {
 		for(int i = 0 ; i < lstDate.size() ; i++) {
-			File file = new File(TWSEConstants.getDailyClosingFilePath(fileFolder, lstDate.get(i)));
+			File file = new File(TWSEPathUtil.getDailyClosingFilePath(baseFolder, lstDate.get(i)).toString());
 			if(!file.exists()) {
-				checkFolderExist(TWSEConstants.getDailyClosingFolder(fileFolder, lstDate.get(i).substring(0, 4)));
+				checkFolderExist(TWSEPathUtil.getDailyClosingFolder(baseFolder, lstDate.get(i).substring(0, 4)));
 				log.info("Download daily closing info. {}", lstDate.get(i));
 				poller.downloadDailyClosingInfo(lstDate.get(i));
 				try {
@@ -137,14 +130,13 @@ public class TWSEDataSource implements DataSource {
 		}
 	}
 	
-	private void checkFolderExist(String folderPath) {
-		Path path = new File(folderPath).toPath();
+	private void checkFolderExist(Path path) {
 		if(!Files.exists(path)) {
 			try {
 				Files.createDirectories(path);
-				log.info("Create folder. {}", folderPath);
+				log.info("Create folder. {}", path);
 			} catch (IOException e) {
-				log.error("Create folder failed. {}", folderPath, e);
+				log.error("Create folder failed. {}", path, e);
 			}
 		}
 	}

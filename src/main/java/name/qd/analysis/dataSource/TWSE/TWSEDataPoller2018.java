@@ -1,11 +1,11 @@
 package name.qd.analysis.dataSource.TWSE;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
+import name.qd.analysis.dataSource.TWSE.utils.TWSEPathUtil;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -20,8 +20,7 @@ public class TWSEDataPoller2018 extends TWSEDataPoller {
 
 	@Override
 	protected void tryDownloadDailyClosingInfo(String date) throws IOException {
-		String filePathName = TWSEConstants.getDailyClosingFilePath(dataPath, date);
-		Path path = new File(filePathName).toPath();
+		Path path = TWSEPathUtil.getDailyClosingFilePath(dataPath, date);
 		if(Files.exists(path)) return;
 
 		HttpUrl.Builder urlBuilder = httpUrl.newBuilder();

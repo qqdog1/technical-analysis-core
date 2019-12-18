@@ -14,11 +14,13 @@ import java.util.Set;
 import name.qd.analysis.Constants;
 
 public class BSRBrokerParser {
-	private final String dataDir = "./file/TWSE/bsr/";
+	private final String dataDir = "/TWSE/bsr/";
 	private final Path configPath = Paths.get("./config/TWSEBrokers.txt");
 	private Set<String> set = new HashSet<>();
+	private String baseFolder;
 	
-	public BSRBrokerParser() {
+	public BSRBrokerParser(String baseFolder) {
+		this.baseFolder = baseFolder;
 	}
 	
 	public void parse(String date) throws UnsupportedEncodingException, FileNotFoundException, IOException {
@@ -43,7 +45,7 @@ public class BSRBrokerParser {
 	}
 	
 	private void parseData(String date) throws IOException {
-		Files.walk(Paths.get(dataDir + date)).forEach(path->{
+		Files.walk(Paths.get(baseFolder, dataDir, date)).forEach(path->{
 			try {
 				getBrokers(path);
 			} catch (IOException e) {
@@ -90,7 +92,7 @@ public class BSRBrokerParser {
 	}
 	
 	public static void main(String[] args) {
-		BSRBrokerParser parser = new BSRBrokerParser();
+		BSRBrokerParser parser = new BSRBrokerParser(args[0]);
 		try {
 			parser.parse("20190719");
 		} catch (IOException e) {

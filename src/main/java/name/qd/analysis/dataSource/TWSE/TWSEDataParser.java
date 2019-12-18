@@ -9,7 +9,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.Constants;
+import name.qd.analysis.dataSource.TWSE.utils.TWSEPathUtil;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.analysis.dataSource.vo.DailyClosingInfo;
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
@@ -39,7 +39,7 @@ public class TWSEDataParser {
 	public ProductClosingInfo readProdClosingInfo(String date, String prodId) throws FileNotFoundException, IOException, ParseException {
 		ProductClosingInfo prodInfo = null;
 		prodId = StringCombineUtil.combine("\"", prodId, "\"");
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(dataPath, date)), Constants.CHINESE_ENCODE))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEPathUtil.getDailyClosingFilePath(dataPath, date).toString()), Constants.CHINESE_ENCODE))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				if(line.contains(prodId)) {
 					List<String> lst = parseLineToArray(line);
@@ -54,19 +54,19 @@ public class TWSEDataParser {
 		DailyClosingInfo dailyClosingInfo = null;
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(dataPath, date)), Constants.CHINESE_ENCODE))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEPathUtil.getDailyClosingFilePath(dataPath, date).toString()), Constants.CHINESE_ENCODE))) {
 			for(String line; (line = br.readLine()) != null; ) {
 				List<String> lst = parseLineToArray(line);
 				if(lst == null) return null;
-				if(line.contains(TWSEConstants.ADVANCE)) {
+				if(line.contains(TWSEPathUtil.ADVANCE)) {
 					dailyClosingInfo = new DailyClosingInfo();
 					String sAdvance = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setAdvance(Integer.parseInt(sAdvance));
 					dailyClosingInfo.setDate(sdf.parse(date));
-				} else if(line.contains(TWSEConstants.DECLINE)) {
+				} else if(line.contains(TWSEPathUtil.DECLINE)) {
 					String decline = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setDecline(Integer.parseInt(decline));
-				} else if(line.contains(TWSEConstants.UNCHANGED)) {
+				} else if(line.contains(TWSEPathUtil.UNCHANGED)) {
 					String unchanged = lst.get(2).split("\\(")[0];
 					dailyClosingInfo.setUnchanged(Integer.parseInt(unchanged));
 				}
@@ -78,7 +78,7 @@ public class TWSEDataParser {
 	public List<ProductClosingInfo> readAllStock(String date) throws FileNotFoundException, IOException, ParseException {
 		List<ProductClosingInfo> lst = new ArrayList<>();
 		
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getDailyClosingFilePath(dataPath, date)), Constants.CHINESE_ENCODE))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEPathUtil.getDailyClosingFilePath(dataPath, date).toString()), Constants.CHINESE_ENCODE))) {
 			boolean start = false;
 			while(true) {
 				String line = br.readLine();
@@ -107,7 +107,7 @@ public class TWSEDataParser {
 	public Map<String, List<BuySellInfo>> getBuySellInfo(String date) throws IOException {
 		Map<String, List<BuySellInfo>> map = new HashMap<>();
 		
-		Path path = Paths.get(TWSEConstants.getBuySellInfoFolder(dataPath, date));
+		Path path = TWSEPathUtil.getBuySellInfoFolder(dataPath, date);
 		
 		if(Files.exists(path)) {
 			Files.walk(path).forEach(p->{
@@ -149,7 +149,7 @@ public class TWSEDataParser {
 		List<BuySellInfo> lst = new ArrayList<>();
 		Date d = TimeUtil.getDateFormat().parse(date);
 		
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEConstants.getBuySellInfoFilePath(dataPath, date, product)), Constants.CHINESE_ENCODE))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEPathUtil.getBuySellInfoFilePath(dataPath, date, product).toString()), Constants.CHINESE_ENCODE))) {
 			boolean start = false;
 			for(String line; (line = br.readLine()) != null; ) {
 				if(line.startsWith("1")) {

@@ -11,6 +11,7 @@ import java.text.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import name.qd.analysis.dataSource.TWSE.utils.TWSEPathUtil;
 import name.qd.analysis.utils.StringCombineUtil;
 import name.qd.analysis.utils.TimeUtil;
 
@@ -37,7 +38,7 @@ public class TWSEDataPoller2016 extends TWSEDataPoller {
 		connection.getOutputStream().write(getDailyClosingPOSTBody(POSTDate).getBytes());
 		ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
 		@SuppressWarnings("resource")
-		FileOutputStream fos = new FileOutputStream(TWSEConstants.getDailyClosingFilePath(dataPath, date));
+		FileOutputStream fos = new FileOutputStream(TWSEPathUtil.getDailyClosingFilePath(dataPath, date).toString());
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 		logger.info("download daily closing info success.");
 	}
