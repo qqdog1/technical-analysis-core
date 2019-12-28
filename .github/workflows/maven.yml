@@ -10,9 +10,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - uses: actions/file-cache@v2.0.2
-      name: Get file cache
+    - name: Build with Maven
+      run: mvn -B package -s settings.xml --file pom.xml
       env: 
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
