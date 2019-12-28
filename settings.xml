@@ -21,10 +21,10 @@
   </profiles>
 
   <servers>
-    <server>
-      <id>github</id>
-      <username>qqdog1</username>
-      <password>${{ secrets.GITHUB_TOKEN }}</password>
-    </server>
-  </servers>
+		<server>
+			<id>github</id>
+			<username>${github.user}</username>
+			<password>${github.password}</password>
+		</server>
+	</servers>
 </settings>
