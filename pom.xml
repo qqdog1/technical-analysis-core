@@ -31,6 +31,16 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<scm><url>https://maven.pkg.github.com/qqdog1/technical-analysis-core</url></scm>
+	
+	<distributionManagement>
+	    <repository>
+			<id>github</id>
+			<name>GitHub OWNER Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/qqdog1/technical-analysis-core</url>
+	   	</repository>
+	</distributionManagement>
 
  	<repositories>
 		<repository>
