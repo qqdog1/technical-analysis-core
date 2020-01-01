@@ -27,7 +27,7 @@ public class TWSEPathUtil {
 	}
 	
 	public static Path getBuySellInfoFolder(String baseFolder, String date) {
-		return Paths.get(baseFolder, Exchange.TWSE.toString(), BUY_SELL_INFO_DIR, date);
+		return Paths.get(baseFolder, Exchange.TWSE.toString(), BUY_SELL_INFO_DIR, date.substring(0, 4), date);
 	}
 	
 	public static Path getBuySellInfoFilePath(String baseFolder, String date, String product) {
