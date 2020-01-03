@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class TWSEDataSource implements DataSource {
 	
 	public TWSEDataSource(String baseFolder) {
 		this.baseFolder = baseFolder;
-		poller = new TWSEDataPoller2018(new TWSEDataPoller2016(null, baseFolder), baseFolder);
+		poller = new TWSEDataPoller2020(new TWSEDataPoller2018(new TWSEDataPoller2016(null, baseFolder), baseFolder), baseFolder);
 		parser = new TWSEDataParser(baseFolder);
 		
 		log.info("TWSE data source path:[{}]", baseFolder);
