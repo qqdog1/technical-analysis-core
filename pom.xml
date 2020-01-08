@@ -44,7 +44,7 @@
 
  	<repositories>
 		<repository>
-			<id>github-read-only</id>
+			<id>github</id>
 			<url>https://maven.pkg.github.com/qqdog1/file-cache</url>
 		</repository>
 	</repositories>
