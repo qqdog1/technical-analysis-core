@@ -48,7 +48,7 @@ public class TotalPnl implements ChipAnalyzer {
 	}
 
 	@Override
-	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl) {
+	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl, String ... customInputs) {
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 		
 		log.debug("Analyze Total Pnl. From {} to {}. Branch:{}, Product:{}, With Open Pnl:{}", sdf.format(from), sdf.format(to), branch, product, isOpenPnl);

@@ -20,7 +20,7 @@ public class BranchInfoByCache implements ChipAnalyzer {
 	}
 
 	@Override
-	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl) {
+	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl, String ... customInputs) {
 		return null;
 	}
 }
