@@ -22,6 +22,10 @@ public class DataSourceFactory {
 				twse = new TWSEDataSource(fileFolder);
 			}
 			return twse;
+		case TPEX:
+			break;
+		default:
+			break;
 		}
 		return null;
 	}

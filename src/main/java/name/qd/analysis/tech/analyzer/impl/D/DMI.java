@@ -1,6 +1,5 @@
 package name.qd.analysis.tech.analyzer.impl.D;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
