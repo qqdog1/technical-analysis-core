@@ -40,7 +40,7 @@ public class ChipAnalyzerManager {
 	
 	public List<List<String>> getAnalysisResult(DataSource dataSource, ChipAnalyzers analyzer, String branch, String product, Date from, Date to, double tradeCost, boolean isOpenPnl, String ... inputs) {
 		log.debug("Trying to run {}", analyzer);
-		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer);
+		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer, this);
 		if(chipAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
 			return null;
@@ -58,7 +58,7 @@ public class ChipAnalyzerManager {
 	}
 	
 	public int getInputField(ChipAnalyzers analyzer) {
-		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer);
+		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer, this);
 		if(chipAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
 			return 0;
