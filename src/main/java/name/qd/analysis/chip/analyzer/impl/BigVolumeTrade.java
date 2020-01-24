@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.chip.InputField;
 import name.qd.analysis.chip.analyzer.ChipAnalyzer;
+import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.analysis.utils.TimeUtil;
@@ -21,8 +22,12 @@ import name.qd.fileCache.FileCacheManager;
 /**
  * 任何 買-賣 或是 賣-買 超過一定量 都列出來
  */
-public class BigVolumeTrade implements ChipAnalyzer {
+public class BigVolumeTrade extends ChipAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(BigVolumeTrade.class);
+	
+	public BigVolumeTrade(ChipAnalyzerManager chipAnalyzerManager) {
+		super(chipAnalyzerManager);
+	}
 	
 	@Override
 	public int getInputField() {

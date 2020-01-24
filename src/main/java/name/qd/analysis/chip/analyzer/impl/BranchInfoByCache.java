@@ -4,10 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import name.qd.analysis.chip.analyzer.ChipAnalyzer;
+import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.fileCache.FileCacheManager;
 
-public class BranchInfoByCache implements ChipAnalyzer {
+public class BranchInfoByCache extends ChipAnalyzer {
+	public BranchInfoByCache(ChipAnalyzerManager chipAnalyzerManager) {
+		super(chipAnalyzerManager);
+	}
 
 	@Override
 	public int getInputField() {

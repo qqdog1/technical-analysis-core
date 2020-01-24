@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.chip.InputField;
 import name.qd.analysis.chip.analyzer.ChipAnalyzer;
+import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.fileCache.FileCacheManager;
@@ -17,8 +18,12 @@ import name.qd.fileCache.FileCacheManager;
 /**
  * 單日買進超過固定金額
  */
-public class DailyOpen implements ChipAnalyzer {
+public class DailyOpen extends ChipAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(DailyOpen.class);
+	
+	public DailyOpen(ChipAnalyzerManager chipAnalyzerManager) {
+		super(chipAnalyzerManager);
+	}
 	
 	@Override
 	public int getInputField() {

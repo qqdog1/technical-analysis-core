@@ -2,7 +2,13 @@ package name.qd.analysis;
 
 public class Constants {
 	public static final String CHINESE_ENCODE = "Windows-950";
-	public static final String BSR_FOLDER = "bsr";
+	public static final String BSR_PREFIX = "bsr_";
+	
+	public static String getBSRCacheName(String date) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(BSR_PREFIX).append(date);
+		return sb.toString();
+	}
 	
 	public enum AnalyzerType {
 		PRODUCT, MARKET;

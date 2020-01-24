@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.chip.InputField;
 import name.qd.analysis.chip.analyzer.ChipAnalyzer;
+import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
 import name.qd.analysis.chip.vo.BranchFinalInfo;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
@@ -21,8 +22,12 @@ import name.qd.fileCache.FileCacheManager;
  * 分公司最新狀態
  * 倉位 PNL
  */
-public class BranchInfoByBS implements ChipAnalyzer {
+public class BranchInfoByBS extends ChipAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(BranchInfoByBS.class);
+	
+	public BranchInfoByBS(ChipAnalyzerManager chipAnalyzerManager) {
+		super(chipAnalyzerManager);
+	}
 	
 	@Override
 	public int getInputField() {
