@@ -75,7 +75,7 @@ public class DailyOpen extends ChipAnalyzer {
 					sellCost += info.getSellShare() * info.getPrice();
 				}
 				
-				if(buyCost > tradeCost) {
+				if(buyCost > tradeCost || sellCost > tradeCost) {
 					lst.add(getList(branch, keyProduct, "B", buyShare, buyCost));
 					lst.add(getList(branch, keyProduct, "S", sellShare, sellCost));
 				}

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import name.qd.analysis.chip.ChipAnalyzers;
 import name.qd.analysis.chip.analyzer.impl.BackTestPattern1;
-import name.qd.analysis.chip.analyzer.impl.BestBranchBuy;
+import name.qd.analysis.chip.analyzer.impl.BestBranchBuySell;
 import name.qd.analysis.chip.analyzer.impl.BigVolumeTrade;
 import name.qd.analysis.chip.analyzer.impl.BranchInfoByBS;
 import name.qd.analysis.chip.analyzer.impl.BranchInfoByCache;
@@ -57,8 +57,8 @@ public class ChipAnalyzerFactory {
 		case BRANCH_INFO_BY_CACHE:
 			map.put(analyzer, new BranchInfoByCache(chipAnalyzerManager));
 			break;
-		case BEST_BRANCH_BUY:
-			map.put(analyzer, new BestBranchBuy(chipAnalyzerManager));
+		case BEST_BRANCH_BUY_SELL:
+			map.put(analyzer, new BestBranchBuySell(chipAnalyzerManager));
 			break;
 		default:
 			break;
