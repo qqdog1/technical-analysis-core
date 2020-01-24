@@ -1,5 +1,6 @@
 package name.qd.analysis.chip.analyzer.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,5 +30,12 @@ public class BestBranchBuy implements ChipAnalyzer {
 	@Override
 	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl, String ... customInputs) {
 		return null;
+	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		List<String> lst = new ArrayList<>();
+		lst.add("Top X branch:");
+		return lst;
 	}
 }

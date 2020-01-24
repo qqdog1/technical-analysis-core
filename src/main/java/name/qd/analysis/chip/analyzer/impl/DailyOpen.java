@@ -92,4 +92,9 @@ public class DailyOpen implements ChipAnalyzer {
 		lst.add(String.valueOf(cost));
 		return lst;
 	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		return null;
+	}
 }

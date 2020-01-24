@@ -73,9 +73,9 @@ public class ChipAnalyzerManager {
 		while(!to.before(date)) {
 			if(isFolderExist(date)) {
 				if(!isCacheExist(date)) {
-					log.debug("Cache not exist, transforming ... {}", date);
+					log.info("Cache not exist, transforming ... {}", date);
 					transDailyCache(dataSource, date);
-					log.debug("Cache transformed. {}", date);
+					log.info("Cache transformed. {}", date);
 				}
 			} 
 			

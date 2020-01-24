@@ -23,4 +23,9 @@ public class BranchInfoByCache implements ChipAnalyzer {
 	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl, String ... customInputs) {
 		return null;
 	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		return null;
+	}
 }

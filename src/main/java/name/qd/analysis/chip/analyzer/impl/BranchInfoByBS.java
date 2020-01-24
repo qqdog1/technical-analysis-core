@@ -189,4 +189,9 @@ public class BranchInfoByBS implements ChipAnalyzer {
 			}
 		}
 	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		return null;
+	}
 }

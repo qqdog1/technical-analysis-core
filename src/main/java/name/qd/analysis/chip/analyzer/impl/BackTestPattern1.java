@@ -103,4 +103,9 @@ public class BackTestPattern1 implements ChipAnalyzer {
 		
 		return lst;
 	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		return null;
+	}
 }

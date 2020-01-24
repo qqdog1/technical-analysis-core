@@ -91,4 +91,9 @@ public class DailyTradeRecord implements ChipAnalyzer {
 		lst.add(String.valueOf(share));
 		return lst;
 	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		return null;
+	}
 }

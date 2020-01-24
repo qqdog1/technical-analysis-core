@@ -10,4 +10,5 @@ public interface ChipAnalyzer {
 	public int getInputField();
 	public List<String> getHeaderString(String branch, String product);
 	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl, String ... customInputs);
+	public abstract List<String> getCustomDescreption();
 }

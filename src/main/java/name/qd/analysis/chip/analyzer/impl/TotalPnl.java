@@ -178,4 +178,9 @@ public class TotalPnl implements ChipAnalyzer {
 			}
 		});
 	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		return null;
+	}
 }

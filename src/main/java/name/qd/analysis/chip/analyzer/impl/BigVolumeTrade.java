@@ -127,4 +127,9 @@ public class BigVolumeTrade implements ChipAnalyzer {
 			}
 		});
 	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		return null;
+	}
 }

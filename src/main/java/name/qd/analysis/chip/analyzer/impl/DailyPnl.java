@@ -142,4 +142,9 @@ public class DailyPnl implements ChipAnalyzer {
 		}
 		return lst;
 	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		return null;
+	}
 }
