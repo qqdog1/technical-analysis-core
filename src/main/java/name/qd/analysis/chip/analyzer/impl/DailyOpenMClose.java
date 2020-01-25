@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.chip.InputField;
 import name.qd.analysis.chip.analyzer.ChipAnalyzer;
+import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.fileCache.FileCacheManager;
@@ -18,8 +19,12 @@ import name.qd.fileCache.FileCacheManager;
  * 單日買進-賣出 超過固定金額
  */
 
-public class DailyOpenMClose implements ChipAnalyzer {
+public class DailyOpenMClose extends ChipAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(DailyOpenMClose.class);
+	
+	public DailyOpenMClose(ChipAnalyzerManager chipAnalyzerManager) {
+		super(chipAnalyzerManager);
+	}
 	
 	@Override
 	public int getInputField() {
@@ -39,7 +44,7 @@ public class DailyOpenMClose implements ChipAnalyzer {
 	}
 
 	@Override
-	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl) {
+	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl, String ... customInputs) {
 		if("".equals(branch)) {
 			log.error("Please choose a branch.");
 			return null;
@@ -92,5 +97,10 @@ public class DailyOpenMClose implements ChipAnalyzer {
 		lst.add(String.valueOf(share));
 		lst.add(String.valueOf(cost));
 		return lst;
+	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		return null;
 	}
 }

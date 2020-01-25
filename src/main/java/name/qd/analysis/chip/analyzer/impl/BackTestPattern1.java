@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.chip.InputField;
 import name.qd.analysis.chip.analyzer.ChipAnalyzer;
+import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.fileCache.FileCacheManager;
@@ -24,9 +25,13 @@ import name.qd.fileCache.FileCacheManager;
  * 4. check price
  */
 
-public class BackTestPattern1 implements ChipAnalyzer {
+public class BackTestPattern1 extends ChipAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(BackTestPattern1.class);
-
+	
+	public BackTestPattern1(ChipAnalyzerManager chipAnalyzerManager) {
+		super(chipAnalyzerManager);
+	}
+	
 	@Override
 	public int getInputField() {
 		return InputField.BROKER + InputField.FROM + InputField.TO + InputField.TRADE_COST;
@@ -44,7 +49,7 @@ public class BackTestPattern1 implements ChipAnalyzer {
 	}
 
 	@Override
-	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl) {
+	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl, String ... customInputs) {
 		if("".equals(branch)) {
 			log.warn("Please choose a branch.");
 			return null;
@@ -102,5 +107,10 @@ public class BackTestPattern1 implements ChipAnalyzer {
 		}
 		
 		return lst;
+	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		return null;
 	}
 }

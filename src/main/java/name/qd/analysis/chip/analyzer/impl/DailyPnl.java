@@ -12,8 +12,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import name.qd.analysis.Constants;
 import name.qd.analysis.chip.InputField;
 import name.qd.analysis.chip.analyzer.ChipAnalyzer;
+import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
 import name.qd.analysis.chip.vo.DailyOperate;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.utils.TimeUtil;
@@ -24,9 +26,13 @@ import name.qd.fileCache.cache.CoordinateObject;
 /**
  * 每日是否有賺錢 只看當日PnL
  */
-public class DailyPnl implements ChipAnalyzer {
+public class DailyPnl extends ChipAnalyzer {
 	private static Logger log = LoggerFactory.getLogger(DailyPnl.class);
 
+	public DailyPnl(ChipAnalyzerManager chipAnalyzerManager) {
+		super(chipAnalyzerManager);
+	}
+	
 	@Override
 	public int getInputField() {
 		return InputField.FROM + InputField.TO + InputField.BROKER + InputField.PRODUCT + InputField.WITH_OPEN_PNL;
@@ -45,7 +51,7 @@ public class DailyPnl implements ChipAnalyzer {
 	}
 
 	@Override
-	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl) {
+	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl, String ... customInputs) {
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
 
 		log.debug("Analyze Daily Pnl. From {} to {}. Branch:{}, Product:{}, With Open Pnl:{}", sdf.format(from), sdf.format(to), branch, product, isOpenPnl);
@@ -61,7 +67,7 @@ public class DailyPnl implements ChipAnalyzer {
 
 		while (!to.before(currentDate)) {
 			CoordinateCacheManager lastCacheManager = null;
-			String cacheName = "bsr_" + sdf.format(currentDate);
+			String cacheName = Constants.getBSRCacheName(sdf.format(currentDate));
 			try {
 				lastCacheManager = fileCacheManager.getCoordinateCacheInstance(cacheName, DailyOperate.class.getName());
 			} catch (Exception e) {
@@ -141,5 +147,10 @@ public class DailyPnl implements ChipAnalyzer {
 			fileCacheManager.removeCoordinateCache(cacheName);
 		}
 		return lst;
+	}
+
+	@Override
+	public List<String> getCustomDescreption() {
+		return null;
 	}
 }

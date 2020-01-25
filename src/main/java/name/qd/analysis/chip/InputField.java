@@ -9,6 +9,7 @@ public class InputField {
 	public static int PNL = 32;
 	public static int PNL_RATE = 64;
 	public static int WITH_OPEN_PNL = 128;
+	public static int CUSTOM = 256;
 	
 	public static boolean isBroker(int inputField) {
 		return (inputField & BROKER) == BROKER;
@@ -33,5 +34,8 @@ public class InputField {
 	}
 	public static boolean isWithOpenPnl(int inputField) {
 		return (inputField & WITH_OPEN_PNL) == WITH_OPEN_PNL;
+	}
+	public static boolean isCustom(int inputField) {
+		return (inputField & CUSTOM) == CUSTOM;
 	}
 }

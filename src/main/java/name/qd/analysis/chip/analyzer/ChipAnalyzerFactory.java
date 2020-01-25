@@ -5,7 +5,7 @@ import java.util.Map;
 
 import name.qd.analysis.chip.ChipAnalyzers;
 import name.qd.analysis.chip.analyzer.impl.BackTestPattern1;
-import name.qd.analysis.chip.analyzer.impl.BestBranchBuy;
+import name.qd.analysis.chip.analyzer.impl.BestBranchBuySell;
 import name.qd.analysis.chip.analyzer.impl.BigVolumeTrade;
 import name.qd.analysis.chip.analyzer.impl.BranchInfoByBS;
 import name.qd.analysis.chip.analyzer.impl.BranchInfoByCache;
@@ -21,44 +21,44 @@ public class ChipAnalyzerFactory {
 	public ChipAnalyzerFactory() {
 	}
 	
-	public ChipAnalyzer getAnalyzer(ChipAnalyzers analyzer) {
+	public ChipAnalyzer getAnalyzer(ChipAnalyzers analyzer, ChipAnalyzerManager chipAnalyzerManager) {
 		if(!map.containsKey(analyzer)) {
-			createAnalyzer(analyzer);
+			createAnalyzer(analyzer, chipAnalyzerManager);
 		}
 		return map.get(analyzer);
 	}
 	
-	private void createAnalyzer(ChipAnalyzers analyzer) {
+	private void createAnalyzer(ChipAnalyzers analyzer, ChipAnalyzerManager chipAnalyzerManager) {
 		switch(analyzer) {
 		case DAILY_PNL:
-			map.put(analyzer, new DailyPnl());
+			map.put(analyzer, new DailyPnl(chipAnalyzerManager));
 			break;
 		case TOTAL_PNL:
-			map.put(analyzer, new TotalPnl());
+			map.put(analyzer, new TotalPnl(chipAnalyzerManager));
 			break;
 		case DAILY_TRADE_RECORD:
-			map.put(analyzer, new DailyTradeRecord());
+			map.put(analyzer, new DailyTradeRecord(chipAnalyzerManager));
 			break;
 		case DAILY_OPEN:
-			map.put(analyzer, new DailyOpen());
+			map.put(analyzer, new DailyOpen(chipAnalyzerManager));
 			break;
 		case DAILY_OPEN_M_CLOSE:
-			map.put(analyzer, new DailyOpenMClose());
+			map.put(analyzer, new DailyOpenMClose(chipAnalyzerManager));
 			break;
 		case BACK_TEST_PATTERN_1:
-			map.put(analyzer, new BackTestPattern1());
+			map.put(analyzer, new BackTestPattern1(chipAnalyzerManager));
 			break;
 		case BIG_VOLUME_TRADE:
-			map.put(analyzer, new BigVolumeTrade());
+			map.put(analyzer, new BigVolumeTrade(chipAnalyzerManager));
 			break;
 		case BRANCH_INFO_BY_BS:
-			map.put(analyzer, new BranchInfoByBS());
+			map.put(analyzer, new BranchInfoByBS(chipAnalyzerManager));
 			break;
 		case BRANCH_INFO_BY_CACHE:
-			map.put(analyzer, new BranchInfoByCache());
+			map.put(analyzer, new BranchInfoByCache(chipAnalyzerManager));
 			break;
-		case BEST_BRANCH_BUY:
-			map.put(analyzer, new BestBranchBuy());
+		case BEST_BRANCH_BUY_SELL:
+			map.put(analyzer, new BestBranchBuySell(chipAnalyzerManager));
 			break;
 		default:
 			break;

@@ -19,6 +19,7 @@ import name.qd.analysis.chip.ChipAnalyzers;
 import name.qd.analysis.chip.utils.ChipUtils;
 import name.qd.analysis.chip.vo.DailyOperate;
 import name.qd.analysis.dataSource.DataSource;
+import name.qd.analysis.dataSource.TWSE.utils.TWSEPathUtil;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.analysis.utils.TimeUtil;
 import name.qd.fileCache.FileCacheManager;
@@ -37,9 +38,9 @@ public class ChipAnalyzerManager {
 		}
 	}
 	
-	public List<List<String>> getAnalysisResult(DataSource dataSource, ChipAnalyzers analyzer, String branch, String product, Date from, Date to, double tradeCost, boolean isOpenPnl) {
+	public List<List<String>> getAnalysisResult(DataSource dataSource, ChipAnalyzers analyzer, String branch, String product, Date from, Date to, double tradeCost, boolean isOpenPnl, String ... inputs) {
 		log.debug("Trying to run {}", analyzer);
-		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer);
+		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer, this);
 		if(chipAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
 			return null;
@@ -49,7 +50,7 @@ public class ChipAnalyzerManager {
 		
 		List<List<String>> lst = new ArrayList<>();
 		lst.add(chipAnalyzer.getHeaderString(branch, product));
-		List<List<String>> lstData = chipAnalyzer.analyze(dataSource, fileCacheManager, from, to, branch, product, tradeCost, isOpenPnl);
+		List<List<String>> lstData = chipAnalyzer.analyze(dataSource, fileCacheManager, from, to, branch, product, tradeCost, isOpenPnl, inputs);
 		if(lstData != null) {
 			lst.addAll(lstData);
 		}
@@ -57,7 +58,7 @@ public class ChipAnalyzerManager {
 	}
 	
 	public int getInputField(ChipAnalyzers analyzer) {
-		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer);
+		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer, this);
 		if(chipAnalyzer == null) {
 			log.error("Analyzer not exist. {}", analyzer);
 			return 0;
@@ -73,9 +74,9 @@ public class ChipAnalyzerManager {
 		while(!to.before(date)) {
 			if(isFolderExist(date)) {
 				if(!isCacheExist(date)) {
-					log.debug("Cache not exist, transforming ... {}", date);
+					log.info("Cache not exist, transforming ... {}", date);
 					transDailyCache(dataSource, date);
-					log.debug("Cache transformed. {}", date);
+					log.info("Cache transformed. {}", date);
 				}
 			} 
 			
@@ -86,20 +87,21 @@ public class ChipAnalyzerManager {
 	
 	private boolean isFolderExist(Date date) {
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
-		Path path = Paths.get(Constants.BSR_FOLDER, sdf.format(date));
+		Path path = Paths.get(TWSEPathUtil.BUY_SELL_INFO_DIR, sdf.format(date));
 		return Files.exists(path);
 	}
 	
 	private boolean isCacheExist(Date date) {
 		SimpleDateFormat sdf = TimeUtil.getDateFormat();
-		String cacheName = "bsr_" + sdf.format(date);
+		String cacheName = Constants.getBSRCacheName(sdf.format(date));
 		return fileCacheManager.isCacheExist(cacheName);
 	}
 	
 	private void transDailyCache(DataSource dataSource, Date date) {
 		CoordinateCacheManager cacheManager = null;
 		try {
-			String cacheName = "bsr_" + TimeUtil.getDateFormat().format(date);
+			SimpleDateFormat sdf = TimeUtil.getDateFormat();
+			String cacheName = Constants.getBSRCacheName(sdf.format(date));
 			cacheManager = fileCacheManager.getCoordinateCacheInstance(cacheName, DailyOperate.class.getName());
 			if(cacheManager.values().size() > 0) {
 				return;
