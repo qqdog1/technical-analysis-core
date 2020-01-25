@@ -1,4 +1,4 @@
-package name.qd.analysis.chip.utils;
+package name.qd.analysis.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,7 +12,6 @@ import org.junit.Test;
 import name.qd.analysis.utils.TimeUtil;
 
 public class TimeUtilTest {
-	@Ignore
 	@Test
 	public void getDateBetweenTest() {
 		Calendar calendar = Calendar.getInstance();
@@ -29,7 +28,6 @@ public class TimeUtilTest {
 			calendar.add(Calendar.DATE, 1);
 		}
 	}
-	@Ignore
 	@Test
 	public void AD2ROCTest() {
 		String s = "20110101";
