@@ -1,3 +1,4 @@
+package name.qd.analysis.chip.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
