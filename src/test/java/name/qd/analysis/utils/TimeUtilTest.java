@@ -6,10 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 
 public class TimeUtilTest {
 	@Test
@@ -20,7 +19,7 @@ public class TimeUtilTest {
 		calendar.set(2016, 2, 2);
 		Date dateTo = calendar.getTime();
 		
-		List<String> lst = TimeUtil.getDateBetween(dateFrom, dateTo);
+		List<String> lst = TimeUtils.getDateBetween(dateFrom, dateTo);
 		calendar.set(2015, 1, 1);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		for(String s : lst) {
@@ -28,12 +27,13 @@ public class TimeUtilTest {
 			calendar.add(Calendar.DATE, 1);
 		}
 	}
+	
 	@Test
 	public void AD2ROCTest() {
 		String s = "20110101";
 		String date = null;
 		try {
-			date = TimeUtil.AD2ROC(s);
+			date = TimeUtils.AD2ROC(s);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

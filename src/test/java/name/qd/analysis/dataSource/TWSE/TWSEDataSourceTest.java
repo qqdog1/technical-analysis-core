@@ -14,7 +14,7 @@ import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.DataSourceFactory;
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.utils.StringCombineUtil;
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 
 public class TWSEDataSourceTest {
 	private String TEST_FOLDER = "./file/TWSE";
@@ -23,7 +23,7 @@ public class TWSEDataSourceTest {
 	@Test
 	public void testDataParser() {
 		DataSource twseDataSource = DataSourceFactory.getInstance().getDataSource(Exchange.TWSE, TEST_FOLDER);
-		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		SimpleDateFormat sdf = TimeUtils.getDateFormat();
 		try {
 			List<ProductClosingInfo> lst = twseDataSource.getProductClosingInfo("2330", sdf.parse("20121001"), sdf.parse("20121031"));
 

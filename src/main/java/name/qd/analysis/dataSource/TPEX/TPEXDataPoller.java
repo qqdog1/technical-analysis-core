@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.concurrent.TimeUnit;
 
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,7 +21,7 @@ public class TPEXDataPoller {
 	
 	public void downloadDailyClosingInfo(String date) throws IOException, ParseException {
 		String filePathName = TPEXConstants.getDailyClosingFilePath(date);
-		String roc = TimeUtil.AD2ROC(date);
+		String roc = TimeUtils.AD2ROC(date);
 		Path path = new File(filePathName).toPath();
 		if(Files.exists(path)) return;
 

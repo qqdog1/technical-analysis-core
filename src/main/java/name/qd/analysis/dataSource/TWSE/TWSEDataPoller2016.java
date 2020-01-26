@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.dataSource.TWSE.utils.TWSEPathUtil;
 import name.qd.analysis.utils.StringCombineUtil;
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 
 public class TWSEDataPoller2016 extends TWSEDataPoller {
 	private static Logger logger = LoggerFactory.getLogger(TWSEDataPoller2016.class);
@@ -27,7 +27,7 @@ public class TWSEDataPoller2016 extends TWSEDataPoller {
 	protected void tryDownloadDailyClosingInfo(String date) throws IOException {
 		String POSTDate = null;
 		try {
-			POSTDate = TimeUtil.AD2ROC(date);
+			POSTDate = TimeUtils.AD2ROC(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
 
-public class TimeUtil {
+public class TimeUtils {
 	private static SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMdd");
 	private static SimpleDateFormat sdfDateTime = new SimpleDateFormat("yyyyMMdd-HH:mm:ss:SSS");
 	
@@ -84,5 +85,18 @@ public class TimeUtil {
 	
 	public static SimpleDateFormat getDateTimeFormat() {
 		return sdfDateTime;
+	}
+	
+	public static void loopByTime(Date from, Date to, Function<Void, Void> function) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(from);
+		Date currentDate = calendar.getTime();
+		while(!to.before(currentDate)) {
+			
+			function.apply(null);
+			
+			calendar.add(Calendar.DATE, 1);
+			currentDate = calendar.getTime();
+		}
 	}
 }

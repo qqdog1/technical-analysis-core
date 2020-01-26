@@ -15,7 +15,7 @@ import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.tech.TechAnalyzers;
 import name.qd.analysis.tech.vo.AnalysisResult;
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 import name.qd.fileCache.FileCacheManager;
 import name.qd.fileCache.cache.FileCacheObject;
 import name.qd.fileCache.cache.NormalCacheManager;
@@ -25,7 +25,7 @@ public class TechAnalyzerManager {
 	private FileCacheManager fileCacheManager;
 	private Map<String, Date> mapFirst = new HashMap<String, Date>();
 	private Map<String, Date> mapLast = new HashMap<String, Date>();
-	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
+	private SimpleDateFormat sdf = TimeUtils.getDateTimeFormat();
 	private TechAnalyzerFactory techAnalyzerFactory = new TechAnalyzerFactory();
 	private String className = AnalysisResult.class.getName();
 	

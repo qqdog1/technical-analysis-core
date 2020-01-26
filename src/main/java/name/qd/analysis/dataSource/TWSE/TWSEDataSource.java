@@ -21,7 +21,7 @@ import name.qd.analysis.dataSource.TWSE.utils.TWSEPathUtil;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.analysis.dataSource.vo.DailyClosingInfo;
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 
 public class TWSEDataSource implements DataSource {
 	private Logger log = LoggerFactory.getLogger(TWSEDataSource.class);
@@ -39,7 +39,7 @@ public class TWSEDataSource implements DataSource {
 	
 	@Override
 	public List<ProductClosingInfo> getProductClosingInfo(String product, Date from, Date to) throws Exception {
-		List<String> lstDate = TimeUtil.getDateBetween(from, to);
+		List<String> lstDate = TimeUtils.getDateBetween(from, to);
 		checkAndDownloadDailyClosing(lstDate);
 		ArrayList<ProductClosingInfo> lstProd = new ArrayList<ProductClosingInfo>();
 		for(String date : lstDate) {
@@ -56,7 +56,7 @@ public class TWSEDataSource implements DataSource {
 	
 	@Override
 	public List<DailyClosingInfo> getDailyClosingInfo(Date from, Date to) throws ParseException, FileNotFoundException, IOException {
-		List<String> lstDate = TimeUtil.getDateBetween(from, to);
+		List<String> lstDate = TimeUtils.getDateBetween(from, to);
 		checkAndDownloadDailyClosing(lstDate);
 		ArrayList<DailyClosingInfo> lstInfo = new ArrayList<DailyClosingInfo>();
 		for(String date : lstDate) {
@@ -73,9 +73,9 @@ public class TWSEDataSource implements DataSource {
 	
 	@Override
 	public Map<Date, List<ProductClosingInfo>> getAllProductClosingInfo(Date from, Date to) throws Exception {
-		List<String> lstDate = TimeUtil.getDateBetween(from, to);
+		List<String> lstDate = TimeUtils.getDateBetween(from, to);
 		checkAndDownloadDailyClosing(lstDate);
-		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		SimpleDateFormat sdf = TimeUtils.getDateFormat();
 		Map<Date, List<ProductClosingInfo>> map = new HashMap<>();
 		for(String date : lstDate) {
 			File file = new File(TWSEPathUtil.getDailyClosingFilePath(baseFolder, date).toString());
@@ -90,8 +90,8 @@ public class TWSEDataSource implements DataSource {
 	@Override
 	public Map<Date, List<BuySellInfo>> getBuySellInfo(String product, Date from, Date to) throws Exception {
 		Map<Date, List<BuySellInfo>> map = new HashMap<>();
-		List<String> lstDate = TimeUtil.getDateBetween(from, to);
-		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		List<String> lstDate = TimeUtils.getDateBetween(from, to);
+		SimpleDateFormat sdf = TimeUtils.getDateFormat();
 		for(String date : lstDate) {
 			File file = new File(TWSEPathUtil.getBuySellInfoFilePath(baseFolder, date, product).toString());
 			if(file.exists()) {
@@ -105,10 +105,10 @@ public class TWSEDataSource implements DataSource {
 	@Override
 	public Map<Date, Map<String, List<BuySellInfo>>> getBuySellInfo(Date from, Date to) throws Exception {
 		Map<Date, Map<String, List<BuySellInfo>>> map = new HashMap<>();
-		List<String> lstDate = TimeUtil.getDateBetween(from, to);
+		List<String> lstDate = TimeUtils.getDateBetween(from, to);
 		for(String date : lstDate) {
 			Map<String, List<BuySellInfo>> mapProduct = parser.getBuySellInfo(date);
-			map.put(TimeUtil.getDateFormat().parse(date), mapProduct);
+			map.put(TimeUtils.getDateFormat().parse(date), mapProduct);
 		}
 		return map;
 	}
