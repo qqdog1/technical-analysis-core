@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import name.qd.analysis.Constants.Action;
 import name.qd.analysis.chip.InputField;
 import name.qd.analysis.chip.analyzer.ChipAnalyzer;
 import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
@@ -77,8 +78,8 @@ public class DailyOpenMClose extends ChipAnalyzer {
 				}
 				
 				if(buyCost - sellCost > tradeCost) {
-					lst.add(getList(branch, keyProduct, "B", buyShare, buyCost));
-					lst.add(getList(branch, keyProduct, "S", sellShare, sellCost));
+					lst.add(getList(branch, keyProduct, Action.BUY.name(), buyShare, buyCost));
+					lst.add(getList(branch, keyProduct, Action.SELL.name(), sellShare, sellCost));
 				}
 			}
 		} catch (Exception e) {

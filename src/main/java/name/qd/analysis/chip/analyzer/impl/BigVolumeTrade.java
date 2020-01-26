@@ -12,6 +12,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import name.qd.analysis.Constants.Action;
 import name.qd.analysis.chip.InputField;
 import name.qd.analysis.chip.analyzer.ChipAnalyzer;
 import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
@@ -96,13 +97,13 @@ public class BigVolumeTrade extends ChipAnalyzer {
 				lstData.add(sdf.format(currentDate));
 				lstData.add(p);
 				if(buyCost - sellCost >= tradeCost) {
-					lstData.add("B");
+					lstData.add(Action.BUY.name());
 					lstData.add(String.valueOf(buyCost/buyShare));
 					lstData.add(String.valueOf(buyShare));
 					lstData.add(String.valueOf(buyCost));
 					lst.add(lstData);
 				} else if(sellCost - buyCost >= tradeCost) {
-					lstData.add("S");
+					lstData.add(Action.SELL.name());
 					lstData.add(String.valueOf(sellCost/sellShare));
 					lstData.add(String.valueOf(sellShare));
 					lstData.add(String.valueOf(sellCost));
