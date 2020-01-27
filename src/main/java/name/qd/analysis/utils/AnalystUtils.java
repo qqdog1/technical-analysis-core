@@ -67,7 +67,7 @@ public class AnalystUtils {
 			
 			lastResult = result;
 			
-			if(i >= days) {
+			if(i >= days-1) {
 				lstResult.add(result);
 			}
 		}
@@ -94,7 +94,7 @@ public class AnalystUtils {
 			
 			lastResult = result;
 			
-			if(i >= days) {
+			if(i >= days-1) {
 				lstResult.add(result);
 			}
 		}
@@ -192,7 +192,7 @@ public class AnalystUtils {
 		return lstResult;
 	}
 	
-	private static double standardDeviation(List<Double> values) {
+	public static double standardDeviation(List<Double> values) {
 		double powSum = 0;
 		double sum = 0;
 		double length = (double) values.size();

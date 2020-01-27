@@ -59,4 +59,11 @@ public class AnalysisResult extends NormalObject {
 	public String getKeyString() {
 		return sdf.format(date);
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Date:").append(getKeyString());
+		sb.append("Values:").append(values);
+		return sb.toString();
+	}
 }

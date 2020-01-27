@@ -2,6 +2,8 @@ package name.qd.analysis.dataSource.vo;
 
 import java.util.Date;
 
+import name.qd.analysis.utils.TimeUtils;
+
 public class ProductClosingInfo {
 	public static int ADVANCE = 1;
 	public static int DECLINE = 2;
@@ -78,5 +80,19 @@ public class ProductClosingInfo {
 	}
 	public void setADStatus(int ADStatus) {
 		this.ADStatus = ADStatus;
+	}
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Product:").append(product);
+		sb.append(",Date:").append(TimeUtils.getDateFormat().format(date));
+		sb.append(",Open:").append(openPrice);
+		sb.append(",Close:").append(closePrice);
+		sb.append(",High:").append(upperPrice);
+		sb.append(",Low:").append(lowerPrice);
+		sb.append(",Average:").append(avgPrice);
+		sb.append(",Fill Shares:").append(filledShare);
+		sb.append(",Fill Amount:").append(filledAmount);
+		sb.append(",AD status:").append(ADStatus);
+		return sb.toString();
 	}
 }
