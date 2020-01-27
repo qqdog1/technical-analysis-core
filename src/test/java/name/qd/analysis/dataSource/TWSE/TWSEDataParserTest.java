@@ -51,6 +51,7 @@ public class TWSEDataParserTest {
 //			e.printStackTrace();
 //		}
 	}
+	@Ignore
 	@Test
 	public void testParseDailyProducts() {
 		TWSEDataParser parser = new TWSEDataParser(dataPath);
