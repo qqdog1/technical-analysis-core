@@ -25,6 +25,7 @@ public class AdvancingVolumeTest {
 	private DataSource dataSource = new FakeDataSource();
 	private String startDate = "20180505";
 	private String endDate = "20180606";
+	private String days = "5";
 	private Date from;
 	private Date to;
 	
@@ -57,6 +58,35 @@ public class AdvancingVolumeTest {
 					}
 				}
 				assertEquals(lst.get(i).getValue().get(0), Double.valueOf(sum));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void customTest() {
+		try {
+			List<AnalysisResult> lst = manager.getCustomAnalysisResult(dataSource, TechAnalyzers.AdvancingVolume, "", from, to, days);
+			Map<Date, List<ProductClosingInfo>> mapCloseInfo = dataSource.getAllProductClosingInfo(from, to);
+			int iDays = Integer.parseInt(days);
+			for (int i = 0; i < lst.size(); i++) {
+				Date currentDate = TimeUtils.afterDays(from, iDays-1+i);
+				assertEquals(lst.get(i).getDate(), currentDate);
+			
+				double sum = 0;
+				for(int x = 0; x < iDays; x++) {
+					Date date = TimeUtils.afterDays(currentDate, -x);
+					List<ProductClosingInfo> lstProduct = mapCloseInfo.get(date);
+					
+					for(ProductClosingInfo info : lstProduct) {
+						if(info.getADStatus() == ProductClosingInfo.ADVANCE) {
+							sum += info.getFilledShare();
+						}
+					}
+				}
+				assertEquals(lst.get(i).getValue().get(0), Double.valueOf(sum/iDays));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
