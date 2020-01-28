@@ -1,6 +1,7 @@
 package name.qd.analysis.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class AnalystUtilsTest {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 
@@ -61,6 +63,7 @@ public class AnalystUtilsTest {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 
@@ -84,6 +87,7 @@ public class AnalystUtilsTest {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 
@@ -110,6 +114,7 @@ public class AnalystUtilsTest {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 
@@ -126,6 +131,7 @@ public class AnalystUtilsTest {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 	
@@ -142,6 +148,7 @@ public class AnalystUtilsTest {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 	
@@ -163,6 +170,7 @@ public class AnalystUtilsTest {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 	

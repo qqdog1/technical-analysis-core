@@ -1,6 +1,7 @@
 package name.qd.analysis.tech.analyzer.impl.A;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -33,6 +34,7 @@ public class ABIDeclineTest {
 			to = TimeUtils.getDateFormat().parse(endDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 	
@@ -51,6 +53,7 @@ public class ABIDeclineTest {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 }

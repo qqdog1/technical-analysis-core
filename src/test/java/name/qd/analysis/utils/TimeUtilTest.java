@@ -1,4 +1,6 @@
 package name.qd.analysis.utils;
+import static org.junit.Assert.fail;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,6 +38,7 @@ public class TimeUtilTest {
 			date = TimeUtils.AD2ROC(s);
 		} catch (ParseException e) {
 			e.printStackTrace();
+			fail(e.getMessage());
 		}
 		Assert.assertEquals(date, "100/01/01");
 	}

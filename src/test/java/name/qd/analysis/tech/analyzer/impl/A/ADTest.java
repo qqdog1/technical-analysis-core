@@ -19,12 +19,11 @@ import name.qd.analysis.tech.analyzer.TechAnalyzerManager;
 import name.qd.analysis.tech.vo.AnalysisResult;
 import name.qd.analysis.utils.TimeUtils;
 
-public class ABITest {
+public class ADTest {
 	private TechAnalyzerManager manager = new FakeAnalyzerManager();
 	private DataSource dataSource = new FakeDataSource();
 	private String startDate = "20180505";
 	private String endDate = "20180606";
-	private String days = "5";
 	private Date from;
 	private Date to;
 	
@@ -42,7 +41,7 @@ public class ABITest {
 	@Test
 	public void analyzeTest() {
 		try {
-			List<AnalysisResult> lst = manager.getAnalysisResult(dataSource, TechAnalyzers.ABI, "", from, to);
+			List<AnalysisResult> lst = manager.getAnalysisResult(dataSource, TechAnalyzers.AD, "", from, to);
 			for (int i = 0; i < lst.size(); i++) {
 				Date currentDate = TimeUtils.afterDays(from, i);
 				assertEquals(lst.get(i).getDate(), currentDate);
@@ -61,20 +60,16 @@ public class ABITest {
 	@Test
 	public void customTest() {
 		try {
-			List<AnalysisResult> lst = manager.getCustomAnalysisResult(dataSource, TechAnalyzers.ABI, "", from, to, days);
-			int iDays = Integer.parseInt(days);
+			List<AnalysisResult> lst = manager.getCustomAnalysisResult(dataSource, TechAnalyzers.AD, "", from, to, "Y");
+			double sum = 0;
 			for (int i = 0; i < lst.size(); i++) {
-				Date currentDate = TimeUtils.afterDays(from, iDays-1+i);
+				Date currentDate = TimeUtils.afterDays(from, i);
 				assertEquals(lst.get(i).getDate(), currentDate);
 				
-				double sum = 0;
-				for(int x = 0; x < iDays; x++) {
-					Date date = TimeUtils.afterDays(currentDate, -x);
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(date);
-					sum = sum + (2 * calendar.get(Calendar.DATE));
-				}
-				assertEquals(lst.get(i).getValue().get(0), Double.valueOf(sum/iDays));
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(currentDate);
+				sum = sum + (2 * calendar.get(Calendar.DATE));
+				assertEquals(lst.get(i).getValue().get(0), Double.valueOf(sum));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
