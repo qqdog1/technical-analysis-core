@@ -43,10 +43,10 @@ public class FakeDataSource implements DataSource {
 			productClosingInfo.setClosePrice(price);
 			productClosingInfo.setFilledAmount(5000d*price);
 			productClosingInfo.setFilledShare(5000);
-			productClosingInfo.setLowerPrice(price);
+			productClosingInfo.setLowerPrice(price-1);
 			productClosingInfo.setOpenPrice(price);
 			productClosingInfo.setProduct(product);
-			productClosingInfo.setUpperPrice(price);
+			productClosingInfo.setUpperPrice(price+1);
 			lst.add(productClosingInfo);
 			calendar.add(Calendar.DATE, 1);
 			currentDate = calendar.getTime();
@@ -74,10 +74,10 @@ public class FakeDataSource implements DataSource {
 			productClosingInfo.setClosePrice(price);
 			productClosingInfo.setFilledAmount(5000d*price);
 			productClosingInfo.setFilledShare(5000);
-			productClosingInfo.setLowerPrice(price);
+			productClosingInfo.setLowerPrice(price-1);
 			productClosingInfo.setOpenPrice(price);
 			productClosingInfo.setProduct(product);
-			productClosingInfo.setUpperPrice(price);
+			productClosingInfo.setUpperPrice(price+1);
 			lst.add(productClosingInfo);
 			calendar.add(Calendar.DATE, 1);
 			currentDate = calendar.getTime();

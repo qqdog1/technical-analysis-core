@@ -46,7 +46,10 @@ public class ADL extends TechAnalyzer {
 				if(maxRange == 0) {
 					d = 0;
 				} else {
-					d = (info.getClosePrice()-info.getLowerPrice())-(info.getUpperPrice()-info.getClosePrice())/(maxRange);
+					double a1 = info.getClosePrice()-info.getLowerPrice();
+					double a2 = info.getUpperPrice()-info.getClosePrice();
+					a1 = a1-a2;
+					d = a1 / maxRange;
 				}
 				d = d * info.getFilledShare();
 				result.setValue(d);
