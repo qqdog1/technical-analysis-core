@@ -45,7 +45,7 @@ public class AnalystUtilsTest {
 	@Test
 	public void simpleMovingAverageByResultTest() {
 		try {
-			List<ProductClosingInfo> lstProdInfo = dataSource.getProductClosingInfo("1101", sdf.parse(startDate), sdf.parse(endDate));
+			List<ProductClosingInfo> lstProdInfo = dataSource.getProductClosingInfo("2202", sdf.parse(startDate), sdf.parse(endDate));
 			List<AnalysisResult> lstSMA = AnalystUtils.simpleMovingAverage(lstProdInfo, days);
 			List<AnalysisResult> lst = AnalystUtils.simpleMovingAverageByResult(lstSMA, days);
 

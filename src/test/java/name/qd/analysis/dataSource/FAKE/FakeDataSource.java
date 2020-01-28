@@ -13,7 +13,6 @@ import name.qd.analysis.dataSource.vo.DailyClosingInfo;
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 
 public class FakeDataSource implements DataSource {
-
 	@Override
 	public List<ProductClosingInfo> getProductClosingInfo(String product, Date from, Date to) throws Exception {
 		int productId = Integer.parseInt(product);

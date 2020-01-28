@@ -26,7 +26,7 @@ public class TechAnalyzerManager {
 	private Map<String, Date> mapFirst = new HashMap<String, Date>();
 	private Map<String, Date> mapLast = new HashMap<String, Date>();
 	private SimpleDateFormat sdf = TimeUtils.getDateTimeFormat();
-	private TechAnalyzerFactory techAnalyzerFactory = new TechAnalyzerFactory();
+	protected TechAnalyzerFactory techAnalyzerFactory = new TechAnalyzerFactory();
 	private String className = AnalysisResult.class.getName();
 	
 	public TechAnalyzerManager(String cachePath) {
