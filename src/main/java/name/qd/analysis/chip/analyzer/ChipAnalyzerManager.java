@@ -29,13 +29,16 @@ public class ChipAnalyzerManager {
 	private static Logger log = LoggerFactory.getLogger(ChipAnalyzerManager.class);
 	private FileCacheManager fileCacheManager;
 	private ChipAnalyzerFactory chipAnalyzerFactory = new ChipAnalyzerFactory();
+	private final boolean isWriteCacheToFile;
 
-	public ChipAnalyzerManager(String cachePath) {
+	public ChipAnalyzerManager(String cachePath, boolean isWriteCacheToFile) {
 		try {
 			fileCacheManager = new FileCacheManager(cachePath);
 		} catch (Exception e) {
 			log.error("Init file cache manager failed.", e);
 		}
+		
+		this.isWriteCacheToFile = isWriteCacheToFile;
 	}
 	
 	public List<List<String>> getAnalysisResult(DataSource dataSource, ChipAnalyzers analyzer, String branch, String product, Date from, Date to, double tradeCost, boolean isOpenPnl, String ... inputs) {
@@ -126,7 +129,9 @@ public class ChipAnalyzerManager {
 				}
 			}
 			
-			cacheManager.writeCacheToFile();
+			if(isWriteCacheToFile) {
+				cacheManager.writeCacheToFile();
+			}
 		} catch (Exception e) {
 			log.error("Get bsr files fail. {}", date.toString(), e);
 		}

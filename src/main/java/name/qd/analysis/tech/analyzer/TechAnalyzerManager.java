@@ -28,13 +28,15 @@ public class TechAnalyzerManager {
 	private SimpleDateFormat sdf = TimeUtils.getDateTimeFormat();
 	protected TechAnalyzerFactory techAnalyzerFactory = new TechAnalyzerFactory();
 	private String className = AnalysisResult.class.getName();
+	private final boolean isWriteCacheToFile;
 	
-	public TechAnalyzerManager(String cachePath) {
+	public TechAnalyzerManager(String cachePath, boolean isWriteCacheToFile) {
 		try {
 			fileCacheManager = new FileCacheManager(cachePath);
 		} catch (Exception e) {
 			log.error("Init file cache manager failed.", e);
 		}
+		this.isWriteCacheToFile = isWriteCacheToFile;
 	}
 	
 	public List<AnalysisResult> getAnalysisResult(DataSource dataSource, TechAnalyzers analyzer, String product, Date from, Date to) throws Exception {
@@ -177,7 +179,9 @@ public class TechAnalyzerManager {
 	private void syncFile(String cacheName) {
 		try {
 			NormalCacheManager cacheManager = fileCacheManager.getNormalCacheInstance(cacheName, className);
-			cacheManager.writeCacheToFile();
+			if(isWriteCacheToFile) {
+				cacheManager.writeCacheToFile();
+			}
 		} catch (Exception e) {
 			log.error("Get {} cache failed.", cacheName, e);
 		}

@@ -10,7 +10,7 @@ import name.qd.analysis.tech.vo.AnalysisResult;
 public class FakeAnalyzerManager extends TechAnalyzerManager {
 
 	public FakeAnalyzerManager() {
-		super("");
+		super("", false);
 	}
 
 	@Override
