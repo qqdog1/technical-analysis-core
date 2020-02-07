@@ -7,13 +7,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 import name.qd.fileCache.cache.NormalObject;
 import name.qd.fileCache.common.TransInputStream;
 import name.qd.fileCache.common.TransOutputStream;
 
 public class AnalysisResult extends NormalObject {
-	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
+	private SimpleDateFormat sdf = TimeUtils.getDateTimeFormat();
 	private Date date;
 	private List<Double> values = new ArrayList<>();
 	
@@ -58,5 +58,12 @@ public class AnalysisResult extends NormalObject {
 	@Override
 	public String getKeyString() {
 		return sdf.format(date);
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Date:").append(getKeyString());
+		sb.append("Values:").append(values);
+		return sb.toString();
 	}
 }

@@ -15,7 +15,7 @@ import name.qd.analysis.Constants.AnalyzerType;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.tech.TechAnalyzers;
 import name.qd.analysis.tech.vo.AnalysisResult;
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 import name.qd.fileCache.FileCacheManager;
 import name.qd.fileCache.cache.FileCacheObject;
 import name.qd.fileCache.cache.NormalCacheManager;
@@ -25,16 +25,18 @@ public class TechAnalyzerManager {
 	private FileCacheManager fileCacheManager;
 	private Map<String, Date> mapFirst = new HashMap<String, Date>();
 	private Map<String, Date> mapLast = new HashMap<String, Date>();
-	private SimpleDateFormat sdf = TimeUtil.getDateTimeFormat();
-	private TechAnalyzerFactory techAnalyzerFactory = new TechAnalyzerFactory();
+	private SimpleDateFormat sdf = TimeUtils.getDateTimeFormat();
+	protected TechAnalyzerFactory techAnalyzerFactory = new TechAnalyzerFactory();
 	private String className = AnalysisResult.class.getName();
+	private final boolean isWriteCacheToFile;
 	
-	public TechAnalyzerManager(String cachePath) {
+	public TechAnalyzerManager(String cachePath, boolean isWriteCacheToFile) {
 		try {
 			fileCacheManager = new FileCacheManager(cachePath);
 		} catch (Exception e) {
 			log.error("Init file cache manager failed.", e);
 		}
+		this.isWriteCacheToFile = isWriteCacheToFile;
 	}
 	
 	public List<AnalysisResult> getAnalysisResult(DataSource dataSource, TechAnalyzers analyzer, String product, Date from, Date to) throws Exception {
@@ -177,7 +179,9 @@ public class TechAnalyzerManager {
 	private void syncFile(String cacheName) {
 		try {
 			NormalCacheManager cacheManager = fileCacheManager.getNormalCacheInstance(cacheName, className);
-			cacheManager.writeCacheToFile();
+			if(isWriteCacheToFile) {
+				cacheManager.writeCacheToFile();
+			}
 		} catch (Exception e) {
 			log.error("Get {} cache failed.", cacheName, e);
 		}

@@ -26,7 +26,7 @@ import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.analysis.dataSource.vo.DailyClosingInfo;
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 import name.qd.analysis.utils.StringCombineUtil;
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 
 public class TWSEDataParser {
 	private static Logger log = LoggerFactory.getLogger(TWSEDataParser.class);
@@ -52,7 +52,7 @@ public class TWSEDataParser {
 	
 	public DailyClosingInfo readDailyClosingInfo(String date) throws FileNotFoundException, IOException, ParseException {
 		DailyClosingInfo dailyClosingInfo = null;
-		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		SimpleDateFormat sdf = TimeUtils.getDateFormat();
 		
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEPathUtil.getDailyClosingFilePath(dataPath, date).toString()), Constants.CHINESE_ENCODE))) {
 			for(String line; (line = br.readLine()) != null; ) {
@@ -139,7 +139,7 @@ public class TWSEDataParser {
 			}
 			
 			if(start) {
-				setBuySellInfo(lst, TimeUtil.getDateFormat().parse(date), product, line);
+				setBuySellInfo(lst, TimeUtils.getDateFormat().parse(date), product, line);
 			}
 		}
 		return lst;
@@ -147,7 +147,7 @@ public class TWSEDataParser {
 	
 	public List<BuySellInfo> getBuySellInfo(String product, String date) throws UnsupportedEncodingException, FileNotFoundException, ParseException, IOException {
 		List<BuySellInfo> lst = new ArrayList<>();
-		Date d = TimeUtil.getDateFormat().parse(date);
+		Date d = TimeUtils.getDateFormat().parse(date);
 		
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(TWSEPathUtil.getBuySellInfoFilePath(dataPath, date, product).toString()), Constants.CHINESE_ENCODE))) {
 			boolean start = false;
@@ -195,7 +195,7 @@ public class TWSEDataParser {
 	}
 	
 	private ProductClosingInfo parseProductCloseInfo(List<String> lst, String date) {
-		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		SimpleDateFormat sdf = TimeUtils.getDateFormat();
 		ProductClosingInfo prodInfo = new ProductClosingInfo();
 		try {
 			prodInfo.setDate(sdf.parse(date));

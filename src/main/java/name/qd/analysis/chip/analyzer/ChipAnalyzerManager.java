@@ -21,7 +21,7 @@ import name.qd.analysis.chip.vo.DailyOperate;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.TWSE.utils.TWSEPathUtil;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 import name.qd.fileCache.FileCacheManager;
 import name.qd.fileCache.cache.CoordinateCacheManager;
 
@@ -29,13 +29,16 @@ public class ChipAnalyzerManager {
 	private static Logger log = LoggerFactory.getLogger(ChipAnalyzerManager.class);
 	private FileCacheManager fileCacheManager;
 	private ChipAnalyzerFactory chipAnalyzerFactory = new ChipAnalyzerFactory();
+	private final boolean isWriteCacheToFile;
 
-	public ChipAnalyzerManager(String cachePath) {
+	public ChipAnalyzerManager(String cachePath, boolean isWriteCacheToFile) {
 		try {
 			fileCacheManager = new FileCacheManager(cachePath);
 		} catch (Exception e) {
 			log.error("Init file cache manager failed.", e);
 		}
+		
+		this.isWriteCacheToFile = isWriteCacheToFile;
 	}
 	
 	public List<List<String>> getAnalysisResult(DataSource dataSource, ChipAnalyzers analyzer, String branch, String product, Date from, Date to, double tradeCost, boolean isOpenPnl, String ... inputs) {
@@ -86,13 +89,13 @@ public class ChipAnalyzerManager {
 	}
 	
 	private boolean isFolderExist(Date date) {
-		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		SimpleDateFormat sdf = TimeUtils.getDateFormat();
 		Path path = Paths.get(TWSEPathUtil.BUY_SELL_INFO_DIR, sdf.format(date));
 		return Files.exists(path);
 	}
 	
 	private boolean isCacheExist(Date date) {
-		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		SimpleDateFormat sdf = TimeUtils.getDateFormat();
 		String cacheName = Constants.getBSRCacheName(sdf.format(date));
 		return fileCacheManager.isCacheExist(cacheName);
 	}
@@ -100,7 +103,7 @@ public class ChipAnalyzerManager {
 	private void transDailyCache(DataSource dataSource, Date date) {
 		CoordinateCacheManager cacheManager = null;
 		try {
-			SimpleDateFormat sdf = TimeUtil.getDateFormat();
+			SimpleDateFormat sdf = TimeUtils.getDateFormat();
 			String cacheName = Constants.getBSRCacheName(sdf.format(date));
 			cacheManager = fileCacheManager.getCoordinateCacheInstance(cacheName, DailyOperate.class.getName());
 			if(cacheManager.values().size() > 0) {
@@ -114,7 +117,7 @@ public class ChipAnalyzerManager {
 		try {
 			Map<Date, Map<String, List<BuySellInfo>>> map = dataSource.getBuySellInfo(date, date);
 			if(map.get(date).size() == 0) {
-				log.info("{} was not a working day.", TimeUtil.getDateFormat().format(date));
+				log.info("{} was not a working day.", TimeUtils.getDateFormat().format(date));
 				return;
 			}
 			Map<String, List<BuySellInfo>> mapProductBSLst = map.get(date);
@@ -126,7 +129,9 @@ public class ChipAnalyzerManager {
 				}
 			}
 			
-			cacheManager.writeCacheToFile();
+			if(isWriteCacheToFile) {
+				cacheManager.writeCacheToFile();
+			}
 		} catch (Exception e) {
 			log.error("Get bsr files fail. {}", date.toString(), e);
 		}

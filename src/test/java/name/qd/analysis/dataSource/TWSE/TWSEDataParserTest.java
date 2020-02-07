@@ -14,7 +14,7 @@ import name.qd.analysis.dataSource.TWSE.TWSEDataParser;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
 import name.qd.analysis.dataSource.vo.DailyClosingInfo;
 import name.qd.analysis.dataSource.vo.ProductClosingInfo;
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 
 public class TWSEDataParserTest {
 	private String dataPath = "D:/workspace/file";
@@ -51,6 +51,7 @@ public class TWSEDataParserTest {
 //			e.printStackTrace();
 //		}
 	}
+	@Ignore
 	@Test
 	public void testParseDailyProducts() {
 		TWSEDataParser parser = new TWSEDataParser(dataPath);

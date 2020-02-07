@@ -21,7 +21,7 @@ import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
 import name.qd.analysis.chip.utils.ChipUtils;
 import name.qd.analysis.chip.vo.DailyOperate;
 import name.qd.analysis.dataSource.DataSource;
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 import name.qd.fileCache.FileCacheManager;
 import name.qd.fileCache.cache.CoordinateCacheManager;
 import name.qd.fileCache.cache.CoordinateObject;
@@ -55,7 +55,7 @@ public class TotalPnl extends ChipAnalyzer {
 
 	@Override
 	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl, String ... customInputs) {
-		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		SimpleDateFormat sdf = TimeUtils.getDateFormat();
 		
 		log.debug("Analyze Total Pnl. From {} to {}. Branch:{}, Product:{}, With Open Pnl:{}", sdf.format(from), sdf.format(to), branch, product, isOpenPnl);
 		

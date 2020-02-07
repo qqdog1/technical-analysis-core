@@ -18,7 +18,7 @@ import name.qd.analysis.chip.analyzer.ChipAnalyzer;
 import name.qd.analysis.chip.analyzer.ChipAnalyzerManager;
 import name.qd.analysis.dataSource.DataSource;
 import name.qd.analysis.dataSource.vo.BuySellInfo;
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 import name.qd.fileCache.FileCacheManager;
 /**
  * 任何 買-賣 或是 賣-買 超過一定量 都列出來
@@ -59,7 +59,7 @@ public class BigVolumeTrade extends ChipAnalyzer {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(from);
 		Date currentDate = calendar.getTime();
-		SimpleDateFormat sdf = TimeUtil.getDateFormat();
+		SimpleDateFormat sdf = TimeUtils.getDateFormat();
 		
 		List<List<String>> lst = new ArrayList<>();
 		
