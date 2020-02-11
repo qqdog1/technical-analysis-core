@@ -29,7 +29,7 @@ public class BestBranchBuySell extends ChipAnalyzer {
 	
 	@Override
 	public int getInputField() {
-		return InputField.FROM + InputField.TO + InputField.CUSTOM + InputField.TRADE_COST;
+		return InputField.FROM + InputField.TO + InputField.TRADE_COST;
 	}
 
 	@Override
@@ -61,6 +61,10 @@ public class BestBranchBuySell extends ChipAnalyzer {
 		
 		List<List<String>> lstPnlResult = chipAnalyzerManager.getAnalysisResult(dataSource, ChipAnalyzers.TOTAL_PNL, "", "", from, to, tradeCost, false, customInputs);
 		List<String> lstBranchs = new ArrayList<>();
+		
+		if(lstPnlResult.size() < branchCount) {
+			branchCount = lstPnlResult.size();
+		}
 		
 		for(int i = 0; i < branchCount ; i++) {
 			lstBranchs.add(lstPnlResult.get(i).get(0));

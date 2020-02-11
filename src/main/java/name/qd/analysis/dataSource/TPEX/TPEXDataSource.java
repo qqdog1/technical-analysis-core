@@ -65,4 +65,14 @@ public class TPEXDataSource implements DataSource {
 			}
 		}
 	}
+
+	@Override
+	public String getDataPath() {
+		return null;
+	}
+
+	@Override
+	public String getMarket() {
+		return "TPEX";
+	}
 }

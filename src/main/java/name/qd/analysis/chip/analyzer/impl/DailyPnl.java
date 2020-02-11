@@ -54,7 +54,7 @@ public class DailyPnl extends ChipAnalyzer {
 	public List<List<String>> analyze(DataSource dataSource, FileCacheManager fileCacheManager, Date from, Date to, String branch, String product, double tradeCost, boolean isOpenPnl, String ... customInputs) {
 		SimpleDateFormat sdf = TimeUtils.getDateFormat();
 
-		log.debug("Analyze Daily Pnl. From {} to {}. Branch:{}, Product:{}, With Open Pnl:{}", sdf.format(from), sdf.format(to), branch, product, isOpenPnl);
+		log.info("Analyze Daily Pnl. From {} to {}. Branch:{}, Product:{}, With Open Pnl:{}", sdf.format(from), sdf.format(to), branch, product, isOpenPnl);
 
 		List<List<String>> lst = new ArrayList<>();
 

@@ -69,13 +69,22 @@ public class ChipAnalyzerManager {
 		return chipAnalyzer.getInputField();
 	}
 	
+	public List<String> getCustomDescription(ChipAnalyzers analyzer) {
+		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer, this);
+		if(chipAnalyzer == null) {
+			log.error("Analyzer not exist. {}", analyzer);
+			return null;
+		}
+		return chipAnalyzer.getCustomDescreption();
+	}
+	
 	private void checkDailyCache(DataSource dataSource, Date from, Date to) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(from);
 		Date date = calendar.getTime();
 		
 		while(!to.before(date)) {
-			if(isFolderExist(date)) {
+			if(isFolderExist(dataSource, date)) {
 				if(!isCacheExist(date)) {
 					log.info("Cache not exist, transforming ... {}", date);
 					transDailyCache(dataSource, date);
@@ -88,9 +97,11 @@ public class ChipAnalyzerManager {
 		}
 	}
 	
-	private boolean isFolderExist(Date date) {
+	private boolean isFolderExist(DataSource dataSource, Date date) {
 		SimpleDateFormat sdf = TimeUtils.getDateFormat();
-		Path path = Paths.get(TWSEPathUtil.BUY_SELL_INFO_DIR, sdf.format(date));
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		Path path = Paths.get(dataSource.getDataPath(), dataSource.getMarket(), TWSEPathUtil.BUY_SELL_INFO_DIR, String.valueOf(calendar.get(Calendar.YEAR)), sdf.format(date));
 		return Files.exists(path);
 	}
 	

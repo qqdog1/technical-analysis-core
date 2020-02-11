@@ -139,4 +139,14 @@ public class TWSEDataSource implements DataSource {
 			}
 		}
 	}
+
+	@Override
+	public String getDataPath() {
+		return baseFolder;
+	}
+
+	@Override
+	public String getMarket() {
+		return "TWSE";
+	}
 }

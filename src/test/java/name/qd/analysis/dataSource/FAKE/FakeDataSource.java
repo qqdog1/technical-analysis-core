@@ -14,6 +14,11 @@ import name.qd.analysis.dataSource.vo.ProductClosingInfo;
 
 public class FakeDataSource implements DataSource {
 	@Override
+	public String getDataPath() {
+		return "";
+	}
+	
+	@Override
 	public List<ProductClosingInfo> getProductClosingInfo(String product, Date from, Date to) throws Exception {
 		int productId = Integer.parseInt(product);
 		if(productId % 2 == 0) {
@@ -180,5 +185,10 @@ public class FakeDataSource implements DataSource {
 			currentDate = calendar.getTime();
 		}
 		return map;
+	}
+
+	@Override
+	public String getMarket() {
+		return "TWSE";
 	}
 }
