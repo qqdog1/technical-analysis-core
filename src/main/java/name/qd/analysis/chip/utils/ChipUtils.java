@@ -138,7 +138,13 @@ public class ChipUtils {
 	
 	private static void calcOpenPnl(DataSource dataSource, String product, Date date, Map<String, DailyOperate> map) throws Exception {
 		List<ProductClosingInfo> lst = dataSource.getProductClosingInfo(product, date, date);
-		double closePrice = lst.get(0).getClosePrice();
+		double closePrice;
+		try {
+			closePrice = lst.get(0).getClosePrice();
+		} catch (IndexOutOfBoundsException e) {
+			log.error("No close price. {} {}", product, date);
+			throw e;
+		}
 		for(DailyOperate op : map.values()) {
 			double openPnl = (closePrice - op.getAvgPrice()) * op.getOpenShare();
 			op.setOpenPnl(openPnl);
