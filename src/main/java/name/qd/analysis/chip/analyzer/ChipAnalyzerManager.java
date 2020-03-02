@@ -41,6 +41,11 @@ public class ChipAnalyzerManager {
 		this.isWriteCacheToFile = isWriteCacheToFile;
 	}
 	
+	public List<String> getHeaderString(ChipAnalyzers analyzer, String branch, String product) {
+		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer, this);
+		return chipAnalyzer.getHeaderString(branch, product);
+	}
+	
 	public List<List<String>> getAnalysisResult(DataSource dataSource, ChipAnalyzers analyzer, String branch, String product, Date from, Date to, double tradeCost, boolean isOpenPnl, String ... inputs) {
 		log.debug("Trying to run {}", analyzer);
 		ChipAnalyzer chipAnalyzer = chipAnalyzerFactory.getAnalyzer(analyzer, this);
@@ -52,7 +57,7 @@ public class ChipAnalyzerManager {
 		checkDailyCache(dataSource, from, to);
 		
 		List<List<String>> lst = new ArrayList<>();
-		lst.add(chipAnalyzer.getHeaderString(branch, product));
+//		lst.add(chipAnalyzer.getHeaderString(branch, product));
 		List<List<String>> lstData = chipAnalyzer.analyze(dataSource, fileCacheManager, from, to, branch, product, tradeCost, isOpenPnl, inputs);
 		if(lstData != null) {
 			lst.addAll(lstData);

@@ -2,7 +2,9 @@ package name.qd.analysis.chip.analyzer.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +19,8 @@ import name.qd.fileCache.FileCacheManager;
 /**
  * 近X日
  * 最會賺前Y名分公司
- * 當日買進超過Z
+ * 當日買進-賣出超過Z
+ * 或賣出-買進超過Z
  * 列出股票觀察
  */
 public class BestBranchBuySell extends ChipAnalyzer {
@@ -59,7 +62,9 @@ public class BestBranchBuySell extends ChipAnalyzer {
 			return null;
 		}
 		
-		List<List<String>> lstPnlResult = chipAnalyzerManager.getAnalysisResult(dataSource, ChipAnalyzers.TOTAL_PNL, "", "", from, to, tradeCost, false, customInputs);
+		log.info("Best Buy Sell from {} to {}, top {} branchs, trade over {}", from, to, branchCount, tradeCost);
+		
+		List<List<String>> lstPnlResult = chipAnalyzerManager.getAnalysisResult(dataSource, ChipAnalyzers.TOTAL_PNL, "", "", from, to, 0, false, customInputs);
 		List<String> lstBranchs = new ArrayList<>();
 		
 		if(lstPnlResult.size() < branchCount) {
@@ -72,12 +77,31 @@ public class BestBranchBuySell extends ChipAnalyzer {
 		
 		List<List<String>> lst = new ArrayList<>();
 		for(String topBranch : lstBranchs) {
+			Map<String, List<String>> mapProductList = new HashMap<>();
 			List<List<String>> lstDailyResult = chipAnalyzerManager.getAnalysisResult(dataSource, ChipAnalyzers.DAILY_OPEN, topBranch, "", to, to, tradeCost, false, customInputs);
-			lst.addAll(lstDailyResult);
+			for(List<String> lstData : lstDailyResult) {
+				String thisProduct = lstData.get(1);
+				if(!mapProductList.containsKey(thisProduct)) {
+					mapProductList.put(thisProduct, lstData);
+				} else {
+					compareTwoList(mapProductList.get(thisProduct), lstData, tradeCost, lst);
+				}
+			}
 		}
 		return lst;
 	}
 
+	private void compareTwoList(List<String> l1, List<String> l2, double tradeCost, List<List<String>> lst) {
+		double cost1 = Double.valueOf(l1.get(5));
+		double cost2 = Double.valueOf(l2.get(5));
+		
+		if(cost1-cost2 > tradeCost) {
+			lst.add(l1);
+		} else if(cost2-cost1 > tradeCost) {
+			lst.add(l2);
+		}
+	}
+	
 	@Override
 	public List<String> getCustomDescreption() {
 		List<String> lst = new ArrayList<>();
